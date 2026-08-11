@@ -1,0 +1,385 @@
+<!--
+  roumu-news アーカイブページの「型」
+
+  これはArtifactとして公開するHTMLの土台（デザイン部分）。
+  daily routine（roumu-news GitHub保存）が、このファイルを読み込み、
+  news/*.md を変換した記事HTMLを <!-- ISSUES_GO_HERE --> の位置に差し込んで、
+  完成したHTMLをArtifactツールで同じURLに再公開する。
+
+  差し込み時に置換するプレースホルダー：
+    {{ISSUE_COUNT}}  → "全N号" のN
+    {{ISSUE_RANGE}}  → "創刊 2026年8月6日" のような表示
+  詳しい変換ルールは archive/BUILD.md を参照。
+-->
+<title>労務ニュース朝刊 — アーカイブ</title>
+<style>
+  :root {
+    --bg: #fff6f1;
+    --bg-blob-1: #ffd9cf;
+    --bg-blob-2: #ded1f7;
+    --card: #ffffff;
+    --card-border: #f4e2da;
+    --ink: #3b2e35;
+    --ink-soft: #9b828d;
+    --coral: #ff7c6b;
+    --coral-ink: #ffffff;
+    --lavender: #9c87d6;
+    --mint: #4fb8a4;
+    --shadow: rgba(87, 55, 61, 0.14);
+    --focus: #9c87d6;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #221722;
+      --bg-blob-1: #3a2036;
+      --bg-blob-2: #1f2a3a;
+      --card: #2b1f2b;
+      --card-border: #3d2c3a;
+      --ink: #f5e9ee;
+      --ink-soft: #bb9fac;
+      --coral: #ff9587;
+      --coral-ink: #2a1620;
+      --lavender: #bba7ec;
+      --mint: #6fd6c1;
+      --shadow: rgba(0, 0, 0, 0.4);
+      --focus: #bba7ec;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #221722;
+    --bg-blob-1: #3a2036;
+    --bg-blob-2: #1f2a3a;
+    --card: #2b1f2b;
+    --card-border: #3d2c3a;
+    --ink: #f5e9ee;
+    --ink-soft: #bb9fac;
+    --coral: #ff9587;
+    --coral-ink: #2a1620;
+    --lavender: #bba7ec;
+    --mint: #6fd6c1;
+    --shadow: rgba(0, 0, 0, 0.4);
+    --focus: #bba7ec;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", "Hiragino Sans", sans-serif;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .bg-blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.55;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .bg-blob.one { width: 30rem; height: 30rem; top: -12rem; right: -10rem; background: var(--bg-blob-1); }
+  .bg-blob.two { width: 24rem; height: 24rem; bottom: 10rem; left: -12rem; background: var(--bg-blob-2); }
+
+  a { color: var(--lavender); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { color: var(--coral); }
+  a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 1.4rem 6rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero { text-align: center; padding-bottom: 1.6rem; }
+  .hero .badge-pill {
+    display: inline-block;
+    background: linear-gradient(120deg, var(--coral), var(--lavender));
+    color: #fff;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+    font-family: "Hiragino Kaku Gothic ProN", sans-serif;
+  }
+  .hero h1 {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.1rem, 7vw, 3.1rem);
+    letter-spacing: 0.02em;
+    margin: 0.85rem 0 0.5rem;
+    text-wrap: balance;
+  }
+  .hero .tagline { color: var(--ink-soft); font-size: 1rem; margin: 0; }
+  .hero .meta-row {
+    margin-top: 1.2rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.7rem;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+    align-items: center;
+  }
+  .hero .meta-row .dot { opacity: 0.5; }
+
+  .controls { display: flex; gap: 0.6rem; align-items: center; padding: 1.6rem 0 1.8rem; }
+  .controls input[type="search"] {
+    flex: 1;
+    font: inherit;
+    font-size: 0.92rem;
+    padding: 0.75rem 1.1rem;
+    border: 1.5px solid var(--card-border);
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: 0 2px 10px var(--shadow);
+  }
+  .controls input[type="search"]::placeholder { color: var(--ink-soft); }
+  .controls .count { font-size: 0.76rem; color: var(--ink-soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  .month-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 2rem 0 1rem;
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 0.98rem;
+    color: var(--lavender);
+  }
+  .month-divider::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--card-border), transparent); }
+
+  .issue {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    box-shadow: 0 6px 22px var(--shadow);
+    padding: 1.3rem 1.4rem;
+    margin-bottom: 1rem;
+  }
+  .issue > summary {
+    list-style: none;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.9rem;
+    align-items: start;
+  }
+  .issue > summary::-webkit-details-marker { display: none; }
+  .issue-badge {
+    background: linear-gradient(135deg, var(--coral), var(--lavender));
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    margin-top: 0.1rem;
+  }
+  .issue-headline {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-weight: 700;
+    font-size: 1.12rem;
+    text-wrap: balance;
+  }
+  .issue-sub { display: block; font-family: inherit; font-weight: 400; font-size: 0.85rem; color: var(--ink-soft); margin-top: 0.35rem; }
+  .issue-toggle { font-size: 0.8rem; color: var(--lavender); align-self: center; transform: rotate(0deg); transition: transform 0.18s ease; }
+  .issue[open] .issue-toggle { transform: rotate(180deg); }
+  .issue-body { margin-top: 1.5rem; padding-top: 1.3rem; border-top: 1px dashed var(--card-border); }
+
+  .article + .article { margin-top: 2.2rem; padding-top: 2rem; border-top: 1px solid var(--card-border); }
+  .article h3 {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    line-height: 1.55;
+    margin: 0 0 0.9rem;
+    text-wrap: balance;
+  }
+  .glossary {
+    background: color-mix(in srgb, var(--lavender) 12%, var(--card));
+    border-left: 4px solid var(--lavender);
+    padding: 0.9rem 1.1rem;
+    border-radius: 0 14px 14px 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    margin: 0 0 1.2rem;
+  }
+  .glossary strong { color: var(--ink); }
+  .article h4 { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mint); font-weight: 700; margin: 1.35rem 0 0.55rem; }
+  .article p { margin: 0 0 1rem; max-width: 42em; }
+  .article ul.todo { list-style: none; margin: 0; padding: 0; }
+  .article ul.todo li { display: flex; gap: 0.55rem; align-items: flex-start; padding: 0.32rem 0; font-size: 0.95rem; }
+  .article ul.todo input { margin-top: 0.3rem; accent-color: var(--coral); }
+  .opinion-table { width: 100%; border-collapse: separate; border-spacing: 0 0.4rem; font-size: 0.87rem; margin-top: 0.2rem; }
+  .opinion-table th, .opinion-table td { text-align: left; padding: 0.6rem 0.75rem; vertical-align: top; background: color-mix(in srgb, var(--card-border) 35%, var(--card)); }
+  .opinion-table th { color: var(--ink); font-weight: 700; width: 9.5em; border-radius: 10px 0 0 10px; }
+  .opinion-table td { border-radius: 0 10px 10px 0; }
+  .source-line { margin-top: 1.1rem; font-size: 0.85rem; color: var(--ink-soft); }
+  .old-format-note { font-size: 0.8rem; color: var(--ink-soft); font-style: italic; margin: 0 0 1.4rem; }
+  .flat-list { margin: 0 0 1.2rem; padding-left: 1.2rem; }
+  .flat-list li { margin-bottom: 0.75rem; }
+  .stance-block { margin-bottom: 1.3rem; }
+  .stance-block h5 { font-size: 0.95rem; margin: 0 0 0.4rem; font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif; color: var(--lavender); }
+  .stance-block ul { margin: 0; padding-left: 1.2rem; }
+  .stance-block li { margin-bottom: 0.4rem; }
+  .empty-state { text-align: center; padding: 2.5rem 0; color: var(--ink-soft); font-size: 0.9rem; }
+
+  footer {
+    margin-top: 2.6rem;
+    padding: 1.6rem;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    text-align: center;
+    line-height: 1.9;
+  }
+
+  .ribbon-wrap { position: fixed; left: 0; top: 50%; transform: translateY(-50%); z-index: 50; display: flex; align-items: center; }
+  .ribbon-tab {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+    font-weight: 700;
+    background: linear-gradient(160deg, var(--coral), var(--lavender));
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 1.5rem 0.6rem 1.9rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.16em;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    box-shadow: 3px 4px 16px var(--shadow);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 86%, 0 100%);
+  }
+  .ribbon-panel {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 0 16px 16px 0;
+    box-shadow: 4px 6px 20px var(--shadow);
+    padding: 0.9rem;
+    min-width: 12rem;
+    max-height: 60vh;
+    overflow-y: auto;
+    display: none;
+  }
+  .ribbon-panel.open { display: block; }
+  .ribbon-panel .rp-title { font-size: 0.72rem; letter-spacing: 0.1em; color: var(--ink-soft); text-transform: uppercase; margin: 0 0 0.6rem; }
+  .ribbon-panel a { display: flex; gap: 0.5rem; align-items: baseline; padding: 0.4rem 0.3rem; border-radius: 8px; font-size: 0.85rem; color: var(--ink); text-decoration: none; }
+  .ribbon-panel a:hover { background: color-mix(in srgb, var(--lavender) 15%, var(--card)); color: var(--ink); }
+  .ribbon-panel a .rp-badge { font-size: 0.68rem; font-weight: 700; color: var(--coral); white-space: nowrap; }
+  .ribbon-panel .rp-top { display: block; margin-top: 0.5rem; padding-top: 0.6rem; border-top: 1px solid var(--card-border); font-size: 0.8rem; color: var(--lavender); font-weight: 700; }
+
+  @media (max-width: 560px) { .ribbon-tab { padding: 1.1rem 0.5rem 1.5rem; font-size: 0.72rem; } }
+  @media (prefers-reduced-motion: reduce) { .issue-toggle { transition: none; } }
+</style>
+
+<div class="bg-blob one" aria-hidden="true"></div>
+<div class="bg-blob two" aria-hidden="true"></div>
+
+<div class="ribbon-wrap">
+  <button class="ribbon-tab" id="ribbon-btn" aria-expanded="false" aria-controls="ribbon-panel">アーカイブ</button>
+  <nav class="ribbon-panel" id="ribbon-panel">
+    <p class="rp-title">号を選ぶ</p>
+    <div id="ribbon-links"></div>
+    <a href="#top" class="rp-top">▲ トップへ戻る</a>
+  </nav>
+</div>
+
+<div class="wrap" id="top">
+
+  <header class="hero">
+    <span class="badge-pill">SHAROUSHI &amp; GYOSEISHOSHI DAILY</span>
+    <h1>労務ニュース朝刊</h1>
+    <p class="tagline">社労士・行政書士のための、毎朝の実務ニュースまとめ</p>
+    <div class="meta-row">
+      <span id="issue-range">{{ISSUE_RANGE}}</span>
+      <span class="dot">・</span>
+      <span id="issue-count">全{{ISSUE_COUNT}}号</span>
+    </div>
+  </header>
+
+  <div class="controls">
+    <input type="search" id="search" placeholder="🔍 見出し・キーワードで検索（最低賃金、育休、カスハラ…）" />
+    <span class="count" id="result-count"></span>
+  </div>
+
+  <main id="archive">
+<!-- ISSUES_GO_HERE -->
+    <p class="empty-state" id="empty-state" hidden>該当する号が見つかりませんでした。別のキーワードで試してみてね。</p>
+  </main>
+
+  <footer>
+    <p>毎朝、社労士・行政書士業務のための労務ニュースを自動収集・配信しています。<br />メール／LINE配信とあわせて、このアーカイブはGitHubリポジトリの内容をもとに更新しています。</p>
+    <p>月次・年次の傾向分析は、記事が十分に蓄積され次第この場所に追加予定です。</p>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var issues = Array.prototype.slice.call(document.querySelectorAll('.issue'));
+    var input = document.getElementById('search');
+    var countEl = document.getElementById('result-count');
+    var emptyEl = document.getElementById('empty-state');
+    var ribbonBtn = document.getElementById('ribbon-btn');
+    var ribbonPanel = document.getElementById('ribbon-panel');
+    var ribbonLinks = document.getElementById('ribbon-links');
+
+    function normalize(s) { return (s || '').toLowerCase(); }
+
+    function applyFilter() {
+      var q = normalize(input.value).trim();
+      var visible = 0;
+      issues.forEach(function (issue) {
+        var haystack = normalize(issue.dataset.search + ' ' + issue.querySelector('.issue-headline').textContent);
+        var match = q === '' || haystack.indexOf(q) !== -1;
+        issue.hidden = !match;
+        if (match) visible++;
+      });
+      emptyEl.hidden = visible !== 0;
+      countEl.textContent = q === '' ? '' : visible + ' 件ヒット';
+    }
+    input.addEventListener('input', applyFilter);
+
+    issues.forEach(function (issue) {
+      var badge = issue.querySelector('.issue-badge').textContent;
+      var headline = issue.querySelector('.issue-headline').textContent;
+      var a = document.createElement('a');
+      a.href = '#' + issue.id;
+      a.innerHTML = '<span class="rp-badge">' + badge + '</span><span>' + headline.slice(0, 16) + '…</span>';
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        issue.open = true;
+        issue.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        closeRibbon();
+      });
+      ribbonLinks.appendChild(a);
+    });
+
+    function openRibbon() { ribbonPanel.classList.add('open'); ribbonBtn.setAttribute('aria-expanded', 'true'); }
+    function closeRibbon() { ribbonPanel.classList.remove('open'); ribbonBtn.setAttribute('aria-expanded', 'false'); }
+    ribbonBtn.addEventListener('click', function () {
+      if (ribbonPanel.classList.contains('open')) closeRibbon(); else openRibbon();
+    });
+    document.addEventListener('click', function (e) { if (!e.target.closest('.ribbon-wrap')) closeRibbon(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeRibbon(); });
+  })();
+</script>
