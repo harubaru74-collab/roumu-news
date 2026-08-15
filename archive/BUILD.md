@@ -56,11 +56,25 @@ https://claude.ai/code/artifact/1b8f2ccc-eaea-4620-bff5-c43a9557a99d
 <p class="old-format-note">※ この号は初期フォーマット（要約／実務影響／賛否両論の3段構成）で配信されたものです。第2号以降、記事ごとに用語解説・実務ToDo・立場別意見表を備えた現在の形式に更新されました。</p>
 ```
 
-## 月次まとめについて
+## 月次まとめについて（前半・後半の2回、自動生成）
 
-`news/monthly/YYYY-MM-summary.md` が存在する場合、それぞれを `.monthly` クラスの `<details>` ブロックとして、対応する月の `month-divider` の直前に挿入する（新しい月が上）。デイリー記事とはCSSクラスを分ける（`.monthly` / `.monthly-badge` / `.monthly-headline` / `.monthly-sub` / `.monthly-body`。構造は `archive/shell.html` のCSSと、2026年8月分の実装例を参照）。
+月次まとめは**月2回、自動生成される**（別トリガー「roumu-news 月次まとめ」が担当。日次のGitHub保存ルーティンとは別物）：
 
-月次まとめは**ユーザーから明示的に依頼された時だけ**作成・更新するものであり、日次のGitHub保存ルーティンが自動生成するものではない。日次ルーティンでアーカイブページを再構築する際は、既存の `news/monthly/*.md` があればそのまま反映し、新規作成はしないこと。
+- **毎月15日**：その月の1日〜15日分を集計し「前半まとめ」を作成 → `news/monthly/YYYY-MM-first-half.md`
+- **毎月末日**：その月の16日〜末日分を集計し「後半まとめ」を作成 → `news/monthly/YYYY-MM-second-half.md`
+
+作成手順（月次まとめルーティン用）：
+1. 対象期間の `news/YYYY-MM-DD.md` を全て読み、記事数・話題を集計する。
+2. 8月前半分（`news/monthly/2026-08-summary.md`）の構成を参考に、以下を含める：
+   - 冒頭の傾向サマリー（1〜2文）
+   - テーマ別セクション（②③④…、各テーマに絵文字見出し＋箇条書き＋一言コメント）
+   - 今後の重要締切テーブル（分かっているもののみ）
+   - 締めの一言メモ
+3. `news/monthly/YYYY-MM-first-half.md` または `news/monthly/YYYY-MM-second-half.md` として保存し、コミット・プッシュする。
+4. アーカイブページを再構築する際、`.monthly` ブロックとして該当月の `month-divider` の直前に挿入する。同じ月に前半・後半2つある場合は、**新しい方（後半）を上**にする。CSSクラスはデイリー記事と分ける（`.monthly` / `.monthly-badge` / `.monthly-headline` / `.monthly-sub` / `.monthly-body`。構造は `archive/shell.html` と2026年8月分の実装例を参照）。
+5. 左リボン（`.ribbon-panel`）のクイックジャンプ一覧にも、日次記事と同様に月次まとめが表示される（`archive/shell.html` のJSは `.issue, .monthly` の両方を拾う実装済み）。
+
+**日次のGitHub保存ルーティン**は、月次まとめを新規作成しない。アーカイブページ再構築時は、既存の `news/monthly/*.md` があればそのまま反映するだけでよい。
 
 ## 注意事項
 

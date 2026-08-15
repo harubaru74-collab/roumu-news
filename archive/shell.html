@@ -389,6 +389,7 @@
 <script>
   (function () {
     var issues = Array.prototype.slice.call(document.querySelectorAll('.issue'));
+    var jumpTargets = Array.prototype.slice.call(document.querySelectorAll('.issue, .monthly'));
     var input = document.getElementById('search');
     var countEl = document.getElementById('result-count');
     var emptyEl = document.getElementById('empty-state');
@@ -412,16 +413,18 @@
     }
     input.addEventListener('input', applyFilter);
 
-    issues.forEach(function (issue) {
-      var badge = issue.querySelector('.issue-badge').textContent;
-      var headline = issue.querySelector('.issue-headline').textContent;
+    jumpTargets.forEach(function (item) {
+      var badgeEl = item.querySelector('.issue-badge, .monthly-badge');
+      var headlineEl = item.querySelector('.issue-headline, .monthly-headline');
+      var badge = badgeEl ? badgeEl.textContent : '';
+      var headline = headlineEl ? headlineEl.textContent : '';
       var a = document.createElement('a');
-      a.href = '#' + issue.id;
+      a.href = '#' + item.id;
       a.innerHTML = '<span class="rp-badge">' + badge + '</span><span>' + headline.slice(0, 16) + '…</span>';
       a.addEventListener('click', function (e) {
         e.preventDefault();
-        issue.open = true;
-        issue.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        item.open = true;
+        item.scrollIntoView({ behavior: 'smooth', block: 'start' });
         closeRibbon();
       });
       ribbonLinks.appendChild(a);
