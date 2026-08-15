@@ -241,6 +241,59 @@
   .stance-block li { margin-bottom: 0.4rem; }
   .empty-state { text-align: center; padding: 2.5rem 0; color: var(--ink-soft); font-size: 0.9rem; }
 
+  .monthly {
+    background: linear-gradient(155deg, color-mix(in srgb, var(--mint) 16%, var(--card)), var(--card));
+    border: 1.5px solid color-mix(in srgb, var(--mint) 45%, var(--card-border));
+    border-radius: 22px;
+    box-shadow: 0 8px 26px var(--shadow);
+    padding: 1.4rem 1.5rem;
+    margin-bottom: 1.6rem;
+  }
+  .monthly > summary {
+    list-style: none;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.9rem;
+    align-items: start;
+  }
+  .monthly > summary::-webkit-details-marker { display: none; }
+  .monthly-badge {
+    background: var(--mint);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    margin-top: 0.1rem;
+  }
+  .monthly-headline {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    text-wrap: balance;
+  }
+  .monthly-sub { display: block; font-weight: 400; font-size: 0.85rem; color: var(--ink-soft); margin-top: 0.35rem; }
+  .monthly[open] .issue-toggle { transform: rotate(180deg); }
+  .monthly-body { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px dashed color-mix(in srgb, var(--mint) 40%, var(--card-border)); }
+  .monthly-body h4 {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+    font-size: 1rem;
+    color: var(--mint);
+    margin: 1.3rem 0 0.6rem;
+  }
+  .monthly-body h4:first-child { margin-top: 0; }
+  .monthly-body p { margin: 0 0 0.9rem; }
+  .monthly-body ul { margin: 0 0 0.9rem; padding-left: 1.2rem; }
+  .monthly-body li { margin-bottom: 0.5rem; }
+  .monthly-body table { width: 100%; border-collapse: separate; border-spacing: 0 0.4rem; font-size: 0.87rem; margin: 0.4rem 0 0.9rem; }
+  .monthly-body th, .monthly-body td { text-align: left; padding: 0.55rem 0.7rem; background: color-mix(in srgb, var(--card-border) 35%, var(--card)); }
+  .monthly-body th { font-weight: 700; border-radius: 10px 0 0 10px; white-space: nowrap; }
+  .monthly-body td { border-radius: 0 10px 10px 0; }
+  .monthly-note { font-size: 0.82rem; color: var(--ink-soft); font-style: italic; margin-top: 1rem; }
+
   footer {
     margin-top: 2.6rem;
     padding: 1.6rem;

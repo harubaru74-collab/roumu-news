@@ -56,6 +56,12 @@ https://claude.ai/code/artifact/1b8f2ccc-eaea-4620-bff5-c43a9557a99d
 <p class="old-format-note">※ この号は初期フォーマット（要約／実務影響／賛否両論の3段構成）で配信されたものです。第2号以降、記事ごとに用語解説・実務ToDo・立場別意見表を備えた現在の形式に更新されました。</p>
 ```
 
+## 月次まとめについて
+
+`news/monthly/YYYY-MM-summary.md` が存在する場合、それぞれを `.monthly` クラスの `<details>` ブロックとして、対応する月の `month-divider` の直前に挿入する（新しい月が上）。デイリー記事とはCSSクラスを分ける（`.monthly` / `.monthly-badge` / `.monthly-headline` / `.monthly-sub` / `.monthly-body`。構造は `archive/shell.html` のCSSと、2026年8月分の実装例を参照）。
+
+月次まとめは**ユーザーから明示的に依頼された時だけ**作成・更新するものであり、日次のGitHub保存ルーティンが自動生成するものではない。日次ルーティンでアーカイブページを再構築する際は、既存の `news/monthly/*.md` があればそのまま反映し、新規作成はしないこと。
+
 ## 注意事項
 
 - HTML特殊文字（`&` `<` `>`）はエスケープすること。
