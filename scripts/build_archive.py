@@ -70,7 +70,7 @@ def parse_glossary(rest):
 
 def parse_body(rest):
     m = re.match(
-        r"^\*\*(何が起きた？|どういう話？)\*\*\s*\n(.*?)"
+        r"^\*\*(何が起きた？|どういう話？|どんな話？)\*\*\s*\n(.*?)"
         r"(?=\n\*\*うちの仕事にどう関係する？\*\*|\Z)",
         rest,
         re.DOTALL,
