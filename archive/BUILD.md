@@ -1,10 +1,18 @@
-# アーカイブページの再生成手順
+# アーカイブページの再生成手順（2026-08-25以前の旧方式・記録用）
 
-「労務ニュース朝刊」アーカイブは、Claude Artifactとして公開されている静的ページ。
-毎日の GitHub保存ルーティンの最後に、このページも再生成・再公開する。
+**⚠️ このファイルは歴史的記録です。現在の運用は `archive/AUTOBUILD.md` を参照してください。**
+2026-08-25に、この手順書に書かれたClaude手動運用（毎晩Artifactに再公開）から、
+GitHub Actions + Python（`scripts/build_archive.py`）による完全自動更新に切り替わりました。
+ただし以下のMarkdown→HTML変換ルールは`build_archive.py`にそのまま引き継がれているため、
+変換ルールの参照元としては引き続き有効です。
 
-**公開URL（固定・変えないこと）**：
+「労務ニュース朝刊」アーカイブは、**旧方式では**Claude Artifactとして公開されていた静的ページ。
+毎日の GitHub保存ルーティンの最後に、このページも再生成・再公開していた（現在は不要）。
+
+**旧公開URL（2026-08-25で更新停止・凍結）**：
 https://claude.ai/code/artifact/1b8f2ccc-eaea-4620-bff5-c43a9557a99d
+
+**現在の公開URL**：https://harubaru74-collab.github.io/roumu-news/
 
 ## 手順
 
