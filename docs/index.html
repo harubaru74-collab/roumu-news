@@ -1,0 +1,773 @@
+<title>労務ニュース朝刊 — アーカイブ</title>
+<style>
+  :root {
+    --bg: #fff6f1;
+    --bg-blob-1: #ffd9cf;
+    --bg-blob-2: #ded1f7;
+    --card: #ffffff;
+    --card-border: #f4e2da;
+    --ink: #3b2e35;
+    --ink-soft: #9b828d;
+    --coral: #ff7c6b;
+    --coral-ink: #ffffff;
+    --lavender: #9c87d6;
+    --mint: #4fb8a4;
+    --shadow: rgba(87, 55, 61, 0.14);
+    --focus: #9c87d6;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #221722;
+      --bg-blob-1: #3a2036;
+      --bg-blob-2: #1f2a3a;
+      --card: #2b1f2b;
+      --card-border: #3d2c3a;
+      --ink: #f5e9ee;
+      --ink-soft: #bb9fac;
+      --coral: #ff9587;
+      --coral-ink: #2a1620;
+      --lavender: #bba7ec;
+      --mint: #6fd6c1;
+      --shadow: rgba(0, 0, 0, 0.4);
+      --focus: #bba7ec;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #221722;
+    --bg-blob-1: #3a2036;
+    --bg-blob-2: #1f2a3a;
+    --card: #2b1f2b;
+    --card-border: #3d2c3a;
+    --ink: #f5e9ee;
+    --ink-soft: #bb9fac;
+    --coral: #ff9587;
+    --coral-ink: #2a1620;
+    --lavender: #bba7ec;
+    --mint: #6fd6c1;
+    --shadow: rgba(0, 0, 0, 0.4);
+    --focus: #bba7ec;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", "Hiragino Sans", sans-serif;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .bg-blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.55;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .bg-blob.one { width: 30rem; height: 30rem; top: -12rem; right: -10rem; background: var(--bg-blob-1); }
+  .bg-blob.two { width: 24rem; height: 24rem; bottom: 10rem; left: -12rem; background: var(--bg-blob-2); }
+
+  a { color: var(--lavender); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { color: var(--coral); }
+  a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 1.4rem 6rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero { text-align: center; padding-bottom: 1.6rem; }
+  .hero .badge-pill {
+    display: inline-block;
+    background: linear-gradient(120deg, var(--coral), var(--lavender));
+    color: #fff;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+    font-family: "Hiragino Kaku Gothic ProN", sans-serif;
+  }
+  .hero h1 {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.1rem, 7vw, 3.1rem);
+    letter-spacing: 0.02em;
+    margin: 0.85rem 0 0.5rem;
+    text-wrap: balance;
+  }
+  .hero .tagline { color: var(--ink-soft); font-size: 1rem; margin: 0; }
+  .hero .meta-row {
+    margin-top: 1.2rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.7rem;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+    align-items: center;
+  }
+  .hero .meta-row .dot { opacity: 0.5; }
+
+  .controls { display: flex; gap: 0.6rem; align-items: center; padding: 1.6rem 0 1.8rem; }
+  .controls input[type="search"] {
+    flex: 1;
+    font: inherit;
+    font-size: 0.92rem;
+    padding: 0.75rem 1.1rem;
+    border: 1.5px solid var(--card-border);
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: 0 2px 10px var(--shadow);
+  }
+  .controls input[type="search"]::placeholder { color: var(--ink-soft); }
+  .controls .count { font-size: 0.76rem; color: var(--ink-soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  .month-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 2rem 0 1rem;
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 0.98rem;
+    color: var(--lavender);
+  }
+  .month-divider::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--card-border), transparent); }
+
+  .issue {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    box-shadow: 0 6px 22px var(--shadow);
+    padding: 1.3rem 1.4rem;
+    margin-bottom: 1rem;
+  }
+  .issue > summary {
+    list-style: none;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.9rem;
+    align-items: start;
+  }
+  .issue > summary::-webkit-details-marker { display: none; }
+  .issue-badge {
+    background: linear-gradient(135deg, var(--coral), var(--lavender));
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    margin-top: 0.1rem;
+  }
+  .issue-headline {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-weight: 700;
+    font-size: 1.12rem;
+    text-wrap: balance;
+  }
+  .issue-sub { display: block; font-family: inherit; font-weight: 400; font-size: 0.85rem; color: var(--ink-soft); margin-top: 0.35rem; }
+  .issue-toggle { font-size: 0.8rem; color: var(--lavender); align-self: center; transform: rotate(0deg); transition: transform 0.18s ease; }
+  .issue[open] .issue-toggle { transform: rotate(180deg); }
+  .issue-body { margin-top: 1.5rem; padding-top: 1.3rem; border-top: 1px dashed var(--card-border); }
+
+  .article + .article { margin-top: 2.2rem; padding-top: 2rem; border-top: 1px solid var(--card-border); }
+  .article h3 {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    line-height: 1.55;
+    margin: 0 0 0.9rem;
+    text-wrap: balance;
+  }
+  .glossary {
+    background: color-mix(in srgb, var(--lavender) 12%, var(--card));
+    border-left: 4px solid var(--lavender);
+    padding: 0.9rem 1.1rem;
+    border-radius: 0 14px 14px 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    margin: 0 0 1.2rem;
+  }
+  .glossary strong { color: var(--ink); }
+  .article h4 { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mint); font-weight: 700; margin: 1.35rem 0 0.55rem; }
+  .article p { margin: 0 0 1rem; max-width: 42em; }
+  .article ul.todo { list-style: none; margin: 0; padding: 0; }
+  .article ul.todo li { display: flex; gap: 0.55rem; align-items: flex-start; padding: 0.32rem 0; font-size: 0.95rem; }
+  .article ul.todo input { margin-top: 0.3rem; accent-color: var(--coral); }
+  .opinion-table { width: 100%; border-collapse: separate; border-spacing: 0 0.4rem; font-size: 0.87rem; margin-top: 0.2rem; }
+  .opinion-table th, .opinion-table td { text-align: left; padding: 0.6rem 0.75rem; vertical-align: top; background: color-mix(in srgb, var(--card-border) 35%, var(--card)); }
+  .opinion-table th { color: var(--ink); font-weight: 700; width: 9.5em; border-radius: 10px 0 0 10px; }
+  .opinion-table td { border-radius: 0 10px 10px 0; }
+  .source-line { margin-top: 1.1rem; font-size: 0.85rem; color: var(--ink-soft); }
+  .old-format-note { font-size: 0.8rem; color: var(--ink-soft); font-style: italic; margin: 0 0 1.4rem; }
+  .flat-list { margin: 0 0 1.2rem; padding-left: 1.2rem; }
+  .flat-list li { margin-bottom: 0.75rem; }
+  .stance-block { margin-bottom: 1.3rem; }
+  .stance-block h5 { font-size: 0.95rem; margin: 0 0 0.4rem; font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif; color: var(--lavender); }
+  .stance-block ul { margin: 0; padding-left: 1.2rem; }
+  .stance-block li { margin-bottom: 0.4rem; }
+  .empty-state { text-align: center; padding: 2.5rem 0; color: var(--ink-soft); font-size: 0.9rem; }
+
+  .monthly {
+    background: linear-gradient(155deg, color-mix(in srgb, var(--mint) 16%, var(--card)), var(--card));
+    border: 1.5px solid color-mix(in srgb, var(--mint) 45%, var(--card-border));
+    border-radius: 22px;
+    box-shadow: 0 8px 26px var(--shadow);
+    padding: 1.4rem 1.5rem;
+    margin-bottom: 1.6rem;
+  }
+  .monthly > summary {
+    list-style: none;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.9rem;
+    align-items: start;
+  }
+  .monthly > summary::-webkit-details-marker { display: none; }
+  .monthly-badge {
+    background: var(--mint);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    margin-top: 0.1rem;
+  }
+  .monthly-headline {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    text-wrap: balance;
+  }
+  .monthly-sub { display: block; font-weight: 400; font-size: 0.85rem; color: var(--ink-soft); margin-top: 0.35rem; }
+  .monthly[open] .issue-toggle { transform: rotate(180deg); }
+  .monthly-body { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px dashed color-mix(in srgb, var(--mint) 40%, var(--card-border)); }
+  .monthly-body h4 {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+    font-size: 1rem;
+    color: var(--mint);
+    margin: 1.3rem 0 0.6rem;
+  }
+  .monthly-body h4:first-child { margin-top: 0; }
+  .monthly-body p { margin: 0 0 0.9rem; }
+  .monthly-body ul { margin: 0 0 0.9rem; padding-left: 1.2rem; }
+  .monthly-body li { margin-bottom: 0.5rem; }
+  .monthly-body table { width: 100%; border-collapse: separate; border-spacing: 0 0.4rem; font-size: 0.87rem; margin: 0.4rem 0 0.9rem; }
+  .monthly-body th, .monthly-body td { text-align: left; padding: 0.55rem 0.7rem; background: color-mix(in srgb, var(--card-border) 35%, var(--card)); }
+  .monthly-body th { font-weight: 700; border-radius: 10px 0 0 10px; white-space: nowrap; }
+  .monthly-body td { border-radius: 0 10px 10px 0; }
+  .monthly-note { font-size: 0.82rem; color: var(--ink-soft); font-style: italic; margin-top: 1rem; }
+
+  footer {
+    margin-top: 2.6rem;
+    padding: 1.6rem;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    text-align: center;
+    line-height: 1.9;
+  }
+
+  .ribbon-wrap { position: fixed; left: 0; top: 50%; transform: translateY(-50%); z-index: 50; display: flex; align-items: center; }
+  .ribbon-tab {
+    font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+    font-weight: 700;
+    background: linear-gradient(160deg, var(--coral), var(--lavender));
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 1.5rem 0.6rem 1.9rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.16em;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    box-shadow: 3px 4px 16px var(--shadow);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 86%, 0 100%);
+  }
+  .ribbon-panel {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 0 16px 16px 0;
+    box-shadow: 4px 6px 20px var(--shadow);
+    padding: 0.9rem;
+    min-width: 12rem;
+    max-height: 60vh;
+    overflow-y: auto;
+    display: none;
+  }
+  .ribbon-panel.open { display: block; }
+  .ribbon-panel .rp-title { font-size: 0.72rem; letter-spacing: 0.1em; color: var(--ink-soft); text-transform: uppercase; margin: 0 0 0.6rem; }
+  .ribbon-panel a { display: flex; gap: 0.5rem; align-items: baseline; padding: 0.4rem 0.3rem; border-radius: 8px; font-size: 0.85rem; color: var(--ink); text-decoration: none; }
+  .ribbon-panel a:hover { background: color-mix(in srgb, var(--lavender) 15%, var(--card)); color: var(--ink); }
+  .ribbon-panel a .rp-badge { font-size: 0.68rem; font-weight: 700; color: var(--coral); white-space: nowrap; }
+  .ribbon-panel .rp-top { display: block; margin-top: 0.5rem; padding-top: 0.6rem; border-top: 1px solid var(--card-border); font-size: 0.8rem; color: var(--lavender); font-weight: 700; }
+
+  @media (max-width: 560px) { .ribbon-tab { padding: 1.1rem 0.5rem 1.5rem; font-size: 0.72rem; } }
+  @media (prefers-reduced-motion: reduce) { .issue-toggle { transition: none; } }
+</style>
+
+<div class="bg-blob one" aria-hidden="true"></div>
+<div class="bg-blob two" aria-hidden="true"></div>
+
+<div class="ribbon-wrap">
+  <button class="ribbon-tab" id="ribbon-btn" aria-expanded="false" aria-controls="ribbon-panel">アーカイブ</button>
+  <nav class="ribbon-panel" id="ribbon-panel">
+    <p class="rp-title">号を選ぶ</p>
+    <div id="ribbon-links"></div>
+    <a href="#top" class="rp-top">▲ トップへ戻る</a>
+  </nav>
+</div>
+
+<div class="wrap" id="top">
+
+  <header class="hero">
+    <span class="badge-pill">SHAROUSHI &amp; GYOSEISHOSHI DAILY</span>
+    <h1>労務ニュース朝刊</h1>
+    <p class="tagline">社労士・行政書士のための、毎朝の実務ニュースまとめ</p>
+    <div class="meta-row">
+      <span id="issue-range">創刊 2026年8月6日</span>
+      <span class="dot">・</span>
+      <span id="issue-count">全17号</span>
+    </div>
+  </header>
+
+  <div class="controls">
+    <input type="search" id="search" placeholder="🔍 見出し・キーワードで検索（最低賃金、育休、カスハラ…）" />
+    <span class="count" id="result-count"></span>
+  </div>
+
+  <main id="archive">
+<details class="monthly" id="monthly-2026-08-summary">
+      <summary>
+        <span class="monthly-badge">📊 月次まとめ</span>
+        <span>
+          <span class="monthly-headline">月次まとめ：2026年8月前半（8/6〜8/15、全7号）</span>
+          <span class="monthly-sub">全7号・のべ22記事から傾向を分析</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="monthly-body">
+<p class="monthly-note">集計対象：news/2026-08-06.md 〜 news/2026-08-15.md（全7号・のべ22記事）</p><h4>📊 ざっくり傾向</h4><p>8月前半は、<strong>「処遇改善」「ハラスメント対策の締切接近」「人手不足への制度対応」の3本柱</strong>にほぼ集約できるよ。特にハラスメント対策は10月1日という共通の締切に向けて複数の角度から情報が積み上がってきてる。</p><h4>① 処遇改善・賃上げが継続（7号中5号で言及）</h4><p>ほぼ毎号、何らかの形で「賃金・処遇が上がる」話が出てる：</p><ul><li>最低賃金：全国加重平均1176円（+55円、<strong>3年連続</strong>の引き上げ）— 8/11</li><li>男性育休取得率：<strong>初の50%超え</strong>（50.9%）— 8/11</li><li>夏季賞与：経団連集計で<strong>104万円、過去最高</strong>（建設業は200万円超） — 8/11</li><li>雇用保険料率：<strong>2年連続引き下げ</strong>（一般の事業14.5→13.5/1,000）— 8/7</li><li>在職老齢年金：支給停止基準62万円に引き上げ、<strong>約20万人</strong>が全額受給可能に — 8/14</li><li>有給休暇取得率：<strong>66.9%で過去最高</strong>を更新 — 8/15</li></ul><p><strong>顧問先への示唆</strong>：数字だけ見ると「良いニュースが多い月」に見えるけど、業種間格差（宿泊・飲食業の有給取得率50.7%など）は依然大きい。全体トレンドと個別業種の実態を分けて説明する必要がありそう。</p><h4>② ハラスメント対策、10月1日締切に向けて情報が集約（3号で関連言及）</h4><ul><li>精神障害の労災認定が<strong>7年連続で過去最多</strong>（1082件）、原因はパワハラ首位、<strong>カスハラ・セクハラが僅差の同率2位</strong>に浮上 — 8/12</li><li>カスタマーハラスメント防止指針が<strong>正式公布</strong>（令和8年厚労省告示第51号）、電話・SNS上の言動も対象に — 8/15</li><li>治療と仕事の両立支援も4月から努力義務化されてるが、対応が遅れてる企業が多いとの指摘 — 8/12</li></ul><p><strong>顧問先への示唆</strong>：10月1日のカスハラ対策義務化まで、この月次まとめの時点で残り1ヶ月半。就業規則改定・相談窓口設置・マニュアル作成が未着手の顧問先には、この3本の記事をまとめて見せると説得材料になりそう。</p><h4>③ 人手不足への制度対応が複数レイヤーで進行（4号で関連言及）</h4><ul><li>技能実習の監督指導強化（違反率71.7%、東北）— 8/6, 8/7</li><li>障害者法定雇用率2.7%へ引き上げ（対象企業37.5人以上に拡大）— 8/13</li><li>技能実習→育成就労制度への移行（9/1申請開始、2027年4月本格施行）— 8/15</li><li>業務改善助成金の改正（9/1申請開始、最低賃金対応とセット）— 8/12</li><li>建設業の「2026年問題」：時間外上限規制の影響で倒産が12年ぶり2000件超え — 8/13</li></ul><p><strong>顧問先への示唆</strong>：外国人材・障害者雇用・最低賃金対応のいずれも、"制度は整備されてきてるが、現場の受け入れ体制が追いついていない"という共通の課題が透けて見える。監督強化（8/6, 8/7）とセットで見ると、"整備はされたが、まだ徹底されていない"というのが8月前半の裏テーマかもしれない。</p><h4>🗓️ 今後の重要締切（8月前半時点で判明分）</h4><table><tr><th>2026年9月1日</th><td>業務改善助成金：新3コースでの申請受付開始</td></tr><tr><th>2026年9月1日</th><td>育成就労制度：計画認定に係る施行日前申請受付開始</td></tr><tr><th>2026年10月1日</th><td>カスタマーハラスメント防止措置の義務化</td></tr><tr><th>2026年10月1日</th><td>就活セクハラ防止措置の義務化（別途確認要）</td></tr></table><h4>💬 一言メモ</h4><p>「賃上げ・処遇改善」は数字として明るい話が多い月だった一方、「ハラスメント対策」と「人手不足対応」は"締切が迫ってるのに未対応の企業が多そう"という、事務所として動きやすい商機が見える月でもあったよ。次回の月次まとめでは、9月・10月の締切がどれだけ実際にクリアされたか（or 駆け込み対応がどれだけ増えたか）を追ってみると面白いかも。</p><p class="monthly-note">このまとめは news/2026-08-06.md 〜 news/2026-08-15.md の内容から作成しています。8月後半分は次回の月次まとめに含まれる予定です。</p>
+      </div>
+    </details>
+
+    <div class="month-divider">2026年8月</div>
+
+    <details class="issue" id="issue-2026-08-25" open data-search="9月は「職場の健康診断実施強化月間」、厚労省が集中的な啓発活動を呼びかけ 令和7年の賃金不払事案、22,605件で前年より251件増加も是正額は減少 📚コラム：「労務リスク」の本当の怖さは、未払い残業代より"見えない損失" 📚コラム：職場の「無視」はパワハラになる？法的な認定基準と冷静な対処法 📚コラム：労働審判の「解決金」は賃金にあたらない、給与からの相殺は認められず（東京地裁）">
+      <summary>
+        <span class="issue-badge">第17号 8/25</span>
+        <span>
+          <span class="issue-headline">9月は「職場の健康診断実施強化月間」、厚労省が集中的な啓発活動を呼びかけ</span>
+          <span class="issue-sub">9月は「職場の健康診断実施強化月間」、厚労省が集中的な啓発活動を呼びかけ／令和7年の賃金不払事案、22,605件で前年より251件増加も是正額は減少／📚コラム：「労務リスク」の本当の怖さは、未払い残業代より"見えない損失"／📚コラム：職場の「無視」はパワハラになる？法的な認定基準と冷静な対処法／📚コラム：労働審判の「解決金」は賃金にあたらない、給与からの相殺は認められず（東京地裁）　全5本</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><h3>① 9月は「職場の健康診断実施強化月間」、厚労省が集中的な啓発活動を呼びかけ</h3><div class="glossary"><strong>用語解説：なんで9月が「健康診断強化月間」なの？</strong><br />10月1日〜7日の「全国労働衛生週間」に向けた準備期間として、厚労省は毎年9月を「職場の健康診断実施強化月間」に位置づけてる。一般健康診断はやりっぱなしになりがちで、「実施したけど結果を受けての事後措置（医師の意見聴取、保健指導等）まで手が回ってない」という事業所も多いから、この時期に集中的にテコ入れを促す狙いだよ。</div><h4>何が起きた？</h4><p>厚生労働省は8月21日、<strong>「職場の健康診断実施強化月間」（9月）</strong>について発表したよ。重点事項として、①一般健康診断の実施・医師からの意見聴取・事後措置等の徹底、②健康診断結果の記録保存・労基署への報告徹底、③健診結果に基づく医師・保健師による保健指導の実施、④ストレスチェック制度の適切な実施、⑤健康保持増進措置の適切な実施、⑥職場環境に起因する疾病の防止、⑦治療と就業の両立支援の周知、の7項目が掲げられてる。8/22の記事で紹介した定期健康診断の項目変更（令和9年4月〜、血清クレアチニン検査追加等）ともつながる話で、健診の"実施率"だけでなく"事後対応まで含めた運用の質"が今後より問われてきそうだよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の健康診断実施状況（受診率・結果の記録保存・労基署報告）を9月のタイミングで一斉点検する</li><li><input type="checkbox" disabled />健診結果に基づく医師の意見聴取・事後措置が実施されているか確認し、未実施の場合は是正を促す</li><li><input type="checkbox" disabled />ストレスチェック制度の実施状況とあわせて、治療と仕事の両立支援の周知が行われているか確認する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「健診は毎年やってるつもりだったが、事後措置まで求められるとなると負担感がある」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「受けっぱなしじゃなく、結果を踏まえた保健指導までしてもらえるのはありがたい」</td></tr><tr><th>🏢 現場管理者目線</th><td>「記録の保存・報告まで含めてチェックリスト化しておかないと、抜け漏れが起きそう」</td></tr><tr><th>⚖️ 専門家目線</th><td>「毎年恒例の啓発だが、実施率だけでなく事後措置の徹底まで顧問先に案内する良い機会」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.mhlw.go.jp/stf/newpage_75713.html" target="_blank" rel="noopener">厚生労働省「『職場の健康診断実施強化月間』（9月）について」</a></p></article>
+<article class="article"><h3>② 令和7年の賃金不払事案、22,605件で前年より251件増加も是正額は減少</h3><div class="glossary"><strong>用語解説：「賃金不払」の監督指導ってどんな時に行われるの？</strong><br />労働基準監督署が事業場に立入調査（監督指導）を行った結果、残業代の未払いなど賃金不払が確認された場合に、企業に対して是正（遡及支払い）を指導する制度だよ。今回発表されたのは、令和7年の1年間に全国の労基署が行ったこの監督指導の集計結果。</div><h4>何が起きた？</h4><p>厚生労働省は8月21日、<strong>「賃金不払が疑われる事業場に対する監督指導結果（令和7年）」</strong>を公表したよ。令和7年の賃金不払事案の件数は<strong>22,605件</strong>で、前年比<strong>251件増加</strong>。一方で、影響を受けた労働者数は<strong>173,016人</strong>（前年比12,181人減）、是正金額の合計は<strong>約128.6億円</strong>（前年比約43.5億円減）と、<strong>件数は増えたのに規模は縮小</strong>するという対照的な結果になってる。1件あたりの規模が小さい事案が増えた可能性がある一方、監督指導自体の網が広がっている（＝より多くの事業場をチェックできている）とも読める数字だよ。9月の「健康診断実施強化月間」（記事①）と同様、労基署の監督指導が引き続き活発化してる時期であることがうかがえるね。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の残業代計算・打刻データの整合性を、労基署の監督指導が入る前提で定期的に点検する</li><li><input type="checkbox" disabled />過去の賃金不払リスク（サービス残業の慣行等）が残っていないか、この機会に棚卸しを提案する</li><li><input type="checkbox" disabled />監督指導が入った場合の対応フロー（是正報告書の提出等）を顧問先向けに事前に整理しておく</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「件数が増えてると聞くと、うちも監督指導の対象にならないか心配になる」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「未払い分がちゃんと遡って支払われる制度があるのは安心材料」</td></tr><tr><th>🏢 現場管理者目線</th><td>「打刻データと実態にズレがないか、日頃からのチェックの重要性を改めて感じる」</td></tr><tr><th>⚖️ 専門家目線</th><td>「件数増・規模縮小という数字の意味を丁寧に説明できると、顧問先への説得材料になる」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.mhlw.go.jp/stf/newpage_75588.html" target="_blank" rel="noopener">厚生労働省「賃金不払が疑われる事業場に対する監督指導結果（令和7年）を公表します」</a></p></article>
+<article class="article"><h3>③📚コラム：「労務リスク」の本当の怖さは、未払い残業代より"見えない損失"</h3><div class="glossary"><strong>用語解説：「見える損失」と「見えない損失」ってどう違うの？</strong><br />未払い残業代や労働審判の解決金のように、金額としてはっきり数字に出るのが「見える損失」。一方で、労務トラブルが原因の採用力低下・離職の連鎖・取引先からの信用毀損は、金額に換算しにくいけど実は影響がずっと大きい「見えない損失」だよ。</div><h4>どういう話？</h4><p>「労務リスク」とは、企業が社員との雇用関係で直面する法的・組織的・財務的な損失の可能性のことで、賃金未払い・不当解雇・ハラスメント・メンタルヘルス不調・就業規則の不備などが代表的なパターンだよ。近年はテレワークの普及や副業・兼業の一般化で社員の就業実態が複雑化していて、従来の管理手法だけでは対応しきれないケースが増えてる、という指摘があるコラムだよ。ポイントは、<strong>問題が表面化するまで気づきにくい</strong>という性質と、<strong>「見える損失」（未払い残業代・解決金等）より「見えない損失」（採用力低下・離職連鎖・信用毀損）の方がはるかに大きく、回復にも時間がかかる</strong>という視点。労務リスクは「発生してから対処する」のではなく「発生させない仕組みをつくる」という予防的なスタンスが経営上の重要課題だ、というトーンで語られてるよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の労務リスクを「見える損失」だけでなく「見えない損失（採用力・離職・信用）」の観点からも棚卸しする機会をつくる</li><li><input type="checkbox" disabled />テレワーク・副業兼業の普及で就業実態が複雑化している顧問先には、管理手法のアップデートを提案する</li><li><input type="checkbox" disabled />「予防的な労務管理」の価値を、経営層に伝わる言葉（コスト削減ではなくリスク回避投資として）で説明できるよう整理する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「見えない損失と言われても、目先の数字で判断しがちなので説得材料が欲しい」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「離職や信用の話まで持ち出されると、自分たちの働きやすさが会社の経営リスク管理の一部なんだと実感する」</td></tr><tr><th>🏢 現場管理者目線</th><td>「問題が表面化する前に気づくのが難しいからこそ、日頃の相談しやすい雰囲気づくりが大事だと感じる」</td></tr><tr><th>⚖️ 専門家目線</th><td>「『予防的な労務管理』の価値を数字だけでなく定性的なリスクとして説明できると、顧問契約の価値も伝わりやすい」</td></tr></table><p class="source-line">🔗 参考：<a href="https://www.manegy.com/news/detail/15751/" target="_blank" rel="noopener">Manegy「労務リスクとは？企業が直面する課題とその具体的対策」</a></p></article>
+<article class="article"><h3>④📚コラム：職場の「無視」はパワハラになる？法的な認定基準と冷静な対処法</h3><div class="glossary"><strong>用語解説：パワハラの3要素と「人間関係からの切り離し」</strong><br />厚労省の定義では、①優越的な関係を背景とした言動、②業務上必要かつ相当な範囲を超えた言動、③労働者の就業環境が害されること、の3要素を満たすとパワハラに該当する。「無視」は6類型のうち「人間関係からの切り離し」にあたり、特定の社員を意図的に孤立させたり、業務上必要な連絡を一人だけ絶ったりする行為が含まれるよ。</div><h4>どういう話？</h4><p>「上司や同僚から無視されている」という相談は、実は職場のパワーハラスメント（パワハラ）に該当しうるケースだよ。ただし、単に「話しかけても素っ気ない」程度では該当せず、上の3要素、特に「業務上必要かつ相当な範囲を超えている」かどうかがポイントになる。ハラスメントに該当すると判断された場合、企業は就業規則等に基づいて行為者への指導や配置転換などの措置を速やかに取り、再発防止に向けた研修・意識改革も含めて、全社員が安心して働ける環境を再構築する義務がある。2020年6月の「パワハラ防止法」施行以降、企業（事業主）にはハラスメント対策の実施が義務付けられてる、という基本もあらためて押さえておきたいところだよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先のハラスメント相談窓口に「無視」に関する相談が来た場合の判断基準（3要素）を整理して共有する</li><li><input type="checkbox" disabled />「業務上必要な連絡を意図的に絶つ」といった典型的な無視のパターンを、管理職研修の具体例として使えるよう準備する</li><li><input type="checkbox" disabled />相談を受けた後の対応フロー（行為者への指導・配置転換等）が就業規則に明記されているか確認する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「『無視』のような目に見えにくい行為まで対応が必要になると、線引きの難しさを感じる」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「無視も立派なハラスメントだと認めてもらえるだけで、精神的に救われる部分がある」</td></tr><tr><th>🏢 現場管理者目線</th><td>「意図的な無視かどうかの見極めが難しく、当事者双方からのヒアリングに時間がかかりそう」</td></tr><tr><th>⚖️ 専門家目線</th><td>「『人間関係からの切り離し』という類型を具体例つきで説明できると、相談対応の初動がスムーズになる」</td></tr></table><p class="source-line">🔗 参考：<a href="https://www.manegy.com/news/detail/15067/" target="_blank" rel="noopener">Manegy「職場の無視はパワハラ？法的な認定基準と冷静に対処するための実務知識」</a></p></article>
+<article class="article"><h3>⑤📚コラム：労働審判の「解決金」は賃金にあたらない、給与からの相殺は認められず（東京地裁）</h3><div class="glossary"><strong>用語解説：「解決金」が賃金だと何がマズいの？</strong><br />解決金が「賃金」だと認定されると、賃金全額払いの原則（賃金は全額を直接労働者に支払わなければならないという労基法上の大原則）が及ぶため、会社側が一方的に他の債権と相殺することは原則できない。今回の争点は逆に、会社側が「解決金は実質賃金だから、控除後の金額を払えば相殺で足りる」と主張した点にあるよ。</div><h4>どういう話？</h4><p>未払い賃金をめぐる労働審判で成立した調停調書上の「解決金」の法的性質が争われた裁判で、東京地裁（令和8年1月7日判決）は、<strong>解決金は賃金にあたらない</strong>と判断したよ。この事案は、東京都内の不動産会社が「解決金の実質は賃金であり、所得税等を控除した額を支払っているから相殺により全額支払い済みだ」と主張したもの。裁判所は、解決金が字義どおりの意味を超えて別の性質（＝賃金）を持つと認めるには相応の裏付け証拠が必要だと指摘し、<strong>調停調書にはどの月の賃金なのかの内訳もなく、控除に関する条項もない</strong>ことから、賃金とは認められないと結論づけた。労働審判で「解決金」として決着した金額を、後から会社側の都合で賃金扱いに読み替えて控除・相殺することはできない、という実務上の重要な示唆がある判例だよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先が労働審判・和解で「解決金」を支払う場合、調停調書・和解条項の文言（内訳や控除の記載有無）を丁寧に確認するよう助言する</li><li><input type="checkbox" disabled />「解決金＝賃金」と安易にみなして控除・相殺しようとするケースがないか、経理・給与計算担当者に注意喚起する</li><li><input type="checkbox" disabled />労働審判での金銭解決を検討している顧問先には、解決金の性質を明確にした条項案を作成段階から意識してもらう</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「解決金を賃金扱いにして相殺できると思っていたので、この判断は想定外だった」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「せっかく審判で解決した金額を後から勝手に相殺されないと分かって安心した」</td></tr><tr><th>🏢 現場管理者目線</th><td>「調停調書の文言一つでこんなに結論が変わるとは、法務・社労士への確認を徹底したい」</td></tr><tr><th>⚖️ 専門家目線</th><td>「解決金の性質は調書の記載内容次第で判断が分かれる、条項作成段階からの関与が重要だと再認識させられる判例」</td></tr></table><p class="source-line">🔗 参考：<a href="https://www.rodo.co.jp/news/212510/" target="_blank" rel="noopener">労働新聞社「解決金は賃金該当せず 控除基づく相殺不可 東京地裁」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="issue-2026-08-24" data-search="熊本地震で雇用調整助成金の特例が正式決定、生産指標の確認期間を3か月→1か月に短縮 「残業は月45時間まで」の一律指導を9月から見直し、健康確保の取組をより重視へ 📚コラム：「特別条項があれば残業は無制限」は誤解？36協定でよくある勘違い 📚コラム：退職時の有休消化、会社は拒否できる？「引き止め」でよくあるトラブル 📚コラム：履歴書の目的外使用で10万円の賠償命令、個人情報の取り扱いはどこまで許される？ 📚コラム：「1日ずれただけで賞与の社保免除が消えた」…育休の"1ヶ月超"判定で労務が陥る計算の罠">
+      <summary>
+        <span class="issue-badge">第16号 8/24</span>
+        <span>
+          <span class="issue-headline">熊本地震で雇用調整助成金の特例が正式決定、生産指標の確認期間を3か月→1か月に短縮</span>
+          <span class="issue-sub">熊本地震で雇用調整助成金の特例が正式決定、生産指標の確認期間を3か月→1か月に短縮／「残業は月45時間まで」の一律指導を9月から見直し、健康確保の取組をより重視へ／📚コラム：「特別条項があれば残業は無制限」は誤解？36協定でよくある勘違い／📚コラム：退職時の有休消化、会社は拒否できる？「引き止め」でよくあるトラブル／📚コラム：履歴書の目的外使用で10万円の賠償命令、個人情報の取り扱いはどこまで許される？／📚コラム：「1日ずれただけで賞与の社保免除が消えた」…育休の"1ヶ月超"判定で労務が陥る計算の罠　全6本</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><h3>① 熊本地震で雇用調整助成金の特例が正式決定、生産指標の確認期間を3か月→1か月に短縮</h3><div class="glossary"><strong>用語解説：「生産指標の確認期間短縮」って何が変わるの？</strong><br />通常、雇用調整助成金を申請するには「直近3か月の生産量・売上高が前年同期比で一定以上減少している」ことを示す必要がある。これを「1か月」の実績だけで申請できるようにしたのが今回の特例。地震直後の急激な事業活動縮小を、より早いタイミングで助成につなげられるようにする狙いだよ。</div><h4>何が起きた？</h4><p>厚生労働省は8月20日、令和8年熊本地震（7月28日発生）で事業活動の縮小を余儀なくされた事業主向けに、<strong>雇用調整助成金の特例措置を正式に実施する</strong>と発表したよ。8/18の記事で「検討中」と紹介してた内容が、正式決定に進んだ形。全国共通の主な特例は、<strong>①生産指標の確認期間を3か月から1か月に短縮、②地震発生時に事業所設置後1年未満の事業主も対象に、③計画届の事後提出を容認、④残業相殺ルールを撤廃</strong>、の4点。さらに熊本県内の事業所には追加措置として、<strong>直近3か月の雇用量が前年比で増加していても助成対象にする</strong>という緩和も。特例の対象となる休業等の初日は<strong>令和8年7月28日〜令和9年1月27日</strong>の期間内。8/21の記事で紹介した労働相談約1,700件のうち雇用調整助成金関連が約300件あったことを踏まえると、実際に活用される事業所は少なくなさそうだよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />被災地域の顧問先に、生産指標確認期間の短縮（3か月→1か月）など具体的な特例内容を案内する</li><li><input type="checkbox" disabled />設立1年未満の事業所がある顧問先には、通常なら対象外になる要件が緩和されてる点を伝える</li><li><input type="checkbox" disabled />熊本県内の顧問先には、雇用量増加でも対象になる追加緩和措置がある点をあわせて案内する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線（被災地域）</th><td>「確認期間が1か月に短縮されるのは助かる、早く申請して資金繰りを安定させたい」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「休業手当がちゃんと支払われる後ろ盾ができたのは安心材料」</td></tr><tr><th>🏢 現場管理者目線</th><td>「計画届の事後提出が認められたのはありがたいが、通常のフローと違うので手続きミスに注意したい」</td></tr><tr><th>⚖️ 専門家目線</th><td>「検討段階から1週間強で正式決定に至ったスピード感は評価できる、対象期間（〜来年1月27日）を踏まえた継続的なフォローが必要」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.mhlw.go.jp/stf/newpage_75665.html" target="_blank" rel="noopener">厚生労働省「令和8年熊本地震に伴う雇用調整助成金の特例を実施します」</a></p></article>
+<article class="article"><h3>② 「残業は月45時間まで」の一律指導を9月から見直し、健康確保の取組をより重視へ</h3><div class="glossary"><strong>用語解説：これまでの「一律指導」って何が問題だったの？</strong><br />36協定の特別条項で労使が「月100時間未満」まで残業できると合意していても、労基署の窓口指導では「月45時間以内に抑えるように」と一律に指導するのが従来の運用だった。労使が適法に合意した範囲内なのに一律で更に厳しく指導されることに、現場から「合意した意味がない」という声があったんだ。</div><h4>何が起きた？</h4><p>厚生労働省は8月19日、<strong>「時間外労働等に係る相談・支援及び監督指導を見直します」</strong>と発表したよ。日本成長戦略（令和8年7月21日閣議決定）等に基づく見直しで、<strong>9月1日から</strong>、全国の労働基準監督署・働き方改革推進支援センターで運用を変更する。ポイントは、労使合意により月100時間未満まで残業が可能な場合に、これまでのように一律で「月45時間以内に」と指導することはやめ、代わりに<strong>企業の健康確保の取り組み状況（産業医面談、勤務間インターバル等）をより重点的に確認し、必要に応じて指導する</strong>方向にシフトする。「残業時間の絶対量」ではなく「働く人の健康がちゃんと守られているか」を見る指導へ、という転換だね。ただし年720時間・複数月平均80時間以内などの<strong>法定の上限規制そのものは変わらない</strong>点は要注意だよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の36協定の特別条項の内容（合意している上限時間）を改めて確認し、9月以降の指導方針の変化を伝える</li><li><input type="checkbox" disabled />産業医面談の実施状況や勤務間インターバルの導入状況など、「健康確保の取り組み」の実態を棚卸しする</li><li><input type="checkbox" disabled />「45時間の壁がなくなった＝残業させ放題」ではないことを、経営者向けに誤解のないよう説明する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「合意した範囲内で運用できるのは助かるが、健康確保の取り組みをどこまでやれば十分なのか基準が気になる」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「45時間という分かりやすい歯止めがなくなるのは正直不安、健康管理が形だけにならないか心配」</td></tr><tr><th>🏢 現場管理者目線</th><td>「産業医面談の記録など、これまで以上に『やってる証拠』を残しておく必要性を感じる」</td></tr><tr><th>⚖️ 専門家目線</th><td>「法定上限は変わらない前提を顧問先に丁寧に説明しないと、『残業規制が緩和された』と誤解されるリスクがある」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.mhlw.go.jp/stf/newpage_75454.html" target="_blank" rel="noopener">厚生労働省「時間外労働等に係る相談・支援及び監督指導を見直します」</a></p></article>
+<article class="article"><h3>③📚コラム：「特別条項があれば残業は無制限」は誤解？36協定でよくある勘違い</h3><div class="glossary"><strong>用語解説：36協定を結んでも「守るべき上限」は消えない</strong><br />36協定（特別条項付き）を結んでも、年720時間以内・単月100時間未満（休日労働含む）・複数月平均80時間以内（休日労働含む）・月45時間超は年6回まで、という絶対的な上限は必ず守る必要がある。これを超えると36協定を結んでいても違法・刑事罰の対象になるよ。</div><h4>どういう話？</h4><p>「36協定の特別条項さえ結んでおけば、残業は無制限にさせられる」——実務の現場で今も根強く残る勘違いのひとつだよ。実際には、特別条項付き36協定を結んでいても、上の用語解説にある複数の絶対的上限をすべて満たす必要があり、どれか一つでも超えれば労働基準法違反（罰則：6か月以下の懲役または30万円以下の罰金）になる。さらに、特別条項を発動できるのは「臨時的・特別の事情」がある場合に限られていて、「業務の都合上」のような包括的な書き方では認められない。年6回までという回数制限も見落とされがちで、「上限時間さえ守っていれば発動回数は気にしなくていい」と思い込んでいるケースも少なくないよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の36協定の特別条項の記載内容が「臨時的・特別の事情」を具体的に書けているか確認する</li><li><input type="checkbox" disabled />月45時間超の残業をさせた回数が年6回を超えていないか、勤怠データで定期的にチェックする仕組みを提案する</li><li><input type="checkbox" disabled />「特別条項＝残業無制限」という誤解が経営層・現場管理者に残っていないか、更新のタイミングで確認する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「特別条項を結んでるから安心してたけど、回数制限まで意識できていなかった」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「協定を結んでても上限があると知って少し安心した、ちゃんと運用してほしい」</td></tr><tr><th>🏢 現場管理者目線</th><td>「月次の残業集計はしてるけど、年間の発動回数まではカウントできてなかった」</td></tr><tr><th>⚖️ 専門家目線</th><td>「特別条項の誤解は本当に多い、顧問先への定期チェック項目に必ず入れておくべき定番の落とし穴」</td></tr></table><p class="source-line">🔗 参考：<a href="https://www.manegy.com/news/detail/11819/" target="_blank" rel="noopener">Manegy「【弁護士監修】36協定に違反したらどうなる？罰則や必要な対応、防止するための対策」</a></p></article>
+<article class="article"><h3>④📚コラム：退職時の有休消化、会社は拒否できる？「引き止め」でよくあるトラブル</h3><div class="glossary"><strong>用語解説：退職時の有休取得に「時季変更権」は使えるの？</strong><br />会社には、事業の正常な運営を妨げる場合に有休の取得時季をずらしてもらう「時季変更権」があるけど、退職日以降に有休を回せるわけではないので、退職までの残り日数より請求日数が多い場合、実質的に時季変更権を行使できないケースが多いよ。</div><h4>どういう話？</h4><p>「人手不足だから」「引き継ぎが終わってないから」と、退職者からの有休消化の申し出を拒否したり、暗に引き止めたりする対応が、今も現場で起きがちなトラブルのひとつだよ。有休取得は労働基準法で保障された労働者の権利で、会社側の一方的な都合だけで拒否することはできない。よくあるのは、退職日までの残り日数がそもそも短く、時季変更権を行使しようにも変更する先の日程がない、というケース。この場合、会社側にできることは実質的に「引き継ぎのスケジュールを労働者と一緒に組み直す」交渉くらいで、拒否や無視は労基署への相談・トラブルに発展しやすい。円満退職のためには、退職の意思表示と有休消化の希望をできるだけ早いタイミングで伝えてもらい、引き継ぎ計画とセットで調整するのが現実的な落としどころだよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の退職手続きフローに「有休消化の希望を早期に確認する」ステップが組み込まれているか確認する</li><li><input type="checkbox" disabled />「人手不足」「引き継ぎ未了」を理由に有休を拒否している事例がないか、相談対応時にヒアリングする</li><li><input type="checkbox" disabled />退職者との円満なスケジュール調整のテンプレート（引き継ぎ計画＋有休消化計画）を顧問先向けに用意しておく</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「有休消化を認めたいのは山々だけど、人手不足の中での引き継ぎが本当に大変」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「権利として認められているはずなのに、退職を伝えた途端に対応が変わるのは納得しづらい」</td></tr><tr><th>🏢 現場管理者目線</th><td>「退職の申し出があった時点で、有休消化を前提にシフトを組み直す発想に切り替える必要がある」</td></tr><tr><th>⚖️ 専門家目線</th><td>「拒否や引き止めはトラブルの火種になりやすい、早期の情報共有と計画的な引き継ぎを顧問先に助言すべき」</td></tr></table><p class="source-line">🔗 参考：<a href="https://www.manegy.com/news/detail/14907/" target="_blank" rel="noopener">Manegy「退職時に有休消化できる？拒否や引き止め等よくあるトラブルと解決法など」</a></p></article>
+<article class="article"><h3>⑤📚コラム：履歴書の目的外使用で10万円の賠償命令、個人情報の取り扱いはどこまで許される？</h3><div class="glossary"><strong>用語解説：「目的外使用」ってどんな行為が該当するの？</strong><br />採用選考のために提出された履歴書は、あくまで「採用選考」という目的のために使うことが前提。それ以外の目的（例えば選考と関係のない用途への転用や、本人の同意なく第三者へ渡すことなど）に使うと、個人情報保護法上の「目的外使用」にあたり、損害賠償責任を問われることがあるよ。</div><h4>どういう話？</h4><p>労働裁判のニュースまとめの中で紹介されている事例に、採用選考のために提出された履歴書を、選考目的の範囲を超えて使用したとして、<strong>会社側に10万円の損害賠償の支払いを命じた判決</strong>があるよ。裁判所は、履歴書という機微な個人情報を含む書類について、本人が同意した「採用選考」という目的の範囲を超えた使用は、プライバシー侵害・個人情報保護法上の目的外使用にあたると判断した形。賠償額自体は10万円と大きくはないものの、<strong>「採用選考で預かった書類は選考目的以外に使わない」という当たり前のルールが、裁判でも明確に問われた</strong>という点で実務上の示唆が大きい判例だよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の採用選考で預かる履歴書・職務経歴書等の個人情報が、選考目的以外に流用されていないか確認する</li><li><input type="checkbox" disabled />不採用者の履歴書等の保管・廃棄ルール（保管期間、廃棄方法）が社内規程で明文化されているか点検する</li><li><input type="checkbox" disabled />採用担当者向けに、応募書類の「目的外使用」に該当しうる行為の具体例を研修等で周知する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「賠償額自体は小さいが、こういう判決が出ること自体がレピュテーションリスクになりうる」</td></tr><tr><th>🧑‍💼 労働者目線（応募者）</th><td>「履歴書は個人情報の塊、選考以外に使われるのは不安に感じる」</td></tr><tr><th>🏢 現場管理者目線</th><td>「採用担当者全員が『目的外使用』の線引きを正しく理解できているか、改めて確認したくなる」</td></tr><tr><th>⚖️ 専門家目線</th><td>「賠償額の大小にかかわらず、個人情報の取り扱いルールを明文化しておくことが予防策として重要」</td></tr></table><p class="source-line">🔗 参考：<a href="https://www.rodo.co.jp/news/223099/" target="_blank" rel="noopener">労働新聞社「労働裁判ニュースまとめ【2026年１～３月】解決金は賃金該当せず 控除基づく相殺不可／履歴書 漏洩で10万円の賠償命じる 目的外使用と判断」</a></p></article>
+<article class="article"><h3>⑥📚コラム：「1日ずれただけで賞与の社保免除が消えた」…育休の"1ヶ月超"判定で労務が陥る計算の罠</h3><div class="glossary"><strong>用語解説：賞与の社保免除は「1ヶ月超」、給与の社保免除は「月末1日」でOK</strong><br />育休中の社会保険料免除には2つの基準があるよ。<strong>毎月の給与</strong>は、月末時点で育休を取得していれば、たとえ1日だけでもその月は免除対象。一方<strong>賞与</strong>は2022年10月の改正で要件が厳格化されていて、<strong>連続して「1ヶ月を超える」育休を取得した月</strong>でないと免除対象にならない。この「1ヶ月超」の判定が、実はカレンダー通りの感覚とズレやすい落とし穴になってるよ。</div><h4>どういう話？</h4><p>育休を挟んで賞与を支給するとき、担当者が陥りがちな計算ミスが「1ヶ月超」の判定基準だよ。例えば<strong>12月16日〜1月15日</strong>の育休は、暦の上では「ちょうど1ヶ月」であって「1ヶ月を超えて」はいないので、12月支給の賞与の社会保険料は<strong>免除されない</strong>。ところが<strong>12月16日〜1月16日</strong>、たった1日長いだけの育休なら「1ヶ月超」の条件を満たし、賞与の社会保険料は<strong>免除される</strong>。さらにややこしいのが月末スタートのケース。<strong>1月31日〜2月28日</strong>の育休は、1月31日には応当日（2月31日）が存在しないため2月28日に「ちょうど1ヶ月」で満了してしまい、免除にならない。これが<strong>1月31日〜3月1日</strong>なら「1ヶ月超」になり免除対象になる。担当者が「約1ヶ月取ってるから免除されるはず」と暦感覚で判断してしまい、実際には<strong>開始日・終了日がわずか1日足りず賞与の社保だけ免除漏れ</strong>になっているケースが後を絶たないんだって。毎月の給与の免除基準（月末1日でOK）と混同しやすいのも、ミスが起きやすい理由のひとつだよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先で育休を挟んで賞与を支給するケースがあれば、開始日・終了日から「1ヶ月超」に該当するかを暦上で必ず計算し直す</li><li><input type="checkbox" disabled />毎月の給与（月末1日でOK）と賞与（1ヶ月超が必要）で免除基準が異なる点を、給与計算担当者向けに明文化しておく</li><li><input type="checkbox" disabled />月末スタートの育休（応当日がない月をまたぐケース）は特に判定を誤りやすいので、個別にダブルチェックする運用にする</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「たった1日の違いで社会保険料の負担が変わるなんて、制度が複雑すぎると感じる」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「育休の取り方を1日調整するだけで賞与の手取りが変わるなら、事前にちゃんと説明してほしい」</td></tr><tr><th>🏢 現場管理者目線</th><td>「毎月分と賞与分で基準が違うのを忘れがちで、給与計算のたびにヒヤヒヤする」</td></tr><tr><th>⚖️ 専門家目線</th><td>「賞与の免除要件厳格化（2022年10月〜）を知らないまま旧ルール感覚で判定してるケースが今も見られる、要注意ポイント」</td></tr></table><p class="source-line">🔗 参考：<a href="https://hoiku-innovation.com/contents/column/20260609-2/" target="_blank" rel="noopener">保育イノベーション「【育休中の社保免除】給与と賞与で異なる『免除ルール』の注意点」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="issue-2026-08-23" data-search="📚コラム：住宅手当がない有期雇用エンジニアの疑問、「同一労働同一賃金」で待遇差？ 📚コラム：退職金1000万円超の支払い命令、不支給事由を認めず（東京地裁） 📚コラム：「労務がホワイトな会社」はなぜ採用に強いのか？人的資本経営時代の労務コンプライアンス 「静かな退職」どう防ぐか　心理的な背景を見極めた対応がカギに">
+      <summary>
+        <span class="issue-badge">第15号 8/23</span>
+        <span>
+          <span class="issue-headline">📚コラム：住宅手当がない有期雇用エンジニアの疑問、「同一労働同一賃金」で待遇差？</span>
+          <span class="issue-sub">📚コラム：住宅手当がない有期雇用エンジニアの疑問、「同一労働同一賃金」で待遇差？／📚コラム：退職金1000万円超の支払い命令、不支給事由を認めず（東京地裁）／📚コラム：「労務がホワイトな会社」はなぜ採用に強いのか？人的資本経営時代の労務コンプライアンス／「静かな退職」どう防ぐか　心理的な背景を見極めた対応がカギに　全4本</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><h3>①📚コラム：住宅手当がない有期雇用エンジニアの疑問、「同一労働同一賃金」で待遇差？</h3><div class="glossary"><strong>用語解説：住宅手当は「同一労働同一賃金」の対象になるの？</strong><br />住宅手当は、正社員には転勤や転居の可能性があることを理由に支給されるケースが多い手当。同一労働同一賃金のルールでは、こうした「支給の趣旨」に照らして、非正規社員との差が不合理かどうかを個別に判断する。転勤の可能性がない働き方をしてるのに手当だけ「正社員だから」という理由でカットされてると、不合理と判断されるリスクがあるよ。</div><h4>どういう話？</h4><p>IT企業に契約4年目で勤務する有期雇用エンジニアが、「正社員には住宅手当があるのに、自分やパートの事務員にはない」という状況について、「同一労働同一賃金」の観点から疑問を投げかける相談が取り上げられてるよ。同一労働同一賃金の考え方では、業務内容・責任の程度・配置転換の範囲が正社員と同等であれば、不合理な待遇差は禁止される。ポイントは、<strong>住宅手当を支給する「趣旨」</strong>（転勤がありうる正社員の生活費補填、なのか、単に正社員への福利厚生なのか）が、実際の運用と一致してるかどうか。もし有期雇用エンジニアも転勤がなく、正社員と業務内容がほぼ同じなら、「正社員だから」というだけの理由での不支給は不合理な待遇差と判断される可能性が高いケースだよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の住宅手当の支給要件・支給趣旨（転勤の有無との連動性）を確認し、文書化されているか確認する</li><li><input type="checkbox" disabled />有期雇用・パート従業員から待遇差について質問された場合の説明ロジックを、支給趣旨に沿って整理しておく</li><li><input type="checkbox" disabled />転勤の実態がない有期雇用者・パートに手当を一律不支給にしてる顧問先には、見直しの必要性を助言する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「住宅手当は正社員への功労的な意味合いもあり、全部同じにするのは難しい」</td></tr><tr><th>🧑‍💼 労働者目線（有期雇用）</th><td>「同じように働いてるのに手当だけ違うのは、正直モヤモヤする」</td></tr><tr><th>🏢 現場管理者目線</th><td>「手当の趣旨をきちんと説明できないと、こういう疑問への対応がその場しのぎになってしまう」</td></tr><tr><th>⚖️ 専門家目線</th><td>「住宅手当は同一労働同一賃金の相談で特に多いテーマ、支給趣旨の整理が対応の鍵になる」</td></tr></table><p class="source-line">🔗 参考：<a href="https://xtech.nikkei.com/atcl/nxt/column/18/00084/00437/" target="_blank" rel="noopener">日経クロステック「住宅手当がない有期雇用エンジニアの疑問、『同一労働同一賃金』で待遇差？」</a></p></article>
+<article class="article"><h3>②📚コラム：退職金1000万円超の支払い命令、不支給事由を認めず（東京地裁）</h3><div class="glossary"><strong>用語解説：「退職金の不支給事由」ってどんな時に認められるの？</strong><br />就業規則に「懲戒解雇の場合は退職金を支給しない」等の不支給条項があっても、実際に裁判で認められるとは限らない。裁判所は、労働者の長年の勤続の功労を打ち消すほどの著しい背信行為があったかを、個別に厳しく審査する傾向があるよ。</div><h4>どういう話？</h4><p>2026年7月8日、東京地裁は歯科技工物製造業で20年以上勤務した60代の労働者に対し、会社側の退職金不支給の主張を認めず、<strong>1000万円超の退職金の支払いを命じる判決</strong>を下したよ。会社側は労働者に不適切な行為があったとして退職金の不支給を主張したけど、裁判所は「特別な懲戒処分を受けていたわけではなく、20年を超える勤続の功労をそこまで減殺・消滅させるものとは言えない」と判断。さらに、60歳での定年退職の事実自体を認定せず、継続雇用（再雇用ではなく雇用継続）だったとして、定年時の会社都合による退職金計算の主張も退けた。<strong>「問題行動があった＝退職金を減らせる」ではない</strong>ことを改めて示した判例だよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の退職金規程の不支給・減額事由が、懲戒処分の記録とセットで運用されているか確認する</li><li><input type="checkbox" disabled />定年・再雇用・継続雇用の区分が就業規則上・実態上で一致しているか、この機会に点検する</li><li><input type="checkbox" disabled />退職金の不支給を検討してる顧問先には、この判例を踏まえたリスク（長年の功労を軽視できない）を説明する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「問題行動があったのに満額支払いを命じられるのは納得しづらい」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「長年勤めた功労は簡単には消えないという判断は心強い」</td></tr><tr><th>🏢 現場管理者目線</th><td>「不支給事由を主張するなら、懲戒処分の記録をきちんと残しておく必要性を痛感する」</td></tr><tr><th>⚖️ 専門家目線</th><td>「退職金の不支給・減額は要件が厳しいことを、顧問先に事前に伝えておくべき定番の注意点」</td></tr></table><p class="source-line">🔗 参考：<a href="https://www.rodo.co.jp/news/224259/" target="_blank" rel="noopener">労働新聞社「退職金 1000万円超の支払い命令 不支給事由を認めず 東京地裁」</a></p></article>
+<article class="article"><h3>③📚コラム：「労務がホワイトな会社」はなぜ採用に強いのか？人的資本経営時代の労務コンプライアンス</h3><div class="glossary"><strong>用語解説：「人的資本経営」ってなに？</strong><br />従業員を「コスト」ではなく、企業価値を生み出す「資本」として捉える経営の考え方だよ。健康経営や女性活躍推進の情報公開が広がってるのも、この流れの一環。労務コンプライアンスの状態が、投資家や求職者から見える形で評価される時代になってきてるんだ。</div><h4>どういう話？</h4><p>求職者が転職先・就職先を選ぶ基準がここ数年で大きく広がっていて、SNSや口コミサイトを通じて、残業時間の実態やハラスメント対応の姿勢といった<strong>「労務管理の内側」が可視化される</strong>時代になってるという指摘があるよ。かつては給与や事業内容が中心だった比較軸に、「労務がホワイトかどうか」という要素が加わってきてる。人的資本経営が注目される中で、健康経営優良法人の認定（今日8/22の記事②参照）のような対外的な"見える化"の仕組みも、採用競争力に直結する時代になってきてる、という論調のコラムだよ。労務管理は「守りのコンプライアンス」から「攻めの採用戦略」への一部として捉え直されつつあるんだね。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />採用に苦戦してる顧問先に、労務管理の実態（残業実績・ハラスメント対応体制）が求職者から見られている前提で助言する</li><li><input type="checkbox" disabled />口コミサイト・SNSでの評判リスクを踏まえ、労務コンプライアンスの改善を「採用競争力向上」の文脈で提案する</li><li><input type="checkbox" disabled />健康経営優良法人などの対外認定制度の取得を、採用戦略の一環として顧問先に案内する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「労務管理が採用に直結するなら、コンプライアンス投資の説明がしやすくなる」</td></tr><tr><th>🧑‍💼 労働者目線（求職者）</th><td>「口コミサイトで実態が見えるのはありがたい、情報の非対称性が減ってきてる実感がある」</td></tr><tr><th>🏢 現場管理者目線</th><td>「日々の労務管理の積み重ねが会社の評判に直結すると思うと、身が引き締まる」</td></tr><tr><th>⚖️ 専門家目線</th><td>「労務コンプライアンスを『コスト』でなく『採用投資』と説明できると、経営層への提案が通りやすくなる」</td></tr></table><p class="source-line">🔗 参考：<a href="https://www.manegy.com/news/detail/16747/" target="_blank" rel="noopener">Manegy「『労務がホワイトな会社』はなぜ採用に強いのか？人的資本経営時代の労務コンプライアンス」</a></p></article>
+<article class="article"><h3>④ 「静かな退職」どう防ぐか　心理的な背景を見極めた対応がカギに</h3><div class="glossary"><strong>用語解説：「静かな退職」ってどういう状態？</strong><br />実際に会社を辞めるわけじゃなく、雇用は維持したまま、必要最低限の仕事だけをこなして意欲的な提案や周囲との関わりを極力控える働き方のことだよ。「動機づけの低下」「主体性の欠如」「仕事からの心理的な離脱」が特徴で、"辞めてはいないけど、もう頑張ってない"状態と言えるね。</div><h4>何が起きた？</h4><p>日本経済新聞は8月18日、健康心理学の専門家・島津明人氏へのインタビュー記事「『静かな退職』どう防ぐか、心理的な背景を見極め対応を」を掲載したよ。記事では、静かな退職の問題は<strong>「定時退社そのものではなく、仕事との心理的な距離感」</strong>にあると指摘。背景には、<strong>成果を出しても昇給・昇進に結びつかない経験の積み重ねによる「学習性無力感」</strong>や、長時間労働・感情労働・高すぎる期待が続くことによる<strong>「燃え尽き（バーンアウト）」</strong>、単調な業務からくる「退屈」など、複数の心理的要因があるとされてる。対応策としては、質の高い対話を通じて従業員の本音を引き出し、<strong>聞いた内容に対して具体的なアクションを取ること</strong>が欠かせないと強調されてるよ。同紙では前日の8月17日に、福利厚生の視点から静かな退職への対策を論じる西久保浩二氏の記事（前編）も掲載されてて、2本立ての特集になってる。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先で「静かな退職」の兆候（提案が減った、必要最低限の業務しかしない従業員）が見られないか、面談機会の設置を提案する</li><li><input type="checkbox" disabled />評価制度が「頑張っても報われない」という学習性無力感を生んでいないか、昇給・昇進の基準の透明性を見直す機会として案内する</li><li><input type="checkbox" disabled />1on1面談などの「対話の質」を高める仕組みづくりを、離職防止・エンゲージメント向上の施策として顧問先に提案する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「静かな退職の従業員をどう見極めればいいのか、目に見えにくい問題だけに対応が難しい」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「頑張っても報われないと感じたら距離を置きたくなるのは自然な反応だと思う」</td></tr><tr><th>🏢 現場管理者目線</th><td>「日々の業務に追われる中で、部下の心理状態まで丁寧に見る余裕がなかなか持てない」</td></tr><tr><th>⚖️ 専門家目線</th><td>「静かな退職は個人の意欲の問題として片付けず、組織側の構造的な要因として捉える視点が重要」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.nikkei.com/article/DGXZQOCD047PS0U6A800C2000000/" target="_blank" rel="noopener">日本経済新聞「『静かな退職』どう防ぐか、心理的な背景を見極め対応を 島津明人氏」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="issue-2026-08-22" data-search="外国人労働者向け助成金コースの見直し案にパブコメ募集開始 「健康経営優良法人2027」申請受付が8月17日から開始 建設業・運輸業の働き方改革、新PR動画を厚労省が公開（8月17日〜） 定期健康診断の項目、令和9年4月から一部変更　血清クレアチニン検査を追加、喀痰検査は削除 「労働契約等解説セミナー2026」が全国で開催中、無期転換・副業ガイドライン等をテーマに 📚コラム：「時間単位有休」では消化できない？パートの「年5日取得義務」で実務担当者が陥る勘違い">
+      <summary>
+        <span class="issue-badge">第14号 8/22</span>
+        <span>
+          <span class="issue-headline">外国人労働者向け助成金コースの見直し案にパブコメ募集開始</span>
+          <span class="issue-sub">外国人労働者向け助成金コースの見直し案にパブコメ募集開始／「健康経営優良法人2027」申請受付が8月17日から開始／建設業・運輸業の働き方改革、新PR動画を厚労省が公開（8月17日〜）／定期健康診断の項目、令和9年4月から一部変更　血清クレアチニン検査を追加、喀痰検査は削除／「労働契約等解説セミナー2026」が全国で開催中、無期転換・副業ガイドライン等をテーマに／📚コラム：「時間単位有休」では消化できない？パートの「年5日取得義務」で実務担当者が陥る勘違い　全6本</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><h3>① 外国人労働者向け助成金コースの見直し案にパブコメ募集開始</h3><div class="glossary"><strong>用語解説：「パブコメ」ってなに？</strong><br />正式には「パブリックコメント」。国が政省令等を改正する前に、広く国民から意見を募集する手続きだよ。今回は雇用保険法施行規則の一部改正案（外国人労働者向け助成金コースの見直し）について、誰でも意見を出せる期間が設けられてるんだ。</div><h4>何が起きた？</h4><p>厚生労働省は8月15日から、<strong>「人材確保等支援助成金（外国人労働者就労環境整備助成コース）」を見直すための雇用保険法施行規則の一部改正案</strong>について、パブリックコメント（意見募集）を開始したよ。このコースは、外国人労働者の職場定着に取り組む事業主に対して、外国人特有の事情に配慮した就労環境整備（社内マニュアルの多言語化、相談窓口の設置など）の経費を助成するもの。令和7年度からは支給方法が変わり、<strong>制度を1つ導入・実施するごとに20万円の定額助成（上限80万円）</strong>という分かりやすい形式になってる。今回の改正案は、この仕組みをさらに使いやすく見直す内容とみられ、外国人材の受け入れが進む中小企業にとって注目の制度だよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />外国人労働者を雇用してる・雇用予定の顧問先に、このパブコメの動向と助成金制度の存在を案内する</li><li><input type="checkbox" disabled />改正案の正式な内容が固まり次第、支給要件・申請書類の変更点を整理して顧問先に共有する</li><li><input type="checkbox" disabled />既にこのコースを利用中の顧問先には、見直し後に申請要件が変わる可能性がある旨を伝えておく</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線（外国人雇用企業）</th><td>「使いやすくなるならありがたい、申請negoコストが下がるのを期待したい」</td></tr><tr><th>🧑‍🌾 労働者目線（外国人材）</th><td>「職場環境整備が進むこと自体はいいが、実際に自分たちの声が反映されるか気になる」</td></tr><tr><th>🏢 現場管理者目線</th><td>「制度が変わるたびに申請書類を作り直すのが正直手間、シンプルな制度であってほしい」</td></tr><tr><th>⚖️ 専門家目線</th><td>「パブコメ段階から動向を追っておくと、正式施行時にいち早く顧問先へ案内できる」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.psrn.jp/topics/detail.php?id=42262" target="_blank" rel="noopener">社会保険労務士PSRネットワーク「『人材確保等支援助成金（外国人労働者就労環境整備助成コース）』を見直すための雇用則の一部改正案について意見募集（パブコメ）」</a></p></article>
+<article class="article"><h3>② 「健康経営優良法人2027」申請受付が8月17日から開始</h3><div class="glossary"><strong>用語解説：「健康経営優良法人」と「健康経営銘柄」の違い</strong><br />健康経営優良法人は、従業員の健康管理を経営的視点で実践している法人（中小企業も含む）を認定する制度。健康経営銘柄は、その中でも特に優れた取り組みをしている「上場企業」を経済産業省と東京証券取引所が共同で選定するもので、投資家向けのアピール要素が強いのが特徴だよ。</div><h4>何が起きた？</h4><p>経済産業省は8月17日、<strong>「健康経営銘柄2027」および「健康経営優良法人2027」の申請受付</strong>を開始したよ。健康経営度調査の回答期間は<strong>8月17日〜10月9日17時まで</strong>、健康経営優良法人2027（中小規模法人部門）の認定申請期間は<strong>8月17日〜10月16日</strong>。健康経営優良法人に認定されると、金融機関の優遇融資や自治体の入札加点などのメリットを受けられるケースもあり、中小企業にとっても実利のある認定制度になってきてる。従業員の健康管理を「コスト」ではなく「経営投資」として捉える考え方が浸透してきた表れとも言えるね。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />健康経営に関心のある顧問先に、認定制度の存在と申請スケジュール（10月9日・10月16日締切）を案内する</li><li><input type="checkbox" disabled />認定取得を目指す顧問先には、健康診断受診率・ストレスチェック実施状況など評価項目の現状を確認するサポートをする</li><li><input type="checkbox" disabled />金融機関の優遇融資・自治体の入札加点など、認定取得のメリットを具体的に説明できるよう情報を整理しておく</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「認定取得で融資や入札の優遇があるなら、申請の手間をかける価値がある」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「会社が健康経営に力を入れてくれるのは嬉しいが、認定が形だけにならないか気になる」</td></tr><tr><th>🏢 現場管理者目線</th><td>「健康経営度調査の回答は項目が多くて準備が大変、早めに着手しないと間に合わない」</td></tr><tr><th>⚖️ 専門家目線</th><td>「健康経営は労務管理と密接に関わる分野、社労士としても認定支援は今後の商機になりうる」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.meti.go.jp/press/2026/08/20260817001.html" target="_blank" rel="noopener">経済産業省「『健康経営銘柄2027』・『健康経営優良法人2027』の申請受付を開始しました」</a></p></article>
+<article class="article"><h3>③ 建設業・運輸業の働き方改革、新PR動画を厚労省が公開（8月17日〜）</h3><div class="glossary"><strong>用語解説：なんで建設業・運輸業だけPR動画があるの？</strong><br />建設業と自動車運転業務（トラック・バス・タクシー等）は、時間外労働の上限規制の適用が2024年4月からという「5年間の猶予」を経て始まったばかりの業種。長年、長時間労働が常態化しやすかった業種だから、厚労省は継続的にPR・周知活動を行って、現場の意識改革を後押ししてるんだ。</div><h4>何が起きた？</h4><p>厚生労働省は8月17日、<strong>建設業・運輸業の働き方改革に向けた新しいPR動画</strong>を公開したよ。動画は建設業・ドライバー・医師の働き方改革総合サイト「はたらきかたススメ」で公開されていて、俳優を起用して長時間労働の解消を呼びかける内容になってる。2024年4月から始まった時間外労働の上限規制の適用後も、両業種では依然として長時間労働の是正が課題視されてて、継続的な周知活動が行われてる形。8月20日には労基署の残業一律指導の見直し（9月〜）も発表されてて、働き方改革の"次のフェーズ"に入ってきてる印象だね。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />建設業・運輸業の顧問先に、この動画・周知サイトを従業員向け研修や意識啓発の教材として案内する</li><li><input type="checkbox" disabled />上限規制適用後の実態（残業時間・36協定の運用状況）を、この機会にあらためて棚卸しする</li><li><input type="checkbox" disabled />継続的な周知活動が行われてる背景（長時間労働是正がまだ道半ば）を踏まえ、顧問先への注意喚起を続ける</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線（建設・運輸）</th><td>「動画で意識啓発されても、人手不足の中で実際に労働時間を減らすのは簡単じゃない」</td></tr><tr><th>🧑‍🔧 労働者目線（ドライバー・現場作業員）</th><td>「長時間労働の問題がまだ続いてるからこそ、こういう啓発は続けてほしい」</td></tr><tr><th>🏢 現場管理者目線</th><td>「動画を見せるだけでなく、実際の勤怠管理・シフト調整とセットで取り組む必要がある」</td></tr><tr><th>⚖️ 専門家目線</th><td>「上限規制適用から時間が経っても継続的な周知が必要ということ自体が、業界の根深さを物語ってる」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.psrn.jp/topics/detail.php?id=42263" target="_blank" rel="noopener">社会保険労務士PSRネットワーク「建設業・運輸業の働き方改革に向けた新PR動画を公開（厚労省）」</a></p></article>
+<article class="article"><h3>④ 定期健康診断の項目、令和9年4月から一部変更　血清クレアチニン検査を追加、喀痰検査は削除</h3><div class="glossary"><strong>用語解説：「血清クレアチニン検査」と「喀痰検査」ってどんな検査？</strong><br />血清クレアチニン検査は血液検査の一種で、腎機能の状態を調べるための検査。喀痰検査は痰（たん）を採取して肺の病気（結核・肺がん等）の兆候を調べる検査だよ。医学的なエビデンスの蓄積を踏まえて、健診項目の中身が見直された形だね。</div><h4>何が起きた？</h4><p>令和8年4月28日に労働安全衛生規則等の一部を改正する省令が公布され、<strong>令和9年4月1日から定期健康診断等の診断項目が一部変更</strong>されることになったよ。具体的には、雇入時健康診断・定期健康診断・特定業務従事者の健康診断・海外派遣労働者の健康診断に<strong>「血清クレアチニン検査」が追加</strong>される一方、これまで義務づけられていた<strong>「喀痰検査」は削除</strong>される。ただし40歳未満の労働者については、厚生労働大臣が定める基準に基づき「医師が必要でないと認めるとき」は血清クレアチニン検査を省略できる、という運用上の配慮もあるよ。施行までまだ半年以上あるけど、健診委託先（健診機関）との調整や社内の健診案内の見直しには早めの準備が必要になるね。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先が委託してる健診機関に、令和9年4月からの新検査項目への対応状況を確認するよう促す</li><li><input type="checkbox" disabled />健康診断個人票の様式・社内の健診案内文書を、新項目に合わせて見直すスケジュールを立てておく</li><li><input type="checkbox" disabled />40歳未満従業員の血清クレアチニン検査省略基準について、施行前に厚労省の詳細な運用通達を継続的にウォッチする</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「施行まで時間があるのはありがたいが、健診費用がどう変わるか気になる」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「喀痰検査がなくなるのは正直ほっとする、腎機能チェックが増えるのは健康管理として歓迎」</td></tr><tr><th>🏢 現場管理者目線</th><td>「健診案内・予約システムの項目更新など、地味だけど対応が必要な作業が増える」</td></tr><tr><th>⚖️ 専門家目線</th><td>「施行まで半年以上あるうちに、健診機関との調整を前倒しで進めるよう顧問先に助言すべき」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.kaiketsu-j.com/environment/22162/" target="_blank" rel="noopener">かいけつ！人事労務「定期健康診断などの検査項目に『血清クレアチニン検査』を追加するなどの改正を行う（令和9年4月～） 改正内容を周知するための通達などを公表（厚労省）」</a></p></article>
+<article class="article"><h3>⑤ 「労働契約等解説セミナー2026」が全国で開催中、無期転換・副業ガイドライン等をテーマに</h3><div class="glossary"><strong>用語解説：セミナーで扱う3つのテーマ</strong><br />①労働契約法の基礎知識、②無期転換ルール（有期契約が5年を超えると労働者の申込みで無期契約に転換できる制度）、③副業・兼業の促進に関するガイドライン、の3テーマを扱ってるよ。事業主向け・労働者向けそれぞれの目線で、労働契約に関するルールを分かりやすく解説する内容になってる。</div><h4>何が起きた？</h4><p>厚生労働省委託事業として、<strong>「労働契約等解説セミナー2026」</strong>が労働契約ポータルサイトを中心に全国で開催されてるよ。開催期間は<strong>2026年7月〜2027年2月</strong>と長期にわたり、参加型セミナー・講師派遣型セミナー・個別相談・動画教材など複数の形式が用意されてる（すべて無料）。講師派遣型セミナーでは、①労働契約法の基礎、②無期転換ルール、③副業・兼業の促進に関するガイドライン、の3テーマを扱う。無期転換ルールや副業促進は実務でトラブルになりやすいテーマだから、顧問先向けの研修依頼にこの無料セミナーを活用できる可能性があるよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />無期転換・副業ルールについて社内研修を検討してる顧問先に、この無料セミナー（講師派遣型含む）を案内する</li><li><input type="checkbox" disabled />個別相談の枠組みも用意されてるようなので、複雑な事案がある顧問先には個別相談の活用も提案する</li><li><input type="checkbox" disabled />セミナーで扱われる最新の解説内容を、自分自身の知識アップデートにも活用する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「無料で講師を呼べるなら、社内研修のコスト削減になってありがたい」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「無期転換や副業のルールを知る機会が増えるのはいいこと、もっと周知してほしい」</td></tr><tr><th>🏢 現場管理者目線</th><td>「研修の申込み手続きや日程調整の窓口業務が発生するので、担当を決めておきたい」</td></tr><tr><th>⚖️ 専門家目線</th><td>「無料の公的セミナーとの役割分担（基礎知識は公的セミナー、個別の込み入った相談は顧問契約で）を意識すると良い」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.psrn.jp/topics/detail.php?id=42261" target="_blank" rel="noopener">社会保険労務士PSRネットワーク「『労働契約等解説セミナー2026』を開催中（労働契約ポータルサイト）」</a></p></article>
+<article class="article"><h3>⑥📚コラム：「時間単位有休」では消化できない？パートの「年5日取得義務」で実務担当者が陥る勘違い</h3><div class="glossary"><strong>用語解説：「年5日取得義務」の対象になる人・ならない日数</strong><br />年5日取得義務の対象は、<strong>年10日以上</strong>の年次有給休暇が新たに付与される労働者（パート・アルバイトでも週の所定労働日数次第で対象になる）。前年からの繰越日数はこの「10日」のカウントに含まれないのがポイントだよ。</div><h4>どういう話？</h4><p>2019年4月から始まった「年次有給休暇の年5日取得義務」、実務担当者の間でよくある勘違いが<strong>「時間単位年休を消化させれば5日分にカウントできる」というもの</strong>だよ。実際には、<strong>時間単位で取得した有休は、労働者が自分の意思で選んだ場合であっても、年5日取得義務のカウントには含まれない</strong>という扱いになってる。つまり、パート・アルバイトが「時間単位でちょこちょこ有休を使ってるから大丈夫」と思ってても、企業側は別途、<strong>丸1日または半日単位の取得</strong>で5日分を確保する義務がある。この誤解に気づかず、時間単位取得の実績だけで「うちは達成してる」と思い込んで、実際には未達成のまま是正勧告を受けるケースが後を絶たないみたい。違反した場合は労働者1人につき最大30万円の罰金対象になるから、地味に見過ごせないポイントだよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の有休管理台帳で、時間単位取得分を誤って年5日カウントに含めていないか確認する</li><li><input type="checkbox" disabled />年10日以上付与されるパート・アルバイトが対象に含まれることを、勤怠担当者に改めて周知する</li><li><input type="checkbox" disabled />前年繰越分がカウントに含まれない点も含め、対象者判定の基準を分かりやすい社内マニュアルにまとめる</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「時間単位で消化させてるから大丈夫と思ってた、勘違いに気づいて冷や汗をかいた」</td></tr><tr><th>🧑‍💼 労働者目線（パート）</th><td>「自分が時間単位で有休を使ってることと、会社の義務達成は別問題だと初めて知った」</td></tr><tr><th>🏢 現場管理者目線</th><td>「勤怠システムの設定次第では自動集計が誤ったカウントになってることもあり、定期チェックが欠かせない」</td></tr><tr><th>⚖️ 専門家目線</th><td>「この勘違いは非常に多い、顧問先への年次チェックの際に必ず確認すべき定番ポイント」</td></tr></table><p class="source-line">🔗 参考：<a href="https://jinjibu.jp/qa/detl/143371/1/" target="_blank" rel="noopener">人事のQ&amp;A『日本の人事部』「時間単位年休が年休5日取得義務の対象にならない旨の条文有無」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="issue-2026-08-21" data-search="熊本県、被災世帯向けに緊急小口資金の特例貸付を開始（8月19日〜） 2026年度最低賃金、30都道府県で答申が判明　17県が中央目安を上回る 被災地の保育所・学童保育、再開遅れが従業員の職場復帰にも影響（熊本地震） 📚コラム：「同一労働同一賃金」の原点、ハマキョウレックス事件を今こそ振り返る">
+      <summary>
+        <span class="issue-badge">第13号 8/21</span>
+        <span>
+          <span class="issue-headline">熊本県、被災世帯向けに緊急小口資金の特例貸付を開始（8月19日〜）</span>
+          <span class="issue-sub">熊本県、被災世帯向けに緊急小口資金の特例貸付を開始（8月19日〜）／2026年度最低賃金、30都道府県で答申が判明　17県が中央目安を上回る／被災地の保育所・学童保育、再開遅れが従業員の職場復帰にも影響（熊本地震）／📚コラム：「同一労働同一賃金」の原点、ハマキョウレックス事件を今こそ振り返る　全4本</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><h3>① 熊本県、被災世帯向けに緊急小口資金の特例貸付を開始（8月19日〜）</h3><div class="glossary"><strong>用語解説：「緊急小口資金」ってどんな制度？</strong><br />生活福祉資金貸付制度の一つで、緊急かつ一時的に生計の維持が困難になった世帯に、少額の資金を無利子・無保証人で貸し付ける制度だよ。普段は対象が低所得世帯等に限られるけど、災害時の特例では所得を問わず被災世帯全般が対象になるのがポイント。</div><h4>何が起きた？</h4><p>熊本県社会福祉協議会は8月19日から、令和8年熊本地震（7月28日発生）で被災した世帯を対象に、生活福祉資金（緊急小口資金）の<strong>災害時特例貸付</strong>の受付を開始したよ。対象は<strong>災害救助法が適用された21市町村</strong>の被災世帯で、通常と違い<strong>低所得世帯等に限定されない</strong>のが特例のポイント。貸付上限は原則<strong>10万円</strong>、世帯に死亡者・要介護者・重傷者・妊産婦・小学校修了までの子どもがいる場合は<strong>20万円以内</strong>まで拡大される。据置期間1年以内・償還期限2年以内で、<strong>無利子・保証人不要</strong>。申込みは住所地または避難先の市町村社会福祉協議会で受け付けてるよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />被災地域の顧問先の従業員から生活資金の相談があれば、この特例貸付の窓口（市町村社会福祉協議会）を案内する</li><li><input type="checkbox" disabled />対象世帯の要件（21市町村、死亡・要介護・重傷・妊産婦・子どもの有無で貸付上限が変わる）を正確に説明できるよう整理しておく</li><li><input type="checkbox" disabled />雇用調整助成金・休業手当など他の労働関連支援策とあわせて、被災地域向け支援策の一覧を顧問先に共有する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線（被災地域）</th><td>「従業員の当面の生活資金の心配が減るのはありがたい、周知を手伝いたい」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「無利子・保証人不要で借りられるのは助かるが、返済のことも考えると不安は残る」</td></tr><tr><th>🏢 現場管理者目線</th><td>「従業員から相談された時にすぐ案内できるよう、窓口情報を把握しておきたい」</td></tr><tr><th>⚖️ 専門家目線</th><td>「労働関連の支援策（雇用保険・助成金）と生活福祉資金は担当窓口が異なるので、まとめて案内できる体制作りが大事」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.fukushi-kumamoto.or.jp/pages/151/" target="_blank" rel="noopener">熊本県社会福祉協議会「生活福祉資金等の貸付け」</a></p></article>
+<article class="article"><h3>② 2026年度最低賃金、30都道府県で答申が判明　17県が中央目安を上回る</h3><div class="glossary"><strong>用語解説：「目安を上回る」ってどういうこと？</strong><br />中央最低賃金審議会が示す全国統一の「目安」（今年度はAランク+54円、B・Cランク+56円）はあくまで参考額。実際の金額は都道府県ごとの地方審議会が独自に決定するから、地域の実情次第で目安より高い金額で答申されることがあるんだ。今年は目安超えの県が例年より多いのが特徴だよ。</div><h4>何が起きた？</h4><p>2026年8月20日時点で、<strong>全国47都道府県のうち30都道府県の最低賃金答申額が判明</strong>したよ。答申額が最も高いのは<strong>東京都の1,280円</strong>、引き上げ額が最も大きいのは<strong>宮城県・鳥取県の+60円</strong>。注目は、<strong>宮城・新潟・栃木・群馬・埼玉・千葉・富山・石川・福井・静岡・愛知・岡山・島根・山口・福岡・鳥取・秋田の17県</strong>が、中央最低賃金審議会の目安（Aランク+54円、B・Cランク+56円）を<strong>上回る</strong>形で答申した点。8月17日時点では目安超えが数県だったのに対し、この3日ほどでさらに増えた形で、地方の賃上げ意欲の高さがうかがえるよ。全国加重平均は全都道府県が目安通りなら1,176円になる見込みだけど、目安超えが相次いでるので最終的にはこれを上回る可能性もあるね。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の所在地の最新答申額を確認し、目安超えの県かどうかで賃上げ対応の緊急度を調整する</li><li><input type="checkbox" disabled />まだ答申が出ていない都道府県の顧問先には、今後の答申スケジュールと発効日の見通しを伝えておく</li><li><input type="checkbox" disabled />複数県に拠点がある顧問先には、目安超え・目安通りの県が混在する可能性を踏まえた一覧表を用意する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「目安超えの県が増えてきて、想定してた人件費の見込みを上回りそうで心配」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「東京だけじゃなく地方でも目安超えが相次いでるのは嬉しい流れ」</td></tr><tr><th>🏢 現場管理者目線</th><td>「答申が出るたびに給与体系の見直しが必要になり、対応に追われている」</td></tr><tr><th>⚖️ 専門家目線</th><td>「目安超えの県がここまで多いのは近年珍しく、地域間格差是正の本気度が表れている」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://taxlabor.com/minimum-wage-japan/" target="_blank" rel="noopener">taxlabor.com「2026年8月18日更新｜2026年度 都道府県別最低賃金一覧｜答申状況を随時更新・全国の新時給と発効日」</a></p></article>
+<article class="article"><h3>③ 被災地の保育所・学童保育、再開遅れが従業員の職場復帰にも影響（熊本地震）</h3><div class="glossary"><strong>用語解説：転園手続き不要の「柔軟な受け入れ」って？</strong><br />通常、保育所や学童保育を変える際は転園手続きが必要。でも今回のような災害時は、被災した子どもが避難先近くの施設を一時的に利用する際、正式な転園手続きなしで柔軟に受け入れてよいという特例的な運用がされているよ。文部科学省やこども家庭庁が、施設側にこの柔軟な対応を促す形になってる。</div><h4>何が起きた？</h4><p>令和8年熊本地震で最大震度7を観測した<strong>宇城市・氷川町</strong>では、保育所・学童保育の再開に大きく遅れが出てるよ。氷川町は一時、保育園・学童保育とも<strong>再開率0%</strong>という状況だったけど、8月17日時点で氷川町の一部の保育園・幼稚園で<strong>1日を通した保育が再開</strong>され始めた。一方、学童保育（19施設）は約6割で再開の目処が立たないままとのこと。子どもの預け先が確保できないと、被災地域の従業員は職場復帰・通常勤務がそもそも難しくなる。文部科学省・こども家庭庁は8月中旬、被災した子どもが避難先近くの施設を<strong>転園手続きなしで一時利用できる</strong>柔軟な運用を各自治体・施設に促していて、岡山市など受け入れ先の自治体では利用料の免除措置も出てきてるよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />被災地域に居住する顧問先の従業員に、保育・学童の代替利用が可能なことを案内する</li><li><input type="checkbox" disabled />保育・学童が確保できず出勤が難しい従業員向けに、時差出勤・在宅勤務・特別休暇など柔軟な勤務対応を顧問先に提案する</li><li><input type="checkbox" disabled />避難先で子どもを預けている従業員がいれば、利用料免除などの自治体支援策もあわせて共有する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線（被災地域）</th><td>「保育・学童が復旧しないと従業員も出勤できず、事業再開そのものが進まない」</td></tr><tr><th>🧑‍👩‍👦 労働者目線（子育て中）</th><td>「子どもの預け先が見つからない間、収入が減らないか不安」</td></tr><tr><th>🏢 現場管理者目線</th><td>「出勤できない従業員のシフトをどう組み直すか、日々調整に追われている」</td></tr><tr><th>⚖️ 専門家目線</th><td>「保育・学童の復旧状況は、被災地域の雇用維持支援策と切り離せない論点として継続的に見ておくべき」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://news.web.nhk/newsweb/na/nd-20260817de44489" target="_blank" rel="noopener">NHKニュース「熊本 氷川町 保育園・幼稚園 1日通した子どもの預かり一部再開」</a></p></article>
+<article class="article"><h3>④📚コラム：「同一労働同一賃金」の原点、ハマキョウレックス事件を今こそ振り返る</h3><div class="glossary"><strong>用語解説：「均衡待遇」と「均等待遇」の違い</strong><br />均衡待遇は「不合理な差は禁止するが、違いがあること自体はOK」という考え方（業務内容や責任が違えば手当に差があってもよい）。均等待遇は「同じ業務・同じ責任なら待遇も完全に同じにする」というより強い考え方。ハマキョウレックス事件は、この「均衡待遇」の判断枠組みを最高裁が初めて具体的に示した事件だよ。</div><h4>どういう話？</h4><p>2018年（平成30年）6月1日、最高裁は運送会社ハマキョウレックスの契約社員が起こした訴訟で、<strong>正社員と契約社員の間の手当格差の一部を違法</strong>と判断したよ。当時の労働契約法20条（現：パート有期法8条）に基づき、<strong>皆勤手当・通勤手当・作業手当・給食手当・無事故手当</strong>など複数の手当について、契約社員に支給しないのは不合理だと認定された一方、<strong>住宅手当</strong>については正社員に転勤がありうることを理由に格差を容認した。判断の枠組みは「①業務内容、②業務内容・配置変更の範囲、③その他の事情」の3点を見て、<strong>手当ごとに個別に不合理性を判断する</strong>という、今の同一労働同一賃金ルールの土台になった考え方だよ。パート・有期雇用労働者が会社に待遇差の説明を求められる制度も、この判例の延長線上にある実務論点なんだ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の手当制度（通勤・皆勤・無事故手当等）を棚卸しし、正社員と非正規社員で差がある場合はその理由を説明できる状態か確認する</li><li><input type="checkbox" disabled />「転勤の有無」など、待遇差の根拠にしている事情が実態として本当に機能しているか（形骸化してないか）を確認する</li><li><input type="checkbox" disabled />パート・有期雇用労働者から待遇差の説明を求められた際の回答テンプレートを、この判例の判断枠組みを参考に整備する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「手当ごとに個別判断が必要なのは分かるが、実務上は制度全体の見直しコストが大きい」</td></tr><tr><th>🧑‍💼 労働者目線（契約社員）</th><td>「同じ仕事をしてるのに手当だけ違うのはやっぱり納得しづらい、判例があってよかった」</td></tr><tr><th>🏢 現場管理者目線</th><td>「手当の趣旨を一つひとつ説明できるようにしておかないと、今の時代は通用しないと実感する」</td></tr><tr><th>⚖️ 専門家目線</th><td>「今も相談の多くはこの判例の枠組みに沿って考えると整理しやすい、実務家必読の判例」</td></tr></table><p class="source-line">🔗 参考：<a href="https://www.kp-lo.jp/law-info/post-855.html" target="_blank" rel="noopener">加藤＆パートナーズ法律事務所「同一労働同一賃金⑴（ハマキョウレックス事件，最高裁平成３０年６月１日判決）」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="issue-2026-08-20" data-search="残業の一律指導を見直し、労基署は「45時間以内」の画一対応をやめる方針（9月〜）">
+      <summary>
+        <span class="issue-badge">第12号 8/20</span>
+        <span>
+          <span class="issue-headline">残業の一律指導を見直し、労基署は「45時間以内」の画一対応をやめる方針（9月〜）</span>
+          <span class="issue-sub">残業の一律指導を見直し、労基署は「45時間以内」の画一対応をやめる方針（9月〜）　全1本</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><h3>① 残業の一律指導を見直し、労基署は「45時間以内」の画一対応をやめる方針（9月〜）</h3><div class="glossary"><strong>用語解説：「一律指導」がなくなると何が変わるの？</strong><br />これまでは、時間外・休日労働の時間数だけを見て「月45時間を超えてるから減らしなさい」という画一的な指導が中心だった。今回の見直しでは、時間数そのものより「36協定の特別条項に定めた"健康・福祉確保措置"（代休付与、産業医面談など）がちゃんと実施されてるか」を重点的にチェックする方向に変わるよ。</div><h4>何が起きた？</h4><p>厚生労働省は8月19日、時間外労働に関する労働基準監督署の相談・支援・監督指導のあり方を<strong>9月から見直す</strong>と発表したよ。これまでの「時間外・休日労働時間数のみに着目して月45時間以内への削減を求める一律の指導」を改め、各事業場が<strong>36協定の特別条項に定めた健康・福祉確保措置の実施状況を重点的に確認</strong>する方式に転換する。あわせて、全国の働き方改革推進支援センターに36協定・特別条項の締結や柔軟な労働時間制度の活用を支援する<strong>「専門相談窓口」を新設</strong>し、働き方改革推進支援センターと労基署のチームによる<strong>アウトリーチ型の訪問支援</strong>も行う方針。経営側からは「画一的すぎる」との声がある一方、労働者側からは長時間労働の助長を懸念する声も出てるよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の36協定・特別条項の内容を確認し、健康・福祉確保措置が実効性を持つ形で定められているかチェックする</li><li><input type="checkbox" disabled />9月以降の労基署の指導方針変更を踏まえ、顧問先に「時間数だけでなく措置の実施状況が問われる」旨を周知する</li><li><input type="checkbox" disabled />働き方改革推進支援センターの専門相談窓口・訪問支援の活用を、必要な顧問先に案内する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「画一的な45時間指導がなくなるのはありがたいが、代わりに何を整備すればいいか分かりにくい」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「時間数への着目が緩むことで、結局は長時間労働が黙認されないか心配」</td></tr><tr><th>🏢 現場管理者目線</th><td>「健康・福祉確保措置を"やってるふり"で済ませず、実効性のある運用に変えないといけない」</td></tr><tr><th>⚖️ 専門家目線</th><td>「時間数から実質的な健康確保措置へのシフトは、36協定の中身の"質"が今まで以上に問われる転換点」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.mhlw.go.jp/stf/newpage_75454.html" target="_blank" rel="noopener">厚生労働省「時間外労働等に係る相談・支援及び監督指導を見直します」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="issue-2026-08-19" data-search="2026年度の賃上げ、企業の83.2%が実施　賃上げ率「5%以上」は中小企業が大企業を上回る 熊本地震で労働相談1,700件、雇用保険の特例活用が進む 経過措置終了、期限切れの健康保険証は8月から使用不可に 雇用保険の基本手当・育児休業給付など、支給限度額が8月1日から一斉改定">
+      <summary>
+        <span class="issue-badge">第11号 8/19</span>
+        <span>
+          <span class="issue-headline">2026年度の賃上げ、企業の83.2%が実施　賃上げ率「5%以上」は中小企業が大企業を上回る</span>
+          <span class="issue-sub">2026年度の賃上げ、企業の83.2%が実施　賃上げ率「5%以上」は中小企業が大企業を上回る／熊本地震で労働相談1,700件、雇用保険の特例活用が進む／経過措置終了、期限切れの健康保険証は8月から使用不可に／雇用保険の基本手当・育児休業給付など、支給限度額が8月1日から一斉改定　全4本</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><h3>① 2026年度の賃上げ、企業の83.2%が実施　賃上げ率「5%以上」は中小企業が大企業を上回る</h3><div class="glossary"><strong>用語解説：「賃上げ実施率」と「賃上げ率」は別の数字だよ</strong><br />「実施率」は賃上げを行った企業の割合（今回83.2%）。「賃上げ率」は実際に給与をどれくらい上げたか（例：5%以上）を示す数字。実施率が高くても、賃上げ率が低ければ実質的な効果は小さくなる、という2つの視点があるんだ。</div><h4>何が起きた？</h4><p>東京商工リサーチが2026年7月31日〜8月11日に実施したアンケート調査（有効回答5,909社）の結果によると、<strong>2026年度に賃上げを実施した企業は83.2%</strong>で、前年度（82.0%）から1.2ポイント上昇し<strong>5年連続で80%台</strong>を維持したよ。規模別では大企業93.8%・中小企業82.3%とどちらも前年度を上回った一方、注目は<strong>賃上げ率「5%以上」の企業割合で、中小企業42.6%が大企業41.4%を上回った</strong>こと。<strong>2023年度以来3年ぶり</strong>に中小企業が大企業を上回る結果になったんだ。産業別では製造業90.0%、運輸業89.6%、卸売業88.8%の順で高かったよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の賃上げ実施状況を、業界平均・規模別平均と比較した資料を用意する</li><li><input type="checkbox" disabled />賃上げ率5%以上を目指す中小企業の顧問先には、他社の実施事例を具体的な参考材料として共有する</li><li><input type="checkbox" disabled />賃上げが進んでいない顧問先には、業務改善助成金など公的支援策とあわせて相談に乗る</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線（中小企業）</th><td>「無理して5%以上に踏み切ったけど、原資の確保は正直綱渡り」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「中小企業の方が賃上げ率が高いのは意外、実感が伴ってるか気になる」</td></tr><tr><th>🏢 現場管理者目線</th><td>「賃上げの原資配分と評価制度の整合性をどう取るか、毎年頭を悩ませてる」</td></tr><tr><th>⚖️ 専門家目線</th><td>「中小企業が大企業を上回るのは人材確保の危機感の表れ、来年度以降も注視すべき流れ」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.nikkei.com/article/DGXZQOUC1720F0X10C26A8000000/" target="_blank" rel="noopener">日本経済新聞「26年度の賃上げ、企業の8割超が実施 商工リサーチ調べ」</a></p></article>
+<article class="article"><h3>② 熊本地震で労働相談1,700件、雇用保険の特例活用が進む</h3><div class="glossary"><strong>用語解説：休業からの一時離職でも基本手当がもらえる「特例」って？</strong><br />通常、雇用保険の基本手当（失業給付）は「離職して求職活動をしている」ことが前提。でも今回の特例では、災害救助法の適用地域にある事業所が地震で直接被害を受けて休業し、労働者が元の事業主へ再雇用される予定で一時的に離職している場合でも、要件を満たせば基本手当を受けられるようになってるよ。</div><h4>何が起きた？</h4><p>2026年7月28日発生の令和8年熊本地震を受けて、<strong>8月17日時点で労働関係の相談が約1,700件</strong>寄せられていることが分かったよ。内訳は<strong>雇用保険（基本手当特例）が約500件</strong>、<strong>雇用調整助成金が約300件</strong>、<strong>休業手当に関する相談が約200件</strong>、<strong>労災補償に関する相談が約100件</strong>など。事業再開が難しい被災事業所も多く、早急な支援を求める声が上がってる。雇用保険については、事業所が地震で直接被害を受けて休業し、元の事業主への再雇用が予定されている労働者が一時的に離職した場合でも、要件を満たせば基本手当を受給できる特例が適用されてるほか、指定された失業認定日にハローワークへ行けない場合の認定日変更や、避難先を管轄するハローワークでの手続きも案内されてるよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />被災地域の顧問先やその従業員に、雇用保険の基本手当特例・失業認定日変更の仕組みを案内する</li><li><input type="checkbox" disabled />休業手当・雇用調整助成金に関する相談が増えている状況を踏まえ、被災地域向けの相談体制を強化する</li><li><input type="checkbox" disabled />避難先で手続きが必要な従業員がいる顧問先には、管轄外ハローワークでの手続き方法を案内する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線（被災地域）</th><td>「事業再開の目処が立たない中、従業員の生活を守る特例はありがたいが手続きが煩雑」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「一時離職でも基本手当がもらえるのは助かるが、いつ再雇用されるか見通しが立たず不安」</td></tr><tr><th>🏢 現場管理者目線</th><td>「相談件数の多さから、被害の深刻さと従業員の不安の大きさを改めて実感する」</td></tr><tr><th>⚖️ 専門家目線</th><td>「相談件数の内訳を見ると休業・雇用維持系のニーズが大きい、特例の周知徹底が引き続き重要」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.nikkei.com/article/DGXZQOUF186610Y6A810C2000000/" target="_blank" rel="noopener">日本経済新聞「熊本地震で労働相談1700件 事業再開難しく、早急な支援求める声」</a></p></article>
+<article class="article"><h3>③ 経過措置終了、期限切れの健康保険証は8月から使用不可に</h3><div class="glossary"><strong>用語解説：「マイナ保険証」「資格確認書」「電子証明書」の違い</strong><br />マイナ保険証はマイナンバーカードを健康保険証として使う仕組み。資格確認書はマイナ保険証を持たない人向けに交付される、紙の代替書類。電子証明書はマイナンバーカードに搭載されたオンライン資格確認用の証明書のこと。8月以降は、この3つのいずれかがないと保険診療を受けられなくなったよ。</div><h4>何が起きた？</h4><p>2026年7月31日をもって、<strong>「誤って期限の切れた保険証を持参した患者でも保険診療を受けることを認める」という経過措置・暫定措置が終了</strong>したよ。これにより<strong>2026年8月1日以降は、期限切れの従来型保険証は「保険証忘れ」と同じ扱い</strong>になり、医療機関の窓口でいったん医療費を全額（10割）自己負担する必要が出てくる。8月1日以降に保険診療を受けるには、<strong>「マイナ保険証」または「資格確認書」の提示が必要</strong>になった形。今まさに今月起きてる変化なので、従業員から「保険証が使えなかった」という相談が顧問先に寄せられ始めてる可能性があるよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の従業員に、期限切れ保険証が8月から使えなくなった旨をあらためて周知する</li><li><input type="checkbox" disabled />マイナ保険証未取得・資格確認書未着の従業員がいないか、顧問先の総務担当と確認する</li><li><input type="checkbox" disabled />海外駐在員・休職中・育休中など受け取りが難しい従業員向けに、資格確認書の再発行手続きを案内する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「従業員の保険証トラブルで総務への問い合わせが増えそう、事前周知を徹底したい」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「マイナンバーカードの暗証番号を忘れてて、いざという時に使えなかったら困る」</td></tr><tr><th>🏢 現場管理者目線</th><td>「育休中・休職中の従業員への資格確認書の受け渡しをどう管理するか悩ましい」</td></tr><tr><th>⚖️ 専門家目線</th><td>「経過措置終了は事前に周知されてたはずだが、実際に困るケースはこれから顕在化しそう」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://gemmed.ghc-j.com/?p=75498" target="_blank" rel="noopener">GemMed「『期限切れの保険証』は2026年8月1日以降は使用不可、マイナ保険証・資格確認書で医療機関等受診を—厚労省」</a></p></article>
+<article class="article"><h3>④ 雇用保険の基本手当・育児休業給付など、支給限度額が8月1日から一斉改定</h3><div class="glossary"><strong>用語解説：なんで毎年8月1日に変わるの？</strong><br />雇用保険の基本手当（失業給付）や育児休業給付などの上限・下限額は、毎月勤労統計の平均定期給与額の増減に連動して<strong>毎年8月1日に見直す</strong>ルールになってるよ。賃金水準が上がれば給付の上限・下限額も上がる、という仕組みなんだ。</div><h4>何が起きた？</h4><p>2026年8月1日から、雇用保険の各種給付の支給限度額が一斉に改定されたよ。<strong>基本手当日額の上限</strong>は年齢区分ごとに引き上げられ、60〜64歳が7,623円→<strong>7,830円</strong>、45〜59歳が8,870円→<strong>9,110円</strong>、30〜44歳が8,055円→<strong>8,270円</strong>、30歳未満が7,255円→<strong>7,450円</strong>に。<strong>下限額も2,411円→2,562円</strong>に引き上げられた。<strong>高年齢雇用継続給付の支給限度額は386,922円→397,369円</strong>に、介護休業給付も同様に見直しに。あわせて<strong>育児休業給付の申請手続きも簡素化</strong>され、母親が申請する際の配偶者確認書類として「母子健康手帳の写し」の提出が新たに認められるようになったよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先で現在給付を受給中の従業員がいれば、8月1日以降の給付額が変わる可能性を案内する</li><li><input type="checkbox" disabled />育児休業給付の申請時、配偶者確認書類の簡素化（母子健康手帳の写しでOK）を担当者に周知する</li><li><input type="checkbox" disabled />高齢者雇用・介護休業関連の助成金相談時に、最新の支給限度額を踏まえた試算を用意する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「毎年8月の改定は把握しておかないと、従業員からの問い合わせに答えられない」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「上限額が上がるのはありがたいけど、自分の給付額がどう変わるのか分かりにくい」</td></tr><tr><th>🏢 現場管理者目線</th><td>「育休の書類簡素化は地味にありがたい、母子手帳のコピーで済むなら手間が減る」</td></tr><tr><th>⚖️ 専門家目線</th><td>「毎年8月の定例改定だが、複数の給付が同時に変わるので顧問先への一括案内が効果的」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.kaiketsu-j.com/procedure/23270/" target="_blank" rel="noopener">かいけつ！人事労務「雇用保険の基本手当日額、支給限度額など 令和8年8月1日から変更（厚労省）」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="issue-2026-08-18" data-search="2026年度最低賃金、全国平均1,176円へ　地方の引き上げ幅が大都市を上回る異例の構図 令和8年熊本地震で被災、労働保険料等の申告・納期限を延長 毎月勤労統計6月分速報、実質賃金6か月連続プラス　正社員賃金は統計開始以来の記録 熊本地震を受け、雇用調整助成金の特例措置を検討へ（厚労省） メンタルヘルス対策に取り組む事業所63%、ストレスチェック実施は64%にとどまる（令和7年労働安全衛生調査）">
+      <summary>
+        <span class="issue-badge">第10号 8/18</span>
+        <span>
+          <span class="issue-headline">2026年度最低賃金、全国平均1,176円へ　地方の引き上げ幅が大都市を上回る異例の構図</span>
+          <span class="issue-sub">2026年度最低賃金、全国平均1,176円へ　地方の引き上げ幅が大都市を上回る異例の構図／令和8年熊本地震で被災、労働保険料等の申告・納期限を延長／毎月勤労統計6月分速報、実質賃金6か月連続プラス　正社員賃金は統計開始以来の記録／熊本地震を受け、雇用調整助成金の特例措置を検討へ（厚労省）／メンタルヘルス対策に取り組む事業所63%、ストレスチェック実施は64%にとどまる（令和7年労働安全衛生調査）　全5本</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><h3>① 2026年度最低賃金、全国平均1,176円へ　地方の引き上げ幅が大都市を上回る異例の構図</h3><div class="glossary"><strong>用語解説：「目安」と実際の「最低賃金」は違うの？</strong><br />中央最低賃金審議会が示す「目安」は、全国統一のランク別参考額。実際の最低賃金は都道府県ごとの地方審議会が、この目安を参考にしつつ独自に決定するよ。だから必ずしも目安通りになるとは限らず、地域によっては目安を上回ることもあるんだ。</div><h4>何が起きた？</h4><p>厚生労働省の中央最低賃金審議会は2026年7月28日、2026年度の地域別最低賃金引き上げ目安を答申したよ。全国加重平均で<strong>1,176円</strong>（現行1,121円から<strong>+55円</strong>、伸び率<strong>4.9%</strong>）という水準。地方（B・Cランク）が<strong>+56円</strong>、大都市（Aランク）が<strong>+54円</strong>と、地方の引き上げ幅が大都市を上回る異例の構図になったのがポイント。答申後は都道府県ごとの地方審議会で審議が進んでいて、<strong>8月17日時点で27都道府県の答申額が判明</strong>済み。宮城・鳥取は目安を4円、石川・福井は3円上回るなど目安超えの動きも出てきてる。発効日は10月1日が多いけど、静岡（10/15）、山口（10/8）、福岡（10/4）など地域差があるから要チェックだよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の所在地の最低賃金の答申額・発効日を確認し、給与体系の見直しスケジュールを提示する</li><li><input type="checkbox" disabled />現在の基本給・時給が新しい最低賃金を下回らないか、パート・アルバイト従業員を中心にチェックする</li><li><input type="checkbox" disabled />助成金（業務改善助成金等）の活用余地がある顧問先には、賃上げ対応とあわせて案内する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「4.9%の引き上げは正直きつい、人件費の原資をどう確保するか頭が痛い」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「物価高が続く中でしっかり引き上げてもらえるのはありがたい」</td></tr><tr><th>🏢 現場管理者目線</th><td>「発効日が都道府県でバラバラだから、複数拠点がある会社は管理が煩雑」</td></tr><tr><th>⚖️ 専門家目線</th><td>「地方の引き上げ幅が大都市を上回るのは地域間格差是正の姿勢の表れ、今後も注視すべき」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.nikkei.com/article/DGXZQOUA2828Y0Y6A720C2000000/" target="_blank" rel="noopener">日本経済新聞「最低賃金の全国平均1176円に 26年度目安、55円引き上げ」</a></p></article>
+<article class="article"><h3>② 令和8年熊本地震で被災、労働保険料等の申告・納期限を延長</h3><div class="glossary"><strong>用語解説：「期限延長」と「納付猶予」の違い</strong><br />今回の措置は大きく2つ。指定被災地域は申告・納期限そのものが自動的に延長される「期限延長」。それ以外の地域でも、地震により財産に相当な損失を受けた事業主は個別申請で最大1年間の「納付猶予」を受けられる、という仕組みの違いだよ。</div><h4>何が起きた？</h4><p>2026年7月28日16時27分、熊本県を震源とするマグニチュード7.1・最大震度7の地震（令和8年熊本地震）が発生したよ。これを受けて厚生労働省は、宇城市・氷川町など甚大な被害を受けた地域について、<strong>労働保険料・特別保険料・一般拠出金の申告・納付期限を延長</strong>すると発表した。指定地域外でも、地震により財産に相当な損失を受けた事業主は、<strong>7月28日以降に到来する納付期限について原則1年以内の猶予</strong>を申請できる。年金保険料についても同様の期限延長措置が別途講じられてる。顧問先やその取引先が被災地域にある場合、申告・納付スケジュールの見直しが必要になるから、早めの周知が大事だよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の所在地・主要取引先が指定被災地域に該当しないか確認する</li><li><input type="checkbox" disabled />指定地域外でも実質的な被害を受けた顧問先には、納付猶予の個別申請が可能なことを案内する</li><li><input type="checkbox" disabled />年金保険料の期限延長措置とあわせて、社会保険料全体のスケジュールを顧問先に再共有する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線（被災地域）</th><td>「事業再建で手一杯な中、納期限を延ばしてもらえるのは本当に助かる」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「会社の資金繰りが落ち着くまで、雇用や給与への影響が出ないか心配」</td></tr><tr><th>🏢 現場管理者目線</th><td>「延長された期限を後で忘れないよう、社内カレンダーで管理し直す必要がある」</td></tr><tr><th>⚖️ 専門家目線</th><td>「指定地域外の『実質的被害』の証明方法など、個別相談が増えそうな論点」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.mhlw.go.jp/stf/newpage_75332.html" target="_blank" rel="noopener">厚生労働省「『令和8年熊本地震』で多大な被害を受けた地域での労働保険料等の申告・納期限等の延長を行います」</a></p></article>
+<article class="article"><h3>③ 毎月勤労統計6月分速報、実質賃金6か月連続プラス　正社員賃金は統計開始以来の記録</h3><div class="glossary"><strong>用語解説：「名目賃金」と「実質賃金」の違い</strong><br />名目賃金は額面通りの給与額の伸び率。実質賃金はそこから物価上昇分を差し引いた、実際の購買力ベースの伸び率だよ。名目が伸びても物価上昇がそれを上回れば、実質はマイナスになることもあるんだ。</div><h4>何が起きた？</h4><p>厚生労働省が2026年8月5日に公表した毎月勤労統計調査「令和8年6月分結果速報」によると、労働者1人あたりの<strong>現金給与総額は前年同月比+3.4%の53万1,677円</strong>で<strong>54か月連続</strong>のプラス。物価上昇分を差し引いた<strong>実質賃金も+1.6%</strong>で<strong>6か月連続</strong>のプラスとなったよ。正社員に限ると現金給与総額は<strong>+3.6%の71万5,604円</strong>で、統計開始（1994年1月）以来初めて<strong>5か月連続で3%超</strong>の伸びを記録するなど、賃上げの流れが着実に定着してきてる様子がうかがえる。ただし業種・企業規模による差はまだ大きいから、"平均"の数字だけで自社の状況を判断しないよう注意が必要だよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の賃上げ状況を、業界平均（現金給与総額+3.4%）と比較した資料を用意する</li><li><input type="checkbox" disabled />実質賃金プラスが続く中、来年の春闘・賃上げ交渉に向けた早めの準備を促す</li><li><input type="checkbox" disabled />賃上げが追いついてない顧問先には、業務改善助成金など活用可能な支援策を案内する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「平均は伸びてるというけど、うちの業界・規模ではそこまで実感がない」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「実質賃金がプラスなのは嬉しいけど、6か月連続でようやくという感覚もある」</td></tr><tr><th>🏢 現場管理者目線</th><td>「賃上げの原資をどう配分するか、評価制度との整合性を取るのが難しい」</td></tr><tr><th>⚖️ 専門家目線</th><td>「統計開始以来の記録更新は象徴的だが、中小・小規模事業者への波及はこれからが本番」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.mhlw.go.jp/toukei/itiran/roudou/monthly/r08/2606p/2606p.html" target="_blank" rel="noopener">厚生労働省「毎月勤労統計調査 令和8年6月分結果速報」</a></p></article>
+<article class="article"><h3>④ 熊本地震を受け、雇用調整助成金の特例措置を検討へ（厚労省）</h3><div class="glossary"><strong>用語解説：雇用調整助成金って何？</strong><br />経済上の理由で事業活動の縮小を余儀なくされた事業主が、労働者の雇用を維持するために休業手当等を支払った場合に、その一部を助成する制度だよ。特例措置では、対象地域の要件緩和や助成率の引き上げなどが行われることが多い。</div><h4>何が起きた？</h4><p>厚生労働省は8月10日、令和8年熊本地震を受けて地域の失業者増加を防ぐため、<strong>雇用調整助成金の特例措置</strong>を検討していることを明らかにしたよ。今日の1本目で紹介した労働保険料の申告・納期限延長に続き、<strong>雇用維持を直接支援する仕組み</strong>にも動きが出てきた形。熊本地震は最大震度7・マグニチュード7.1という大規模な被害をもたらしていて、被災地域の事業所では生産設備の損壊や取引先の被災により、事業活動の縮小を余儀なくされるケースが今後増える可能性がある。特例の詳細（対象地域・助成率・要件緩和の内容）はまだ検討段階で、正式発表を待つ必要があるよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />被災地域に顧問先がある場合、雇用調整助成金の特例措置の正式発表を継続的にウォッチする</li><li><input type="checkbox" disabled />休業を検討中の顧問先には、通常の雇用調整助成金の要件・申請フローを先に案内しておく</li><li><input type="checkbox" disabled />労働保険料の期限延長（本日1本目参照）とあわせて、被災地域向け支援策を一覧化して顧問先に共有する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線（被災地域）</th><td>「休業補償の負担が減るなら本当にありがたい、早く正式な制度内容を知りたい」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「雇用が守られる仕組みがあるのは安心、でも実際の休業手当の水準がどうなるか気になる」</td></tr><tr><th>🏢 現場管理者目線</th><td>「特例の対象地域や条件がまだ不明確で、社内への説明をどう準備すればいいか悩む」</td></tr><tr><th>⚖️ 専門家目線</th><td>「東日本大震災や能登半島地震の際の特例と同様の枠組みになるか、過去事例を踏まえた準備をしておきたい」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.nikkei.com/article/DGXZQOUA108370Q6A810C2000000/" target="_blank" rel="noopener">日本経済新聞「厚労省、雇用調整助成金の特例措置を検討 熊本地震を受け」</a></p></article>
+<article class="article"><h3>⑤ メンタルヘルス対策に取り組む事業所63%、ストレスチェック実施は64%にとどまる（令和7年労働安全衛生調査）</h3><div class="glossary"><strong>用語解説：「メンタルヘルス対策」と「ストレスチェック」は別物？</strong><br />ストレスチェックは労働者50人以上の事業場で年1回実施が義務付けられている検査の一つ。メンタルヘルス対策はもっと広い概念で、ストレスチェックに加えて相談窓口の設置、管理職向け研修、職場環境改善なども含むよ。今回の調査では、対策に取り組む事業所の中でもストレスチェックまで実施してるのは6割強にとどまる、という内訳が見えてきた。</div><h4>何が起きた？</h4><p>厚生労働省が2026年8月7日に公表した「令和7年労働安全衛生調査（実態調査）」の結果によると、<strong>メンタルヘルス対策に取り組んでいる事業所の割合は63.0%</strong>で、前年（63.2%）からほぼ横ばい。事業所規模別だと<strong>50人以上の事業所では93.7%</strong>とほぼ定着してる一方、<strong>10〜29人の事業所では54.6%</strong>にとどまり、規模による差が依然大きいことが分かった。さらに、対策に取り組んでる事業所のうち<strong>ストレスチェックを実施しているのは64.0%</strong>（前年65.3%）で、こちらも微減。50人未満の事業所ではストレスチェックが努力義務にとどまってることが、この規模間格差の一因と見られるよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の事業所規模別に、メンタルヘルス対策・ストレスチェックの実施状況を棚卸しする</li><li><input type="checkbox" disabled />10〜29人規模など小規模の顧問先には、努力義務の範囲でも簡易な対策（相談窓口の周知等）から提案する</li><li><input type="checkbox" disabled />ストレスチェック未実施の50人以上事業所があれば、法定義務違反のリスクを説明し早急に対応を促す</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「50人未満は義務じゃないから後回しにしがち、でも人手不足の中でメンタル不調による離職は避けたい」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「小規模の会社ほど相談しづらい雰囲気があるから、対策が進んでないのは実感と合う」</td></tr><tr><th>🏢 現場管理者目線</th><td>「対策をやろうにも何から手をつければいいか分からない、というのが本音」</td></tr><tr><th>⚖️ 専門家目線</th><td>「規模間格差は毎年指摘されてるが縮まらない、小規模事業者向けの支援策の使い勝手をもっと上げるべき」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.mhlw.go.jp/toukei/list/r07-46-50b.html" target="_blank" rel="noopener">厚生労働省「令和7年 労働安全衛生調査（実態調査）結果の概況」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="issue-2026-08-17" data-search="「着替えは労働時間？」厚労省が判断基準を冊子で明示 フリーランス新法違反でKADOKAWAに勧告、取引条件の書面明示なく 70歳までの就業確保、実施企業は34.8％にとどまる（令和7年高年齢者雇用状況報告）">
+      <summary>
+        <span class="issue-badge">第9号 8/17</span>
+        <span>
+          <span class="issue-headline">「着替えは労働時間？」厚労省が判断基準を冊子で明示</span>
+          <span class="issue-sub">「着替えは労働時間？」厚労省が判断基準を冊子で明示／フリーランス新法違反でKADOKAWAに勧告、取引条件の書面明示なく／70歳までの就業確保、実施企業は34.8％にとどまる（令和7年高年齢者雇用状況報告）　全3本</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><h3>① 「着替えは労働時間？」厚労省が判断基準を冊子で明示</h3><div class="glossary"><strong>用語解説：指揮命令下にあるかどうか、って何を見て判断するの？</strong><br />労働時間かどうかは「使用者の指揮命令下に置かれている時間」かで決まるのが原則。今回の冊子は、この抽象的な基準を「制服着用が任意か」「自宅から着ていけるか」「待機中に電話対応が必要か」といった、現場で判断しやすい具体的な着眼点に落とし込んだものだよ。</div><h4>何が起きた？</h4><p>厚生労働省が2026年7月17日、労働時間に関する考え方を整理した冊子を公表したよ。焦点の一つが<strong>「着替え時間」の扱い</strong>：制服や作業着の着用が<strong>任意</strong>であったり、<strong>自宅からの着用</strong>が認められている場合は、労働時間に<strong>該当しない</strong>と明示された。同様に、仮眠・待機時間についても、電話や来客対応の必要がない場合や、社用携帯を持ち帰って自宅で自由に過ごせる緊急対応の待機時間は労働時間に含まれないとされた。名目（「休憩」「待機」と呼んでいるか）ではなく、<strong>実態ベースで客観的に判断する</strong>という方針を厚労省が改めて明確にした形。着替え・待機時間の扱いは現場で判断が割れやすいポイントだから、実務上かなり参考になる整理だよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />制服・作業着がある顧問先に、着用の任意性・自宅着用の可否が明確になってるか確認する</li><li><input type="checkbox" disabled />仮眠・待機時間がある業種（警備・医療・宿直等）の顧問先には、対応義務の有無を実態ベースで再点検してもらう</li><li><input type="checkbox" disabled />冊子の内容を踏まえ、就業規則・勤怠管理ルールの記載が実態と食い違ってないかチェックする</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「基準が明確になったのはありがたい、これまでグレーだった部分の判断がしやすくなる」</td></tr><tr><th>🧑‍🏭 労働者目線</th><td>「制服着用が事実上必須なのに『任意』扱いにされて労働時間から外されないか心配」</td></tr><tr><th>🏢 現場管理者目線</th><td>「実態ベースの判断と言われても、現場ごとの運用差をどう揃えればいいか悩ましい」</td></tr><tr><th>⚖️ 専門家目線</th><td>「"名目でなく実態"という原則の再確認は歓迎だが、境界線の事例がまだ少なく個別相談は増えそう」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.rodo.co.jp/news/222488/" target="_blank" rel="noopener">労働新聞社「"着替え"扱いを明示 労働時間の考え方で冊子 厚労省」</a></p></article>
+<article class="article"><h3>② フリーランス新法違反でKADOKAWAに勧告、取引条件の書面明示なく</h3><div class="glossary"><strong>用語解説：フリーランス新法の「書面明示義務」</strong><br />フリーランス・事業者間取引適正化等法では、発注事業者はフリーランスに業務委託する際、報酬額・支払期日などの取引条件を書面または電磁的方法で明示する義務があるよ。今回はこれを怠ったことが違反とされた。</div><h4>何が起きた？</h4><p>公正取引委員会が、KADOKAWAに対してフリーランス新法違反を認定し、再発防止を求める<strong>勧告</strong>を出したよ。同社は2024年冬以降、雑誌製作関連業務を委託するフリーランスのライター・スタイリスト・イラストレーターらに対し、<strong>報酬の支払期日などの取引条件を書面で明示していなかった</strong>とされる。フリーランス新法（2024年11月施行）に基づく勧告は2025年6月の小学館・光文社への勧告に続くもので、2026年2月末までに累計<strong>8件</strong>の勧告が出てる。大手出版社が名指しで勧告を受けたことで、"うちは大丈夫"と思ってた企業にも改めて注意喚起になりそうな事例だよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />フリーランスに業務委託してる顧問先に、取引条件（報酬額・支払期日等）を書面・電磁的方法で明示できてるか確認する</li><li><input type="checkbox" disabled />特にコンテンツ制作・クリエイティブ業界の顧問先には、この事例を具体的な注意喚起材料として共有する</li><li><input type="checkbox" disabled />勧告に従わない場合の命令・事業者名公表・罰金リスクを説明し、早期の体制整備を促す</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「大手でも違反するくらいだから、うちの委託契約も一度洗い直したほうがいい」</td></tr><tr><th>🧑‍🎨 労働者目線（フリーランス）</th><td>「大手企業が実名で勧告を受けるのは心強い、これで業界全体の意識が変わってほしい」</td></tr><tr><th>🏢 現場管理者目線（発注担当）</th><td>「口頭でのやり取りが多かった発注慣行を、書面化に切り替える手間が地味に大きい」</td></tr><tr><th>⚖️ 専門家目線</th><td>「勧告件数が積み上がってきてるのは、公取委が本気で執行している証拠。企業側の対応猶予はもうない」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.nikkei.com/article/DGXZQOUD0807M0Y6A600C2000000/" target="_blank" rel="noopener">日本経済新聞「KADOKAWAに公正取引委員会が勧告へ 雑誌製作委託でフリーランス法違反」</a></p></article>
+<article class="article"><h3>③ 70歳までの就業確保、実施企業は34.8％にとどまる（令和7年高年齢者雇用状況報告）</h3><div class="glossary"><strong>用語解説：「雇用確保」と「就業確保」の違い</strong><br />65歳までは「雇用確保措置」（義務）、70歳までは「就業確保措置」（努力義務）と、法律上の位置づけが違うよ。70歳までの方は業務委託や社会貢献事業への従事なども選択肢に含まれる、より柔軟な仕組みなんだ。</div><h4>何が起きた？</h4><p>厚生労働省が公表した令和7年「高年齢者雇用状況等報告」の集計結果によると、<strong>65歳までの雇用確保措置を実施済みの企業は99.9%</strong>とほぼ完全に定着してる一方、<strong>70歳までの就業確保措置を実施済みの企業は34.8%</strong>にとどまってることが分かったよ。前年度比では+2.9ポイントと着実に伸びてはいるものの、まだ3社に1社程度という水準。実施方法の内訳では「継続雇用制度の導入」が65.1%と主流で、「定年の引上げ」は31.0%。人手不足が深刻化する中、努力義務とはいえ70歳就業確保の取り組みには企業間でまだ大きな差があることが、この集計から見えてくるね。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の70歳までの就業確保措置の実施状況を確認し、未実施なら他社事例（継続雇用制度が主流）を紹介する</li><li><input type="checkbox" disabled />高齢人材の活用を検討中の顧問先には、在職老齢年金の基準緩和（8/14の記事参照）とあわせて提案する</li><li><input type="checkbox" disabled />定年引上げ・継続雇用制度いずれを選ぶべきか、顧問先の実情に応じた比較資料を用意しておく</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「70歳までとなると人件費や制度設計の負担が増える、まだ努力義務のうちは様子見したい」</td></tr><tr><th>🧑‍🦳 労働者目線（高齢就労者）</th><td>「働き続けたい人にとって選択肢が増えるのはありがたい、もっと導入企業が増えてほしい」</td></tr><tr><th>🏢 現場管理者目線</th><td>「70歳まで働く前提の人員配置・業務設計にまだ慣れておらず、現場の戸惑いがある」</td></tr><tr><th>⚖️ 専門家目線</th><td>「努力義務のうちに先行して整備した企業ほど、将来の義務化に慌てず対応できる」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.forward.or.jp/news/mhlw-20260601/" target="_blank" rel="noopener">厚生労働省「令和７年「高年齢者雇用状況等報告」の集計結果を公表します」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="issue-2026-08-16" data-search="男女間賃金差異の公表義務、対象企業が101人以上に拡大（2026年4月〜） パート・有期雇用労働者の労働条件通知書、10月から新項目追加 「年収の壁」対応のキャリアアップ助成金、3月末で旧コース終了へ">
+      <summary>
+        <span class="issue-badge">第8号 8/16</span>
+        <span>
+          <span class="issue-headline">男女間賃金差異の公表義務、対象企業が101人以上に拡大（2026年4月〜）</span>
+          <span class="issue-sub">男女間賃金差異の公表義務、対象企業が101人以上に拡大（2026年4月〜）／パート・有期雇用労働者の労働条件通知書、10月から新項目追加／「年収の壁」対応のキャリアアップ助成金、3月末で旧コース終了へ　全3本</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><h3>① 男女間賃金差異の公表義務、対象企業が101人以上に拡大（2026年4月〜）</h3><div class="glossary"><strong>用語解説：公表が求められる3項目</strong><br />女性活躍推進法に基づき、①男女間賃金差異（全労働者・正規・非正規の3区分ごとの男女比率）、②女性管理職比率、③その他の任意項目、のうち一定数以上を公表する必要があるよ。事業年度終了後、原則3ヶ月以内（3月決算なら6月30日まで）に公表する仕組みだよ。</div><h4>何が起きた？</h4><p>2025年6月の女性活躍推進法改正により、<strong>男女間賃金差異・女性管理職比率の公表義務対象が、従来の301人以上企業から101人以上企業に拡大</strong>されたよ。施行は2026年4月1日から。101〜300人規模の企業にとっては初めて経験する公表義務で、3月決算企業なら<strong>6月30日が最初の公表期限</strong>だった。今月（8月）時点では、この夏に初めて対応した企業も多いはずで、"公表したはいいけど数字の意味を従業員にどう説明するか"という次の課題に直面してる企業が出てきてる頃だよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の従業員規模を確認し、101〜300人規模で今回新たに対象になった企業がないか洗い出す</li><li><input type="checkbox" disabled />公表済みの顧問先には、数値の算出根拠・説明資料の整備状況を確認する</li><li><input type="checkbox" disabled />まだ対応してない101人以上の顧問先には、次の公表期限に向けて早めに準備を促す</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「公表義務化で余計な事務負担が増えた、算出方法も分かりにくい」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「自社の男女賃金差が数字で見えるのは良いこと、ただ数字の背景説明もセットで欲しい」</td></tr><tr><th>🏢 現場管理者目線</th><td>「数字だけ独り歩きして、従業員から根拠を聞かれても答えに詰まりそう」</td></tr><tr><th>⚖️ 専門家目線</th><td>「対象拡大で中小企業からの相談が増えてる、算出支援がそのまま顧問契約につながる好機」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://mag.smarthr.jp/hr/labor/josei-katsuyaku-suishinhou/" target="_blank" rel="noopener">SmartHR Mag「4月施行「女性活躍推進法」公表義務化・実務対応ガイド｜算出定義から運用まで」</a></p></article>
+<article class="article"><h3>② パート・有期雇用労働者の労働条件通知書、10月から新項目追加</h3><div class="glossary"><strong>用語解説：「待遇差の説明を求めることができる旨」ってなに？</strong><br />パート・有期雇用労働者は、正社員との待遇差について会社に説明を求める権利（同一労働同一賃金ルールに基づく）を持ってるんだけど、その権利があること自体を知らない労働者も多い。今回の改正は、労働条件通知書に「この権利がありますよ」と明記することを会社に義務付けるものだよ。</div><h4>何が起きた？</h4><p><strong>2026年10月1日から、パート・有期雇用労働者への労働条件通知書に「待遇差の説明を求めることができる旨」の記載が義務化</strong>されるよ。これは2024年4月に既に追加されてる「就業場所・業務の変更の範囲」「更新上限の有無」などの明示事項に続く、労働条件明示ルールの追加改正。<strong>違反した場合は10万円以下の過料</strong>が科される可能性がある。同一労働同一賃金の実効性を高めるための改正で、"制度はあるけど労働者が知らないから使われない"という状況を防ぐ狙い。10月1日施行まで残りわずかで、雇用契約書・労働条件通知書のテンプレート改訂が間に合ってない企業も多そうだよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />パート・有期雇用労働者がいる顧問先の労働条件通知書テンプレートを、10月1日までに改訂する</li><li><input type="checkbox" disabled />「待遇差の説明を求めることができる旨」の具体的な記載文言のひな形を用意しておく</li><li><input type="checkbox" disabled />過料リスクを踏まえ、未対応の顧問先には早めのテンプレート更新を強く案内する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「また書式変更か、10月までにテンプレートの改訂が間に合うか心配」</td></tr><tr><th>🧑‍💼 労働者目線（パート・有期）</th><td>「そんな権利があったなんて知らなかった、明記してもらえるのはありがたい」</td></tr><tr><th>🏢 現場管理者目線</th><td>「説明を求められた時に、きちんと答えられる準備ができてるか不安」</td></tr><tr><th>⚖️ 専門家目線</th><td>「明示するだけでなく、実際に説明を求められた時の対応マニュアルもセットで整備すべき」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://taxlabor.com/part-yuki-roudoujoken-meiji-2026/" target="_blank" rel="noopener">taxlabor.com「【2026年10月】パート・有期社員 労働条件通知書に追加される明示事項｜社労士解説」</a></p></article>
+<article class="article"><h3>③ 「年収の壁」対応のキャリアアップ助成金、3月末で旧コース終了へ</h3><div class="glossary"><strong>用語解説：キャリアアップ助成金の2つのコース</strong><br />「社会保険適用時処遇改善コース」は、短時間労働者を新たに社会保険（厚生年金・健康保険）に加入させた事業主向けの助成金。「短時間労働者労働時間延長支援コース」は、労働時間を延長して収入を増やす取り組みを支援するコースだよ。</div><h4>何が起きた？</h4><p>「年収の壁・支援強化パッケージ」の一環である<strong>キャリアアップ助成金「社会保険適用時処遇改善コース」は、2026年3月31日までに短時間労働者を新たに被用者保険に適用させた事業主が対象</strong>という期限付きの制度だったことが改めて確認できたよ。<strong>2026年4月1日以降に同様の取り組みを行う場合は「短時間労働者労働時間延長支援コース」の利用が推奨</strong>される形に切り替わってる。年収の壁・支援強化パッケージ自体は2023年10月からの暫定措置で、抜本的な対策は政府内でまだ検討中。制度の切れ目・切り替えのタイミングを把握してないと、顧問先が申請すべきコースを間違えるリスクがあるので要注意だよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />「年収の壁」対応で助成金活用を検討中の顧問先に、現在利用できるコースが「短時間労働者労働時間延長支援コース」であることを案内する</li><li><input type="checkbox" disabled />過去に「社会保険適用時処遇改善コース」を申請済みの顧問先の、その後の要件充足状況をフォローする</li><li><input type="checkbox" disabled />「年収の壁」の抜本対策の動向を継続ウォッチし、新たな制度変更があれば早めに顧問先へ共有する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「コースがコロコロ変わると、どれを使えばいいのか分かりにくい」</td></tr><tr><th>🧑‍💼 労働者目線（パート）</th><td>「結局『年収の壁』の根本解決はいつになるのか、暫定措置ばかりで不安」</td></tr><tr><th>🏢 現場管理者目線</th><td>「助成金の申請要件を毎回確認し直すのが地味に手間」</td></tr><tr><th>⚖️ 専門家目線</th><td>「暫定措置が続く間は、顧問先ごとに最新の制度を都度確認して案内する丁寧さが差別化になる」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.kaiketsu-j.com/compliance/7517/" target="_blank" rel="noopener">かいけつ！人事労務「【専門家の知恵】「年収の壁・支援強化パッケージ」企業はどう対応するか？」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="issue-2026-08-15" data-search="有給休暇取得率66.9％で過去最高を更新（令和7年就労条件総合調査） 「育成就労制度」、9月1日から施行日前申請の受付開始（2027年4月本格施行へ） カスハラ防止指針が正式公布、10月1日施行に向け10項目の対応措置が明確に">
+      <summary>
+        <span class="issue-badge">第7号 8/15</span>
+        <span>
+          <span class="issue-headline">有給休暇取得率66.9％で過去最高を更新（令和7年就労条件総合調査）</span>
+          <span class="issue-sub">有給休暇取得率66.9％で過去最高を更新（令和7年就労条件総合調査）／「育成就労制度」、9月1日から施行日前申請の受付開始（2027年4月本格施行へ）／カスハラ防止指針が正式公布、10月1日施行に向け10項目の対応措置が明確に　全3本</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><h3>① 有給休暇取得率66.9％で過去最高を更新（令和7年就労条件総合調査）</h3><div class="glossary"><strong>用語解説：就労条件総合調査ってなに？</strong><br />厚生労働省が毎年実施する、労働時間・休日・賃金制度などの実態を企業に調査する統計だよ。年次有給休暇の取得率は、この調査の中でも毎年注目される定番項目なんだ。</div><h4>何が起きた？</h4><p>厚生労働省が公表した令和7年就労条件総合調査によると、令和6年（2024年）1年間の年次有給休暇の<strong>取得率は66.9%</strong>（前年65.3%）となり、<strong>昭和59年の調査開始以来最も高い水準</strong>を更新したよ。取得日数も<strong>12.1日</strong>と過去最多。産業別に見ると、「電気・ガス・熱供給・水道業」が75.2%と最も高い一方、「宿泊業，飲食サービス業」は50.7%と最も低く、業種間の差が依然として大きいのが実態。計画的付与制度を導入してる企業は40.8%（前年40.1%）とじわじわ増加中。2019年の年5日取得義務化から数年が経ち、着実に定着してきてる一方、宿泊・飲食のようなシフト制中心の業種では取得のハードルがまだ高いことが数字にはっきり表れてるよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の有給取得率を業界平均（66.9%）や自社の業種平均と比較し、対応の優先度を判断する材料にする</li><li><input type="checkbox" disabled />宿泊・飲食・小売など取得率が低い業種の顧問先には、計画的付与制度の導入を改めて提案する</li><li><input type="checkbox" disabled />年5日取得義務（未達成の場合30万円以下の罰金）の充足状況を、繁忙期前にもう一度点検してもらう</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「全体としては良い傾向だが、うちの業種（宿泊・飲食系）は人手不足で取得率を上げるのが正直難しい」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「取得率が上がってるのは嬉しいけど、実際に取りやすい空気があるかは会社によって差がありそう」</td></tr><tr><th>🏢 現場管理者目線</th><td>「シフト制の現場で有給取得を進めるには、人員に余裕がないと現実的に厳しい」</td></tr><tr><th>⚖️ 専門家目線</th><td>「業種間の差が大きいのは構造的な問題、計画的付与や時間単位年休の活用など制度面での後押しがもっと必要」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.kaiketsu-j.com/environment/19874/" target="_blank" rel="noopener">かいけつ！人事労務「令和６年の年休の取得率66.9％ 過去最高を更新（令和7年就労条件総合調査）」</a></p></article>
+<article class="article"><h3>② 「育成就労制度」、9月1日から施行日前申請の受付開始（2027年4月本格施行へ）</h3><div class="glossary"><strong>用語解説：育成就労制度ってなに？</strong><br />技能実習制度を廃止して新設される制度で、2027年4月1日に施行予定。技能実習が「国際貢献（技能移転）」目的だったのに対し、育成就労は人材育成とキャリア形成を重視し、特定技能への移行もしやすくなるのが大きな違いだよ。</div><h4>何が起きた？</h4><p>2027年4月1日に施行される育成就労制度に向けて、準備手続きが本格的に動き出してるよ。<strong>2026年4月15日に監理支援機関（旧・監理団体）の許可に係る施行日前申請の受付が開始</strong>済みで、続いて<strong>2026年9月1日からは育成就労計画の認定に係る施行日前申請の受付が開始</strong>される予定。施行後も混乱を避けるため約3年間の経過措置が設けられ、2030年頃までは技能実習制度と育成就労制度が並行して運用される見込み。つまり2026年後半から2027年3月末までは「技能実習の新規申請」と「育成就労の準備」が同時並行で進む、実務担当者にとって地味に大変な移行期間に突入するということだね。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />外国人材受入れの顧問先に、9月1日からの育成就労計画認定申請の受付開始を早めに案内する</li><li><input type="checkbox" disabled />監理団体・監理支援機関を利用してる顧問先には、許可申請の進捗状況を確認してもらう</li><li><input type="checkbox" disabled />技能実習と育成就労が並行する移行期間中、顧問先がどちらの制度で新規受入れを進めるべきか整理して助言する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「新制度への切り替え手続きがいつまで続くのか見えづらく、正直準備が大変」</td></tr><tr><th>🧑‍🌾 労働者目線（外国人材）</th><td>「キャリア形成や特定技能への移行がしやすくなるなら、働く側にとってはプラスの変化」</td></tr><tr><th>🏢 現場管理者目線</th><td>「2つの制度が並行する数年間、書類や手続きの管理が二重になって混乱しそう」</td></tr><tr><th>⚖️ 専門家目線</th><td>「移行期間中の実務対応をどれだけ丁寧にサポートできるかで、事務所としての専門性の差が出る局面」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://willof-work.co.jp/journal/13857/" target="_blank" rel="noopener">ウィルオブ採用ジャーナル「【2027年からスタート】技能実習制度から育成就労制度への移行で何が変わる？」</a></p></article>
+<article class="article"><h3>③ カスハラ防止指針が正式公布、10月1日施行に向け10項目の対応措置が明確に</h3><div class="glossary"><strong>用語解説：指針（告示）ってどのくらいの拘束力があるの？</strong><br />法律そのものではないけど、法律（改正労働施策総合推進法）に基づいて厚労省が具体的な対応内容を示す公式なルールだよ。企業はこの指針に沿った措置を講じる義務がある。今回は「令和8年厚生労働省告示第51号」として公布された。</div><h4>何が起きた？</h4><p>2026年2月26日、厚生労働省が「事業主が職場における顧客等の言動に起因する問題に関して雇用管理上講ずべき措置等についての指針」を公布したよ。<strong>2026年10月1日施行</strong>で、カスタマーハラスメント（カスハラ）対策が<strong>全ての事業主の義務</strong>になる。指針ではカスハラの定義が示され、<strong>対面だけでなく電話やSNSなどを通じた言動も対象</strong>になる点がポイント。企業に求められる具体的な措置として、方針の周知、相談窓口の設置、対応マニュアルの作成などが明記されてる。10月施行まで残り1ヶ月半程度に迫ってきてて、就業規則の改定や研修実施など、まだ着手してない企業は今がまさに準備のラストスパートのタイミングだよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の就業規則にカスハラ防止規定が盛り込まれてるか、10月1日までに確認・改定を進める</li><li><input type="checkbox" disabled />電話・SNS経由のカスハラも対象になる点を踏まえ、コールセンターやSNS運用担当がいる顧問先には特に注意喚起する</li><li><input type="checkbox" disabled />相談窓口設置・対応マニュアル作成がまだの顧問先には、テンプレートを用意して導入をサポートする</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「対応の方向性は分かったけど、10月までに全部整えるのは正直タイトなスケジュール」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「電話やSNSでの暴言も対象になるのは心強い、あとは実際に会社が守ってくれるかどうか」</td></tr><tr><th>🏢 現場管理者目線</th><td>「お客様相手にどこまで強く対応していいのか、現場の線引きの難しさは変わらない」</td></tr><tr><th>⚖️ 専門家目線</th><td>「指針が具体化されたことで、企業側も"何をすればいいか"が明確になった、10月までの駆け込み需要が見込める」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://fpeo.co.jp/news/customer-harassment-guidelines/" target="_blank" rel="noopener">社会保険労務士法人エフピオ「【2026年10月施行】カスタマーハラスメント対策が企業の義務に──厚労省が指針を告示」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="issue-2026-08-14" data-search="在職老齢年金の支給停止基準、62万円に引き上げ（2026年4月〜、20万人が恩恵） 熱中症の労災、休業4日以上の死傷者数が統計開始以来最多に（令和7年確定値） 賃金のデジタル払い、利用率わずか1.5%で伸び悩み">
+      <summary>
+        <span class="issue-badge">第6号 8/14</span>
+        <span>
+          <span class="issue-headline">在職老齢年金の支給停止基準、62万円に引き上げ（2026年4月〜、20万人が恩恵）</span>
+          <span class="issue-sub">在職老齢年金の支給停止基準、62万円に引き上げ（2026年4月〜、20万人が恩恵）／熱中症の労災、休業4日以上の死傷者数が統計開始以来最多に（令和7年確定値）／賃金のデジタル払い、利用率わずか1.5%で伸び悩み　全3本</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><h3>① 在職老齢年金の支給停止基準、62万円に引き上げ（2026年4月〜、20万人が恩恵）</h3><div class="glossary"><strong>用語解説：在職老齢年金ってなに？</strong><br />60歳以降も厚生年金に加入しながら働き続ける人向けの制度で、給与と年金の合計額が一定基準を超えると、年金の一部または全部が支給停止になる仕組みだよ。「働くと年金が減る」と言われがちな制度で、これが就労意欲を下げてるという指摘が長年あったんだ。</div><h4>何が起きた？</h4><p>2025年6月成立の年金制度改正法に基づき、2026年4月から<strong>在職老齢年金の支給停止基準額が月50万円から月62万円に引き上げ</strong>られたよ。基準額を超えた部分の年金が減額される仕組み自体は変わらないけど、基準が上がったことで<strong>新たに約20万人が老齢厚生年金を全額受給できるようになる</strong>と試算されてる。高齢者の就労を年金制度が抑制してしまう"壁"を緩和する狙いで、人手不足の中でシニア人材にもっと働いてもらいたい政府の意図が透けて見える改正。あわせて厚生年金の標準報酬月額の上限（2027年9月〜段階的に75万円へ）や遺族厚生年金の男女差解消（2028年4月〜）など、今後数年かけて年金制度全体が大きく変わっていく一連の改正の一部だよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />60代で働きながら年金を受給してる（予定の）顧問先従業員に、新基準額での試算を案内する</li><li><input type="checkbox" disabled />高齢者雇用を検討中の顧問先に、就労意欲への影響が緩和される制度変更として説明材料に使う</li><li><input type="checkbox" disabled />標準報酬月額上限引き上げ（2027年9月〜）など今後の改正スケジュールも、あわせて顧問先に周知しておく</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「シニア人材をもっと活用したいと思ってたので、この緩和はありがたい」</td></tr><tr><th>🧑‍🦳 労働者目線（高齢就労者）</th><td>「年金が減らずに働けるなら助かる、もっと早く見直してほしかった」</td></tr><tr><th>🏢 現場管理者目線</th><td>「制度変更のたびに従業員から質問が来る、簡単に説明できる資料が欲しい」</td></tr><tr><th>⚖️ 専門家目線</th><td>「基準額引き上げは一歩前進だが、根本的な"減額される"仕組み自体の是非は引き続き議論の余地がある」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.prostaffcloud.jp/knowledge/250623law-amendment_article.html" target="_blank" rel="noopener">ProSTAFFクラウド「【2026年4月以降施行】年金制度改正法が成立 年金制度の課題と主な改正内容を解説」</a></p></article>
+<article class="article"><h3>② 熱中症の労災、休業4日以上の死傷者数が統計開始以来最多に（令和7年確定値）</h3><div class="glossary"><strong>用語解説：WBGT値ってなに？</strong><br />暑さ指数とも呼ばれる、気温・湿度・輻射熱を組み合わせた熱中症リスクの指標だよ。2025年6月施行の改正労働安全衛生規則では、WBGT値28度以上または気温31度以上の環境で連続1時間以上（または1日4時間超）作業する場合、事業者に熱中症予防措置が義務付けられてる。</div><h4>何が起きた？</h4><p>厚生労働省が公表した令和7年（2025年）の「職場における熱中症による死傷災害」確定値によると、<strong>休業4日以上の死傷者数が前年比約4割増加し、統計開始以来最多</strong>を記録したよ。一方で死亡者数は約4割減少しており、2025年6月施行の熱中症対策義務化（WBGT測定・報告体制整備等）が重篤化の防止には一定の効果を上げつつも、そもそもの発症自体は増え続けてる実態が見えてくる。厚労省は今年も「令和8年 STOP！熱中症 クールワークキャンペーン」を実施中で、まさに今この時期（8月）が注意喚起のピーク。義務化から1年以上経った今、対応が形だけになってないかを再点検するタイミングだよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />屋外・高温環境作業がある顧問先に、WBGT値把握と予防措置が実際に運用されてるか（書類上だけでないか）確認する</li><li><input type="checkbox" disabled />熱中症の疑いがある事案が出た際の報告体制・緊急対応フローが整備されてるか再点検を提案する</li><li><input type="checkbox" disabled />違反時の罰則（6ヶ月以下の懲役または50万円以下の罰金）を根拠に、未対応の顧問先へ改めて注意喚起する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「義務化対応はしたつもりだけど、死傷者数が増えてると聞くと本当に十分か不安になる」</td></tr><tr><th>🧑‍🏭 労働者目線</th><td>「暑い中での作業がつらいのは変わらない、現場レベルでの休憩確保が本当に守られてるか気になる」</td></tr><tr><th>🏢 現場管理者目線</th><td>「WBGT測定は形式的にやってるけど、作業を止める判断を現場でどこまでできるか難しい」</td></tr><tr><th>⚖️ 専門家目線</th><td>「死亡者数の減少は義務化の成果と言えるが、死傷者数の増加は猛暑の激甚化そのものへの対応力不足を示してる」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.mhlw.go.jp/stf/newpage_73330.html" target="_blank" rel="noopener">厚生労働省「令和７年「職場における熱中症による死傷災害の発生状況」（確定値）を公表します」</a></p></article>
+<article class="article"><h3>③ 賃金のデジタル払い、利用率わずか1.5%で伸び悩み</h3><div class="glossary"><strong>用語解説：賃金のデジタル払いってなに？</strong><br />2023年4月に解禁された制度で、給与を銀行口座ではなく、PayPayなどの「〇〇ペイ」型の資金移動業者口座に直接振り込めるようにする仕組みだよ。労働者本人の同意と労使協定が必要で、強制はできない。</div><h4>何が起きた？</h4><p>厚生労働省の調査によると、正社員・パートとして働く人のうち<strong>給与をデジタルマネーで受け取ってる人はわずか1.5%</strong>にとどまってることが分かったよ。制度解禁から3年以上経つのに、参入している資金移動業者も<strong>PayPayなど4社どまり</strong>で、普及が思うように進んでない状況。一方でアルバイト給与に限れば、直近半年でデジタル払いを実施した企業は26.2%と、正社員より導入が進んでる業種もある。銀行振込という慣れた仕組みからの移行には、労働者側の心理的ハードルと、企業側の労使協定締結・システム対応の手間の両方が壁になってるとみられるよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />デジタル払い導入を検討してる顧問先に、労使協定の締結手順（過半数代表者選出含む）を案内する</li><li><input type="checkbox" disabled />アルバイト比率が高い顧問先（飲食・小売等）には、導入率が比較的高い業種の事例として情報提供する</li><li><input type="checkbox" disabled />導入する場合の資金移動業者選定・口座上限額（100万円）など実務上の注意点を整理しておく</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「振込手数料が下がるメリットはあるけど、導入の手間を考えるとまだ様子見でいい」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「〇〇ペイに直接入るのは便利そうだけど、銀行口座の安心感を手放す決め手がない」</td></tr><tr><th>🏢 現場管理者目線</th><td>「若いアルバイトスタッフには需要がありそうだけど、労使協定の手続きが面倒に感じる」</td></tr><tr><th>⚖️ 専門家目線</th><td>「制度自体は悪くないが、資金移動業者の信頼性・破綻時の保護の仕組みがもっと知られないと普及は進まない」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.nikkei.com/article/DGKKZO96477640V20C26A5EP0000/" target="_blank" rel="noopener">日本経済新聞「デジタル給与の利用1.5% 参入4社どまり、普及進まず」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="issue-2026-08-13" data-search="障害者法定雇用率2.7％へ、対象企業は37.5人以上に拡大（2026年7月施行） 副業・兼業の「労働時間通算」廃止へ、厚労省が見直し議論を加速 建設業の「2026年問題」現実に、倒産2000件超え・休廃業1万件突破">
+      <summary>
+        <span class="issue-badge">第5号 8/13</span>
+        <span>
+          <span class="issue-headline">障害者法定雇用率2.7％へ、対象企業は37.5人以上に拡大（2026年7月施行）</span>
+          <span class="issue-sub">障害者法定雇用率2.7％へ、対象企業は37.5人以上に拡大（2026年7月施行）／副業・兼業の「労働時間通算」廃止へ、厚労省が見直し議論を加速／建設業の「2026年問題」現実に、倒産2000件超え・休廃業1万件突破　全3本</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><h3>① 障害者法定雇用率2.7％へ、対象企業は37.5人以上に拡大（2026年7月施行）</h3><div class="glossary"><strong>用語解説：法定雇用率と「37.5人以上」の意味</strong><br />法定雇用率は、企業が雇用する労働者数に対して一定割合以上の障害者を雇わなければならないというルール。今回2.5%から2.7%に上がったことで、逆算すると常用雇用労働者37.5人以上の企業から雇用義務（障害者1人以上）が発生するようになったんだ。パート・アルバイトも一定条件で人数にカウントされる。</div><h4>何が起きた？</h4><p>2026年7月1日から、民間企業の<strong>障害者法定雇用率が2.5%から2.7%に引き上げ</strong>られたよ。これに伴い、雇用義務が発生する対象企業の範囲も<strong>従業員40人以上から37.5人以上（実質38人以上）に拡大</strong>した。2024年4月の2.3%→2.5%引き上げに続く段階的な引き上げの第2弾で、5年ごとの見直しサイクルに沿ったもの。今回新たに対象になる中小企業は数万社規模とみられてて、これまで「うちは対象外」だった会社が急に義務を負うケースが相次ぎそう。未達成のまま放置すると、不足1人あたり月5万円の障害者雇用納付金が課される可能性がある、地味に効いてくる改正だよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の常用雇用労働者数（パート・アルバイト含む）を再集計し、37.5人以上に該当するか確認する</li><li><input type="checkbox" disabled />新たに対象になる顧問先には、障害者雇用の進め方（求人・受入体制・助成金活用）を早めに案内する</li><li><input type="checkbox" disabled />既に対象だった顧問先にも、2.7%達成に向けた不足人数の再計算を行う</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「急に対象企業になったけど、受け入れ体制なんて一朝一夕には整わない」</td></tr><tr><th>🧑‍🦽 労働者目線（障害のある求職者）</th><td>「雇用の門戸が広がるのは嬉しいけど、"数合わせ"で終わらない受け入れ体制であってほしい」</td></tr><tr><th>🏢 現場管理者目線</th><td>「業務の切り出しや職場環境の調整、何から手をつければいいか分からない」</td></tr><tr><th>⚖️ 専門家目線</th><td>「納付金を払って終わりにする企業と、本気で採用・定着に取り組む企業の差が今後さらに開く」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://sr-dsg.or.jp/column/hr-labor/1173/" target="_blank" rel="noopener">社会保険労務士法人第一綜合事務所「【2026年7月施行】障害者法定雇用率が2.7%へ引き上げ。対象となる企業規模（37.5人以上）と実務対応」</a></p></article>
+<article class="article"><h3>② 副業・兼業の「労働時間通算」廃止へ、厚労省が見直し議論を加速</h3><div class="glossary"><strong>用語解説：労働時間の通算ってなに？</strong><br />今のルールでは、同じ人が2つの会社で働く場合、両方の労働時間を合算して「1日8時間・週40時間」の法定労働時間を判定する。後から契約した会社側が、通算した上での残業代（割増賃金）を負担する仕組みになってるんだ。</div><h4>何が起きた？</h4><p>厚生労働省の有識者会議で、副業・兼業をしている労働者の<strong>労働時間を会社をまたいで通算する現行ルールを廃止</strong>し、<strong>各企業が自社の労働時間だけで残業代を計算するシンプルな仕組みに見直す方向</strong>で議論が進んでるよ。日・週単位での通算把握は不要にする一方、健康管理の観点から月単位での総労働時間把握は企業に求める、という切り分けが検討されてる。まだ決定事項ではなく議論段階だけど、実現すれば副業を認める企業にとって長年の実務負担（通算計算・情報のやり取り）が大きく軽減される話。今年見送りになった労基法大改正の論点の一つとして、動向を継続ウォッチしておきたいところだよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />副業・兼業を認めてる（または検討中の）顧問先に、通算ルール見直しの議論状況を情報提供しておく</li><li><input type="checkbox" disabled />現行ルールでの通算管理に苦労してる顧問先には、見直しが実現するまでの当面の実務対応を整理する</li><li><input type="checkbox" disabled />月単位の健康管理（総労働時間把握）が新たに求められる可能性を見据え、勤怠管理の仕組みを点検しておく</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「通算計算がなくなるなら助かる、副業を認めるハードルが下がる」</td></tr><tr><th>🧑‍💻 労働者目線（副業ワーカー）</th><td>「通算がなくなると、長時間労働への歯止めが弱くなるのでは、と少し不安」</td></tr><tr><th>🏢 現場管理者目線</th><td>「本業と副業の労働時間、結局どこまで把握・管理すればいいのか線引きが気になる」</td></tr><tr><th>⚖️ 専門家目線</th><td>「健康管理の実効性をどう担保するかが焦点、通算廃止＝チェック不要ではない点を顧問先に正確に伝える必要がある」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://r-syaro.com/column/labor-law-revisions-2026-1/" target="_blank" rel="noopener">社会保険労務士法人湘南経営パートナーズ「2026年労働法大改正：「副業・兼業の労働時間通算ルールの見直し」」</a></p></article>
+<article class="article"><h3>③ 建設業の「2026年問題」現実に、倒産2000件超え・休廃業1万件突破</h3><div class="glossary"><strong>用語解説：建設業の「2026年問題」ってなんだっけ？</strong><br />2024年4月に建設業へも時間外労働の上限規制（原則月45時間・年360時間）が適用されたことに加え、熟練技術者の大量退職・資材高騰が重なって、業界全体で「受注しても人が足りず工事が進まない」状態が深刻化してることを指す言葉だよ。</div><h4>何が起きた？</h4><p>建設業の時間外労働上限規制の適用から2年以上が経ち、その影響が数字にはっきり表れてきてるよ。2025年の建設業倒産件数は<strong>12年ぶりに2000件を突破</strong>、休廃業・解散に至った企業は<strong>過去最多の1万件超え</strong>という水準になった。人手不足によって「受注できない」「工期が長期化する」といった事態が広がっていて、受注余力の縮小が経営体力の弱い中小建設業者を直撃してる構図。上限規制自体は労働者保護のための正しい方向性である一方、業界の構造的な人手不足対策（賃上げ・生産性向上・多能工化など）が追いついていない現実が、倒産・廃業という形で表面化してきてるということだね。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />建設業の顧問先には、36協定の上限遵守状況と実際の稼働実態にギャップがないか改めて確認する</li><li><input type="checkbox" disabled />人手不足対策として活用できる助成金（業務改善助成金、人材開発支援助成金等）を建設業向けに整理して提案する</li><li><input type="checkbox" disabled />経営体力が厳しい顧問先には、早期に社労士・税理士・金融機関を交えた相談体制を案内する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「上限規制の趣旨は分かるが、人が足りない中でどう工期を守ればいいのか正直厳しい」</td></tr><tr><th>🧑‍🔧 労働者目線</th><td>「長時間労働が是正されるのは歓迎、ただし会社が倒れたら元も子もない」</td></tr><tr><th>🏢 現場管理者目線</th><td>「工程管理と法令遵守の板挟みで、現場の采配が年々難しくなってる」</td></tr><tr><th>⚖️ 専門家目線</th><td>「規制と支援策はセットで機能させる必要がある、企業側には早めの経営相談を強く勧めたい局面」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://sekokan.ch-magazine.rise-jms.jp/change-innovation/4392/" target="_blank" rel="noopener">施工管理チャンネル MAGAZINE「建設業の2026年問題とは？現場が回らなくなる本当の理由」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="issue-2026-08-12" data-search="業務改善助成金、9月から3コースに再編＆上限600万円はそのまま 精神障害の労災認定、7年連続で過去最多に（原因トップはパワハラ） 「治療と仕事の両立支援」が努力義務に（2026年4月施行、対応まだの企業も）">
+      <summary>
+        <span class="issue-badge">第4号 8/12</span>
+        <span>
+          <span class="issue-headline">業務改善助成金、9月から3コースに再編＆上限600万円はそのまま</span>
+          <span class="issue-sub">業務改善助成金、9月から3コースに再編＆上限600万円はそのまま／精神障害の労災認定、7年連続で過去最多に（原因トップはパワハラ）／「治療と仕事の両立支援」が努力義務に（2026年4月施行、対応まだの企業も）　全3本</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><h3>① 業務改善助成金、9月から3コースに再編＆上限600万円はそのまま</h3><div class="glossary"><strong>用語解説：業務改善助成金ってなに？</strong><br />生産性向上につながる設備投資（POSレジ導入、機械化など）と、事業場内の最低賃金の引き上げをセットで行う中小企業・小規模事業者に対して、その費用の一部を助成する制度だよ。最低賃金対応とセットになってるのが特徴。</div><h4>何が起きた？</h4><p>令和8年度の業務改善助成金について、<strong>申請受付が9月1日開始</strong>に変更され、賃上げ額のコースが<strong>50円・70円・90円の3コース</strong>に再編されることが分かったよ。対象は地域別最低賃金との差額が一定以内の事業場（＝最低賃金にかなり近い水準で人を雇ってる中小事業者）で、複数事業場を持つ場合は事業主単位で年間上限<strong>600万円</strong>まで。予算規模も大幅に積み増しされてて、政府が「賃上げ」「人手不足対策」を重点分野に据えてる姿勢がここにも表れてる。9月申請開始とはいえ、設備投資の計画・見積もりは今のうちから動かないと間に合わないパターンが多い制度だよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />最低賃金ギリギリの水準で雇ってる顧問先に、9月申請開始のスケジュールを早めに案内する</li><li><input type="checkbox" disabled />新しい3コース（50円・70円・90円）のどれが顧問先の実情に合うか、設備投資計画とあわせて相談に乗る</li><li><input type="checkbox" disabled />複数事業場を持つ顧問先には、事業主単位の上限600万円の考え方を説明しておく</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「助成金があるうちに設備投資したいけど、9月まで待つと年度末の駆け込みが心配」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「賃上げの原資が助成金頼みなのは、ちょっと不安定に感じる」</td></tr><tr><th>🏢 現場管理者目線</th><td>「申請書類の準備、いつも直前でバタバタするから今回は早めに動きたい」</td></tr><tr><th>⚖️ 専門家目線</th><td>「コース再編のタイミングで申請要件が変わりやすいから、旧コース前提で計画してる顧問先には要注意喚起」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://joseikin-insight.com/grants/grant-168559/" target="_blank" rel="noopener">joseikin-insight.com「業務改善助成金【令和8年度】9月申請・最大600万円を徹底解説」</a></p></article>
+<article class="article"><h3>② 精神障害の労災認定、7年連続で過去最多に（原因トップはパワハラ）</h3><div class="glossary"><strong>用語解説：労災請求と支給決定の違い</strong><br />「請求」は労働者・遺族が労災だと主張して申請すること、「支給決定（認定）」は労基署がそれを実際に労災と認めて給付を決めることだよ。請求されても認定されるとは限らない（今回の認定率は約3割）。</div><h4>何が起きた？</h4><p>厚生労働省が公表した令和7年度の「過労死等の労災補償状況」によると、仕事のストレスが原因の精神障害について、<strong>労災請求件数は4958件</strong>で過去最多を更新、<strong>支給決定（認定）件数も1082件</strong>となり、<strong>7年連続で過去最多</strong>を記録したよ。認定の原因別では、トップは<strong>パワーハラスメントの222件</strong>、僅差で<strong>カスタマーハラスメントとセクシュアルハラスメントがともに127件</strong>で続いた。カスハラが正式にランクインしてくるあたり、2026年10月施行のカスハラ防止措置義務化がまさにタイムリーな話だと分かる数字。認定率は約3割にとどまってて、"請求しても認められにくい"実態も浮かび上がってるよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先のハラスメント相談窓口が、パワハラだけでなくカスハラ・セクハラにも対応できる体制になってるか再確認</li><li><input type="checkbox" disabled />メンタルヘルス不調者が出た際の労災請求サポート体制（証拠収集・タイムライン整理）を事務所として整備</li><li><input type="checkbox" disabled />認定率3割という数字を踏まえ、"労災請求すれば必ず認定される"わけではない点を顧問先・従業員双方に正確に説明する</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「数字が増えると企業イメージにも関わる、予防に本気で投資すべきタイミング」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「請求しても3割しか認められないなら、声を上げても無駄という空気になりそうで怖い」</td></tr><tr><th>🏢 現場管理者目線</th><td>「パワハラ・カスハラ・セクハラ全部に気を配れと言われても、正直どこまでやればいいか分からない」</td></tr><tr><th>⚖️ 専門家目線</th><td>「カスハラが原因の上位に食い込んできたのは象徴的、10月の防止措置義務化と合わせて企業に説明する好材料」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.nikkei.com/article/DGXZQOUF157GG0V10C26A7000000/" target="_blank" rel="noopener">日本経済新聞「仕事のストレス原因の精神障害、労災認定7年連続最多 25年度1082件」</a></p></article>
+<article class="article"><h3>③ 「治療と仕事の両立支援」が努力義務に（2026年4月施行、対応まだの企業も）</h3><div class="glossary"><strong>用語解説：治療と仕事の両立支援ってどういうこと？</strong><br />がんや糖尿病など、長期の治療をしながら働き続けたいと希望する労働者が増えてる中で、会社が「両立支援指針」に基づいて相談対応や勤務配慮をすることだよ。特定の病気に限定されず、継続的な治療が必要な従業員なら誰でも対象になり得るのがポイント。</div><h4>何が起きた？</h4><p>改正労働施策総合推進法の施行により、<strong>2026年4月1日から企業に「治療と仕事の両立支援」への取り組みが努力義務</strong>として求められてるよ。背景には、医療の進歩でがんなどの病気が「治療しながら長く付き合う病気」に変わってきてることがある。企業は厚労省の「治療と就業の両立支援指針」に基づいて、労働者からの相談に適切に対応することが求められる。努力義務なので罰則はないけど、対応を怠ると行政指導の対象になり得るし、施行から4ヶ月以上経った今も体制が整ってない企業は少なくないはず。地味だけど、じわじわ効いてくるタイプの改正だよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先に両立支援指針の対応状況をヒアリングし、未対応なら相談窓口・休暇制度の整備を提案</li><li><input type="checkbox" disabled />治療と仕事の両立に関する相談があった際の対応フロー（産業医連携含む）をひな形として用意しておく</li><li><input type="checkbox" disabled />努力義務とはいえ行政指導リスクがある点を、まだ着手してない顧問先に改めて伝える</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「努力義務なら後回しでいいかと思ってたけど、行政指導のリスクがあるなら考え直したい」</td></tr><tr><th>🧑‍🩺 労働者目線</th><td>「治療しながら働ける環境が広がるのはありがたい、実際に相談しやすい雰囲気があるかが大事」</td></tr><tr><th>🏢 現場管理者目線</th><td>「本人の病状をどこまで周囲に共有していいか、線引きが難しくて対応に迷う」</td></tr><tr><th>⚖️ 専門家目線</th><td>「努力義務のうちに体制を整えた企業と、放置した企業とで数年後に差が出るタイプの改正」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.safetynet.co.jp/column/20260701/" target="_blank" rel="noopener">パソナセーフティネット「2026年4月改正で「治療と仕事の両立支援」が努力義務化へ」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="issue-2026-08-11" data-search="最低賃金、3年連続55円アップで全国平均1176円に 男性育休取得率、統計開始以来はじめて50％超え 大手企業の夏ボーナス、104万円で過去最高に（建設は初の200万円超え） 出産費用が実質無償化へ！健康保険法等改正が成立">
+      <summary>
+        <span class="issue-badge">第3号 8/11</span>
+        <span>
+          <span class="issue-headline">最低賃金、3年連続55円アップで全国平均1176円に</span>
+          <span class="issue-sub">最低賃金、3年連続55円アップで全国平均1176円に／男性育休取得率、統計開始以来はじめて50％超え／大手企業の夏ボーナス、104万円で過去最高に（建設は初の200万円超え）／出産費用が実質無償化へ！健康保険法等改正が成立　全4本</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><h3>① 最低賃金、3年連続55円アップで全国平均1176円に</h3><div class="glossary"><strong>用語解説：全国加重平均ってなに？</strong><br />各都道府県の最低賃金を、その県で働く労働者の人数で重みづけして平均した数字だよ。東京・神奈川・大阪みたいな人口の多い都市部の水準が全体の数字を押し上げやすいんだ。</div><h4>何が起きた？</h4><p>中央最低賃金審議会が2026年度の最低賃金改定の目安をまとめて、全国加重平均が<strong>時給1176円</strong>（前年度比<strong>＋55円</strong>）になる見通しになったよ。<strong>3年連続で55円の引き上げ</strong>という異例のペースで、企業の人件費負担は年々重くなってる状況。都道府県ごとの正式な金額・発効日はこれから決まるけど、この目安がベースになるのはほぼ確実。時給制のパート・アルバイト・派遣社員を抱える企業は、毎年恒例とはいえ今年も対応必須の話だよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の時給単価が新しい最低賃金を下回らないか、都道府県別に確認するリマインドを設定する</li><li><input type="checkbox" disabled />派遣元・派遣先双方の顧問先には、最低賃金改定に伴う派遣料金・労使協定の見直しタイミングも案内する</li><li><input type="checkbox" disabled />最低賃金引き上げに伴う社会保険料への影響を試算し、資金繰り相談への準備をしておく</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「毎年55円ずつ上がるのはさすがにキツい、価格転嫁できない業種はどうすれば」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「上がるのはありがたいけど、物価上昇のペースに追いついてる実感がない」</td></tr><tr><th>🏢 現場管理者目線</th><td>「時給が上がると既存社員との賃金バランスが崩れる、昇給ルールの見直しが毎年発生する」</td></tr><tr><th>⚖️ 専門家目線</th><td>「賃上げの持続可能性を考えると、生産性向上とセットで顧問先に提案する視点が必要」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.nikkei.com/article/DGXZQOUA2828Y0Y6A720C2000000/" target="_blank" rel="noopener">日本経済新聞「最低賃金の全国平均1176円に 26年度目安、55円引き上げ」</a></p></article>
+<article class="article"><h3>② 男性育休取得率、統計開始以来はじめて50％超え</h3><div class="glossary"><strong>用語解説：出生時育児休業（産後パパ育休）</strong><br />子どもの出生後8週間以内に、最大4週間取得できる育休制度のこと。通常の育休と違って2回に分割取得できたり、労使協定があれば休業中に一部就業もできたりする柔軟な仕組みだよ。</div><h4>何が起きた？</h4><p>厚生労働省が2026年7月31日に発表した調査で、2025年度の男性の育児休業取得率が<strong>50.9%</strong>となり、統計開始以来はじめて50%を超えたよ。前年度から<strong>＋10.4ポイント</strong>という大幅な伸びで、政府が掲げてた「2025年度までに50%」の目標をギリギリ達成した形。事業所規模別で見ると、これまで低かった<strong>5〜29人の小規模事業所でも42.9%</strong>まで伸びてて、大企業だけの話じゃなくなってきてる。ただし女性の取得率（88.3%）とはまだ37ポイント以上の開きがあって、"制度はあるけど実際に取りやすいか"はまた別の話。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の育休取得率を確認し、300人超企業なら公表義務（男女とも）を果たせてるかチェック</li><li><input type="checkbox" disabled />小規模事業所の顧問先にも、育休取得者の代替要員確保・業務引継ぎマニュアルの整備を提案</li><li><input type="checkbox" disabled />出生時育児休業給付金の申請手続き見直し（8月1日〜）と合わせて、育休制度全体の説明資料をアップデート</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「取得率の高さは採用面でプラスだけど、代替要員の確保が正直しんどい」</td></tr><tr><th>🧑‍🍼 労働者目線</th><td>「数字は伸びてるけど、実際は職場の空気で取りづらいところもまだ多いはず」</td></tr><tr><th>🏢 現場管理者目線</th><td>「同じ部署で複数人同時に育休に入られると業務が回らない、人員配置の見直しが急務」</td></tr><tr><th>⚖️ 専門家目線</th><td>「"取得率50%"の次のフェーズは、育休後の両立支援（時短・リモート）の設計競争になる」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.nikkei.com/article/DGXZQOUA297RQ0Z20C26A7000000/" target="_blank" rel="noopener">日本経済新聞「男性の育休取得率、25年度は50.9% 88.3%の女性と開き」</a></p></article>
+<article class="article"><h3>③ 大手企業の夏ボーナス、104万円で過去最高に（建設は初の200万円超え）</h3><div class="glossary"><strong>用語解説：経団連集計ってどんなデータ？</strong><br />経団連（日本経済団体連合会）が大手企業の人事部を通じて集計する夏季賞与のデータだよ。大企業中心の数字だから、中小企業も含めた全体平均とはズレがある点は注意が必要。</div><h4>何が起きた？</h4><p>経団連が発表した2026年夏の賞与（最終集計）の平均額が<strong>104万2537円</strong>で、前年比<strong>＋7.04%</strong>、<strong>比較可能な1981年以降で過去最高</strong>を更新したよ。<strong>夏のボーナスとして初めて100万円の大台を突破</strong>した形。業種別では建設業が突出してて、平均<strong>約202万6633円</strong>と全業種で初めて200万円を超えた。一方で電機・情報通信は伸びが鈍いなど、業種間の差も目立つ。5年連続の増加傾向で、企業側が「人への投資」を意識し始めてる証拠とも言えるね。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先企業の賞与支給額・支給基準を確認し、前年比での人件費増加率を把握する</li><li><input type="checkbox" disabled />業績連動型賞与への切り替えを検討中の顧問先には、制度設計・就業規則改定を提案</li><li><input type="checkbox" disabled />賞与額アップに伴う社会保険料・所得税の影響を、従業員向けに分かりやすく説明する資料を用意</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「業績が良いうちは還元したいけど、賞与に頼りすぎると業績悪化時の調整が難しくなる」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「104万円は平均の話、中小企業や非正規は全く別世界で格差を感じる」</td></tr><tr><th>🏢 現場管理者目線</th><td>「賞与が増えると、評価が伸びてない部下への説明がより難しくなる」</td></tr><tr><th>⚖️ 専門家目線</th><td>「賞与依存の給与体系は業績変動リスクを従業員に転嫁しやすい、月給体系とのバランス設計が重要」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.nikkei.com/article/DGXZQOUA0658H0W6A800C2000000/" target="_blank" rel="noopener">日本経済新聞「大手企業の夏ボーナス過去最高、建設は200万円超え 経団連」</a></p></article>
+<article class="article"><h3>④ 出産費用が実質無償化へ！健康保険法等改正が成立</h3><div class="glossary"><strong>用語解説：「出産育児一時金」から「分娩費」へ</strong><br />これまでは出産費用としてまず50万円が支給されて、実際の分娩費用との差額は自己負担だった（＝実質無償にならないケースもあった）。今回の改正で、正常分娩にかかる費用を公的保険から医療機関に直接全額支払う「分娩費」という仕組みに変わるんだ。</div><h4>何が起きた？</h4><p>2026年5月29日、参議院本会議で「健康保険法等の一部を改正する法律」が可決・成立したよ。目玉は<strong>出産費用の実質無償化</strong>：正常分娩にかかる費用を保険から医療機関へ直接支払う「分娩費」の仕組みが新設される。あわせて、国民健康保険の<strong>子どもの均等割保険料の軽減対象を、これまでの未就学児から高校生年代まで拡充</strong>することも決まった。ほかにも、市販薬と代替性の高い薬を保険適用外にする「一部保険外療養」の創設なども盛り込まれてる。少子化対策の一環として出産・子育て世帯の負担軽減を狙った改正で、企業側の実務対応（保険料率の変更や説明資料の準備）は今のうちから始めておきたいところ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />「分娩費」制度への切り替え内容を厚労省資料で確認し、顧問先向けの説明資料を準備しておく</li><li><input type="checkbox" disabled />子育て世帯の従業員が多い顧問先には、子どもの均等割保険料軽減拡充のメリットを周知</li><li><input type="checkbox" disabled />施行日（今後公表予定）に向けた社内周知・保険料率改定のスケジュールをあらかじめ整理</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「少子化対策として理解はできるが、保険料率への跳ね返りがどの程度か見極めたい」</td></tr><tr><th>🧑‍🍼 労働者目線</th><td>「出産費用の実質無償化はありがたい、もっと早くやってほしかった」</td></tr><tr><th>🏢 現場管理者目線</th><td>「制度変更のたびに従業員への説明対応が増える、周知担当としては地味に負担」</td></tr><tr><th>⚖️ 専門家目線</th><td>「出産・子育て支援の制度が急速に拡充されてる、企業の福利厚生設計との連動を提案するチャンス」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.kaiketsu-j.com/compliance/22397/" target="_blank" rel="noopener">かいけつ！人事労務「一部保険外療養の創設、後期高齢者医療における金融所得の勘案、出産に係る給付体系の見直しなどを盛り込んだ健康保険等の改正法が成立」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="issue-2026-08-07" data-search="技能実習生の受け入れ先、7割超で違反あり（東北） 派遣の「同じ賃金のはず」が崩れる？ 労使協定の更新忘れが急増（愛知） 育休給付の申請、書類がちょっと減って早くなる（厚労省・8月1日から） 雇用保険料、令和8年度は下がります（一般の事業：14.5→13.5/1,000） 社労士会の会費、34年ぶりに値上げへ（月300円アップ）">
+      <summary>
+        <span class="issue-badge">第2号 8/7</span>
+        <span>
+          <span class="issue-headline">技能実習生の受け入れ先、7割超で違反あり（東北）</span>
+          <span class="issue-sub">技能実習生の受け入れ先、7割超で違反あり（東北）／派遣の「同じ賃金のはず」が崩れる？ 労使協定の更新忘れが急増（愛知）／育休給付の申請、書類がちょっと減って早くなる（厚労省・8月1日から）／雇用保険料、令和8年度は下がります（一般の事業：14.5→13.5/1,000）／社労士会の会費、34年ぶりに値上げへ（月300円アップ）　全5本</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+<article class="article"><h3>① 技能実習生の受け入れ先、7割超で違反あり（東北）</h3><div class="glossary"><strong>用語解説：技能実習生って？</strong><br />海外から来て、日本の会社で働きながら技術や知識を学ぶ制度で働いている外国人のこと。「教育」目的の在留資格だけど、実際は労働力として現場を支えているケースも多く、労働条件をめぐるトラブルが起きやすいと言われてる制度だよ。</div><h4>何が起きた？</h4><p>東北地方の6つの労働局が、令和6年に技能実習生を受け入れている会社（実施機関）へ行った監督指導の結果をまとめて発表した。調査対象になった836の事業場のうち、<strong>71.7%にあたる599事業場で何らかの法令違反が確認</strong>された。これは令和元年以降で最も多い数字。違反の内容で一番多かったのは「安全基準」に関するもので、日本人労働者に関する違反も含まれていたとのこと。実施事業場数自体も過去最多を記録していて、それだけ受け入れが増えている中で、管理が追いついていない実態が浮き彫りになった形だよ。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />技能実習生を受け入れてる顧問先があれば、先に安全対策をチェックしてあげる</li><li><input type="checkbox" disabled />「監督が入る前に自主点検しておきましょう」と提案できる</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「ただでさえ人手不足なのに、チェックが厳しくなると受け入れづらくなる」</td></tr><tr><th>🧑‍🏭 労働者目線</th><td>「違反が多いなら、もっと厳しく取り締まってほしい」</td></tr><tr><th>🏢 現場管理者目線</th><td>「ルールは分かるけど、現場の実態と合ってない部分もある」</td></tr><tr><th>⚖️ 専門家目線</th><td>「制度自体の複雑さが違反を生みやすくしている、という構造的な指摘もある」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.rodo.co.jp/news/223359/" target="_blank" rel="noopener">労働新聞社「監督数が令和最多に 技能実習の実施機関で 東北６労働局」</a></p></article>
+<article class="article"><h3>② 派遣の「同じ賃金のはず」が崩れる？ 労使協定の更新忘れが急増（愛知）</h3><div class="glossary"><strong>用語解説：労使協定方式ってなに？</strong><br />派遣で働く人の給料を、実際に働く会社（派遣先）と同じ水準にする「同一労働同一賃金」を実現するための2つのやり方のうちの1つ。もう1つの「派遣先均等・均衡方式」と違って、派遣元の会社が労働者側の代表と協定を結んで、その内容にそって給料を決めるやり方だよ。ただしこの協定、毎年更新しないと"賞味期限切れ"になっちゃう仕組みなんだ。</div><h4>何が起きた？</h4><p>愛知労働局が発表した令和7年度の指導監督状況によると、この労使協定を「更新し忘れる」派遣元が相次いでいて、是正指導の件数は前年度から<strong>約6割も増加</strong>した。原因は、協定のベースになる「一般賃金水準」（厚労省が毎年発表する統計）が最低賃金を下回った場合、代わりに最低賃金がその年の基準になるルールがあり、これに気づかず古い協定のまま運用してしまうケース。特に食品製造業などで目立っているとのこと。協定が切れた状態で運用を続けると、賃金決定の根拠自体が崩れてしまうため、遡って是正が必要になるリスクがある、地味だけど実害の大きい話。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />労使協定方式の派遣元顧問先について、協定の更新月を一覧化する</li><li><input type="checkbox" disabled />最低賃金改定（10月頃）のタイミングで、協定の賃金水準が最低賃金を下回っていないか毎年チェックする仕組みを作る</li><li><input type="checkbox" disabled />更新忘れが見つかった場合の遡及是正の進め方を、ひな形として用意しておく</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線（派遣元）</th><td>「毎年の更新作業が地味に負担、行政側でリマインドの仕組みを作ってほしい」</td></tr><tr><th>🧑‍🔧 労働者目線（派遣社員）</th><td>「協定が切れてる間、自分の給料が本当に適正だったのか不安になる」</td></tr><tr><th>🏢 現場管理者目線（派遣先）</th><td>「協定切れが発覚すると均等・均衡方式への切替えが必要になり、こっちの実務も増える」</td></tr><tr><th>⚖️ 専門家目線</th><td>「制度が複雑すぎて"うっかりミス"を誘発する構造そのものが問題という指摘もある」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.rodo.co.jp/news/222107/" target="_blank" rel="noopener">労働新聞社「派遣同一労働同一賃金 協定結び直し忘れ相次ぐ 指導件数は６割増加 愛知労働局・７年度指導監督状況」</a></p></article>
+<article class="article"><h3>③ 育休給付の申請、書類がちょっと減って早くなる（厚労省・8月1日から）</h3><div class="glossary"><strong>用語解説：出てくる給付金、3つ整理しておくね</strong><br />- <strong>出生時育児休業給付金</strong>：いわゆる「産後パパ育休」を取得している間の所得を補償する給付金 - <strong>出生後休業支援給付金</strong>：夫婦そろって一定期間育休を取ると上乗せでもらえる給付金 - <strong>育児時短就業給付</strong>：育児のために時短勤務にして給料が下がった分を補う、2025年にできたばかりの給付金</div><h4>何が起きた？</h4><p>厚生労働省が、これら3つの育休関連給付について、事業所側の事務負担を減らすための手続き見直しを令和8年8月1日から始めた。具体的には、①出生時育休給付はこれまで「実際に支払われた賃金額」が確定するまで申請できなかったが、その空白期間をなくして早めに申請できるようにする、②出生後休業支援給付金の配偶者確認書類として「母子健康手帳の写し」でOKにする、③同じ子について既に育休給付をもらっている場合は、育児時短就業給付の申請時に母子手帳などを出し直さなくてよくする、の3点。派手さはないけど、担当者が毎回「あれ、この書類また出すんだっけ？」と迷っていた地味な手間を減らす改正で、現場ではありがたがられそうな内容。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />育休関連の給付を申請中／予定の顧問先に、書類が減ることを一枚もので案内する</li><li><input type="checkbox" disabled />出生時育休給付の申請を早められる案件がないか、進行中の手続きを棚卸しする</li><li><input type="checkbox" disabled />事務所内の申請書類チェックリストを最新版にアップデートする</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「事務負担が減るのは素直にありがたい、あとはシステム対応が早く追いついてほしい」</td></tr><tr><th>🧑‍🍼 労働者目線</th><td>「書類が減るのは嬉しいけど、そもそも制度自体がまだ複雑」</td></tr><tr><th>🏢 現場管理者目線（人事担当）</th><td>「運用変更のたびに社内マニュアルを直す手間はある」</td></tr><tr><th>⚖️ 専門家目線</th><td>「小さな簡素化より、申請システムそのもののデジタル化が本丸という指摘も」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://jsite.mhlw.go.jp/tokyo-roudoukyoku/newpage_01714.html" target="_blank" rel="noopener">厚生労働省 東京労働局「令和8年8月1日から育児休業給付の申請手続きを見直します」</a></p></article>
+<article class="article"><h3>④ 雇用保険料、令和8年度は下がります（一般の事業：14.5→13.5/1,000）</h3><div class="glossary"><strong>用語解説：雇用保険料率ってどう決まるの？</strong><br />給料の総額に対してかかる雇用保険料の割合のこと。会社と従業員で折半する部分と、会社だけが負担する「雇用保険二事業」分を合わせたものだよ。コロナ禍で休業手当を補助する「雇用調整助成金」の支給が急増して財政が悪化したせいで、令和4年頃から料率が上がり続けてたんだけど、そこからようやく下降局面に入ってきた、という話。</div><h4>何が起きた？</h4><p>令和8年度の雇用保険料率が、前年度から<strong>0.1%引き下げ</strong>られることが決まった。一般の事業は1,000分の14.5から<strong>1,000分の13.5</strong>へ、農林水産・清酒製造業は16.5→15.5、建設業は17.5→16.5に、それぞれ下がる。適用は令和8年4月1日以降、最初に到来する給与の締日から。コロナ関連の給付急増で悪化した雇用保険財政が、雇用情勢の回復もあって改善してきたことが背景で、令和7年度の引き下げに続く2年連続の引き下げになる。従業員1人あたりの負担減はごくわずかだけど、積み重ねると企業の保険料負担にはそれなりのインパクトがある数字。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />顧問先の給与計算システムが新料率（13.5/1,000など）にちゃんと切り替わっているか確認する</li><li><input type="checkbox" disabled />4月以降の給与で旧料率のまま控除していないか、念のため点検する</li><li><input type="checkbox" disabled />7月の労働保険年度更新で、新旧料率の期間按分が正しく計算されているか再確認する</li><li><input type="checkbox" disabled />従業員向けに「手取りが少し増えます」と分かりやすく伝える資料を用意してあげる</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線</th><td>「保険料負担が減るのは助かるけど、また急に上がったりしない？という不安もある」</td></tr><tr><th>🧑‍💼 労働者目線</th><td>「手取りが増えるのは嬉しいけど、正直金額としては実感しにくい」</td></tr><tr><th>🏢 現場管理者目線（給与担当）</th><td>「料率改定の反映漏れが一番怖い、システム対応のタイミングに注意」</td></tr><tr><th>⚖️ 専門家目線</th><td>「財政改善は歓迎しつつ、次の景気後退時にまた急激に上がるリスクへの備えは必要」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://fpeo.co.jp/news/news-20260318/" target="_blank" rel="noopener">社会保険労務士法人エフピオ「令和８年度雇用保険料率は引き下げ」</a></p></article>
+<article class="article"><h3>⑤ 社労士会の会費、34年ぶりに値上げへ（月300円アップ）</h3><div class="glossary"><strong>用語解説：社労士会ってどんな組織？</strong><br />都道府県ごとにある社労士の職能団体。社労士として登録すると入会が義務付けられていて、会費を払って所属する仕組み。研修や広報、相談体制の運営なんかを会費でまかなってるよ。</div><h4>何が起きた？</h4><p>全国社会保険労務士会連合会が開いた令和8年度の通常総会で、会費を月額300円引き上げる会則改正案が賛成多数で可決した。適用は<strong>令和10年4月から</strong>で、開業社労士・社労士法人の社員は月2,000円、それ以外の社労士は月1,500円になる予定。会費の改定自体は<strong>平成4年以来34年ぶり</strong>という珍しいニュースで、背景には会員数の伸びが鈍化していることと、連合会の財政が赤字基調に転じつつあることがあるとのこと。金額としては小さいけど、「34年ぶり」というインパクトの大きさで話題になっている改正。</p><h4>うちの仕事にどう関係する？</h4><ul class="todo"><li><input type="checkbox" disabled />令和10年4月からの会費増額を、事務所の経費計画に織り込んでおく</li><li><input type="checkbox" disabled />値上げの使途（研修拡充・相談体制強化など）を所属の都道府県会に確認しておく</li><li><input type="checkbox" disabled />開業間もない社労士仲間がいれば、固定費増になる点をさりげなく共有しておく</li></ul><h4>立場によって意見が分かれそうなポイント</h4><table class="opinion-table"><tr><th>👔 経営者目線（事務所主宰）</th><td>「34年据え置きなら妥当、ただ使途はちゃんと開示してほしい」</td></tr><tr><th>🧑‍🎓 専門家目線（若手・開業間もない社労士）</th><td>「金額は小さくても、開業初期は固定費が地味に効いてくる」</td></tr><tr><th>🏢 現場目線（会運営側）</th><td>「会員サービスや研修の質を上げるには必要な措置」</td></tr><tr><th>⚖️ 専門家目線（第三者的な見方）</th><td>「会員数の伸び鈍化という構造的な課題への対症療法にすぎない、という声も」</td></tr></table><p class="source-line">🔗 情報源：<a href="https://www.rodo.co.jp/news/222481/" target="_blank" rel="noopener">労働新聞社「社会保険労務士 会費を月300円引き上げ 10年４月から適用に 全国社労士会」</a></p></article>
+      </div>
+    </details>
+
+    <details class="issue" id="issue-2026-08-06" data-search="技能実習 監督指導 違反 東北 派遣 同一労働同一賃金 労使協定 社会保険労務士会 会費 社会保険適用拡大 賃金要件撤廃 最低賃金1500円 労働基準法改正 高年齢労働者 労災防止">
+      <summary>
+        <span class="issue-badge">創刊号 8/6</span>
+        <span>
+          <span class="issue-headline">創刊号：技能実習の監督強化から最低賃金1500円方針まで、7つの動き</span>
+          <span class="issue-sub">旧フォーマット（3段構成）での初回配信　全7項目</span>
+        </span>
+        <span class="issue-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="issue-body">
+        <p class="old-format-note">※ この号は初期フォーマット（要約／実務影響／賛否両論の3段構成）で配信されたものです。第2号以降、記事ごとに用語解説・実務ToDo・立場別意見表を備えた現在の形式に更新されました。</p>
+
+        <article class="article">
+          <h3>① ニュースの要約</h3>
+          <ul class="flat-list">
+            <li><strong>技能実習生への監督指導、違反率71.7%に</strong><br />東北6労働局が令和6年に実施した技能実習実施機関への監督指導結果を公表。実施事業場数836件（令和元年以降で最多）のうち71.7%（599事業場）で労働基準関係法令違反を確認。</li>
+            <li><strong>派遣の同一労働同一賃金、労使協定の"結び直し忘れ"が急増</strong><br />派遣元事業主が労使協定方式を採用する際に必要な協定の更新（結び直し）を失念するケースが相次ぎ、愛知労働局の是正指導件数は前年比6割増。</li>
+            <li><strong>社会保険労務士会の会費引き上げが決定</strong><br />月額300円の値上げが決定（報道ベース。適用開始時期は原典で要確認）。</li>
+            <li><strong>社会保険の適用要件、2026年10月に賃金要件撤廃</strong><br />短時間労働者への社会保険適用拡大に関し、2026年10月から「賃金月額8.8万円以上」の要件が撤廃される予定。企業規模要件・週所定労働時間要件は残る見込み。</li>
+            <li><strong>最低賃金1500円、政府が「2030年代前半」の早期達成方針を明確化</strong></li>
+            <li><strong>労働基準法の抜本改正、2026年通常国会への提出は見送り</strong><br />改正の方向性自体は維持されているが、法案提出時期は未定。2027年以降を見据えた検討が続く。</li>
+            <li><strong>高年齢労働者の労災防止対策、2026年4月より努力義務化</strong>（施行済み・継続対応事項として記載）</li>
+          </ul>
+        </article>
+
+        <article class="article">
+          <h3>② 現職（社労士・行政書士業務）への影響と対応</h3>
+          <p><strong>技能実習・特定技能関連の監督指導強化</strong><br />外国人材受入れ企業を顧問先に持つ場合、実習実施状況・36協定・賃金台帳の整備状況を年内に点検しておく必要性が高まっている。技能実習法から育成就労制度への移行期でもあり、監督指導の重点は「移行後も変わらない」と見て、顧問先への注意喚起（労働時間管理・割増賃金・寮費控除の適正性）を早めに行うのが望ましい。</p>
+          <p><strong>派遣先・派遣元双方の労使協定チェック</strong><br />労使協定方式を採用する派遣元の顧問先がある場合、協定の有効期間・改定タイミングを顧問先任せにせず、事務所側でリマインド管理する仕組み（更新月のカレンダー化）を持つと差別化になる。派遣先均等・均衡方式との使い分けの再説明も需要が見込める。</p>
+          <p><strong>社会保険適用拡大（2026年10月）への対応</strong><br />賃金要件撤廃により新たに加入対象となるパート・アルバイトが発生する顧問先が想定される。対象者洗い出し・被扶養者からの切替え説明・保険料試算は8〜9月中に前倒しで着手すべき業務。</p>
+          <p><strong>会費値上げは事務所運営コストの微増要因</strong><br />経営への影響は軽微だが、他の法定費用改定と合わせて年次の顧問料改定タイミングで説明材料として活用できる。</p>
+          <p><strong>労基法改正の見送りは「様子見」で正解</strong><br />2026年通常国会への提出見送りにより、就業規則・36協定の抜本的な様式変更は当面不要。ただし方向性は継続審議中のため、顧問先への「今すぐ対応不要、ただし動向は継続ウォッチ」という説明が適切。</p>
+        </article>
+
+        <article class="article">
+          <h3>③ 賛否両論の視点</h3>
+          <div class="stance-block">
+            <h5>技能実習の監督強化について</h5>
+            <ul>
+              <li>賛成側：違反率7割超という実態を踏まえれば、監督強化は労働者保護の観点で妥当。</li>
+              <li>慎重・反対側：人手不足に悩む中小事業者からは「摘発偏重で、労務管理体制構築への行政支援が不足している」との声も。</li>
+            </ul>
+          </div>
+          <div class="stance-block">
+            <h5>最低賃金1500円・2030年代前半達成方針</h5>
+            <ul>
+              <li>賛成側：物価上昇や地方の人材流出対策として、賃上げの道筋を早期に示すことは労働者・地方経済双方にプラス。</li>
+              <li>慎重・反対側：中小企業・小規模事業者からは急激な人件費上昇への対応力への懸念が根強い。</li>
+            </ul>
+          </div>
+          <div class="stance-block">
+            <h5>社会保険適用拡大（賃金要件撤廃）</h5>
+            <ul>
+              <li>賛成側：非正規雇用者の将来的な年金・医療保障の充実につながる。</li>
+              <li>慎重・反対側：手取り減を懸念する労働者本人の就業調整行動がむしろ強まる可能性も。</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </details>
+    <p class="empty-state" id="empty-state" hidden>該当する号が見つかりませんでした。別のキーワードで試してみてね。</p>
+  </main>
+
+  <footer>
+    <p>毎朝、社労士・行政書士業務のための労務ニュースを自動収集・配信しています。<br />メール／LINE配信とあわせて、このアーカイブはGitHubリポジトリの内容をもとに更新しています。</p>
+    <p>月次・年次の傾向分析は、記事が十分に蓄積され次第この場所に追加予定です。</p>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var issues = Array.prototype.slice.call(document.querySelectorAll('.issue'));
+    var jumpTargets = Array.prototype.slice.call(document.querySelectorAll('.issue, .monthly'));
+    var input = document.getElementById('search');
+    var countEl = document.getElementById('result-count');
+    var emptyEl = document.getElementById('empty-state');
+    var ribbonBtn = document.getElementById('ribbon-btn');
+    var ribbonPanel = document.getElementById('ribbon-panel');
+    var ribbonLinks = document.getElementById('ribbon-links');
+
+    function normalize(s) { return (s || '').toLowerCase(); }
+
+    function applyFilter() {
+      var q = normalize(input.value).trim();
+      var visible = 0;
+      issues.forEach(function (issue) {
+        var haystack = normalize(issue.dataset.search + ' ' + issue.querySelector('.issue-headline').textContent);
+        var match = q === '' || haystack.indexOf(q) !== -1;
+        issue.hidden = !match;
+        if (match) visible++;
+      });
+      emptyEl.hidden = visible !== 0;
+      countEl.textContent = q === '' ? '' : visible + ' 件ヒット';
+    }
+    input.addEventListener('input', applyFilter);
+
+    jumpTargets.forEach(function (item) {
+      var badgeEl = item.querySelector('.issue-badge, .monthly-badge');
+      var headlineEl = item.querySelector('.issue-headline, .monthly-headline');
+      var badge = badgeEl ? badgeEl.textContent : '';
+      var headline = headlineEl ? headlineEl.textContent : '';
+      var a = document.createElement('a');
+      a.href = '#' + item.id;
+      a.innerHTML = '<span class="rp-badge">' + badge + '</span><span>' + headline.slice(0, 16) + '…</span>';
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        item.open = true;
+        item.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        closeRibbon();
+      });
+      ribbonLinks.appendChild(a);
+    });
+
+    function openRibbon() { ribbonPanel.classList.add('open'); ribbonBtn.setAttribute('aria-expanded', 'true'); }
+    function closeRibbon() { ribbonPanel.classList.remove('open'); ribbonBtn.setAttribute('aria-expanded', 'false'); }
+    ribbonBtn.addEventListener('click', function () {
+      if (ribbonPanel.classList.contains('open')) closeRibbon(); else openRibbon();
+    });
+    document.addEventListener('click', function (e) { if (!e.target.closest('.ribbon-wrap')) closeRibbon(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeRibbon(); });
+  })();
+</script>
