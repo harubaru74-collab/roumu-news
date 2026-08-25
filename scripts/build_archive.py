@@ -455,6 +455,23 @@ def main():
     shell = shell.replace("全{{ISSUE_COUNT}}号", f"全{issue_count}号")
     shell = shell.replace("{{ISSUE_COUNT}}", str(issue_count))
 
+    # shell.html はArtifact用の「body断片」なので、Artifactが自動で付与していた
+    # <!DOCTYPE html>/<head>/<meta viewport> 等がない。GitHub Pagesでは
+    # Artifactを経由しないため、ここで正式なHTML文書として組み立て直す。
+    # （viewportがないとスマホでデスクトップ表示扱いされ、極端に縮小されてしまう）
+    shell = shell.replace(
+        "<title>",
+        (
+            '<!DOCTYPE html>\n<html lang="ja">\n<head>\n'
+            '<meta charset="UTF-8">\n'
+            '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+            "<title>"
+        ),
+        1,
+    )
+    shell = shell.replace("</style>", "</style>\n</head>\n<body>", 1)
+    shell = shell.rstrip() + "\n</body>\n</html>\n"
+
     os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
     with open(OUT_PATH, "w", encoding="utf-8") as f:
         f.write(shell)
