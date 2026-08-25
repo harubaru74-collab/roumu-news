@@ -92,10 +92,16 @@
 
 - 深夜2:00の処理トリガーが、Web検索を伴う重い処理（記事収集・執筆・GitHub保存・アーカイブ再公開）を済ませる。トークン節約のため、この時間帯にまとめて実行し、ユーザーへの通知は行わない。
 - 朝7:00の配信トリガーは、GitHub上の`daily-topics/YYYY-MM-DD.md`をそのまま取得して通知するだけの軽量処理（Web検索は一切行わない）。
-- 両トリガーとも同じセッション（`session_01Fjgku6xirc2xoSsvv95LwE`）に自己バインドされている（`create_trigger`のデフォルト挙動＝呼び出し元セッションへ自動バインド）。
+
+**セッションの紐付け（2026-08-25、roumu-news側との比較検証をふまえて修正）：**
+- 処理トリガー（深夜2:00）は、固定セッション（`session_01Fjgku6xirc2xoSsvv95LwE`）に自己バインドしている。毎回このセッションが再開され、会話の文脈（トーン・過去の修正経緯など）を保持したまま実行される。これはroumu-news側の「roumu-news GitHub保存（深夜2:00）」と同じ設計。
+- 配信トリガー（朝7:00）は、**`create_new_session_on_fire: true`で毎回まっさらな新規セッションを使う**方式に変更した（2026-08-25、初回作成時は誤って処理トリガーと同じセッションに自己バインドしていたが、roumu-newsとの比較検証で「収集は固定セッション／配信は毎回使い捨て」という設計だと判明したため揃えた）。理由は2つ：
+  1. 配信は「GitHub上のファイルを取ってきて知らせるだけ」の完結したタスクで、過去の会話文脈が不要。
+  2. 毎日2回（処理＋配信）同じセッションに会話を積み上げ続けると、長期運用でセッションの文脈が際限なく肥大化してしまう。配信を毎回使い捨てセッションにすることでこれを防いでいる。
+  - 併せて、`create_new_session_on_fire`モードでは`notifications`パラメータ（push/email）が正式にサポートされるため、`{push: true, email: true}`を明示的に設定した。
 - トリガーID（変更時に参照）：
-  - 処理：`trig_016LkY5PVXmuVJyEPcwSmdf6`
-  - 配信：`trig_013aykZunoWCms7Aos4SKeMN`
+  - 処理：`trig_016LkY5PVXmuVJyEPcwSmdf6`（固定セッション`session_01Fjgku6xirc2xoSsvv95LwE`に自己バインド）
+  - 配信：`trig_01GHBDeXoJRdJd6J93txbMhP`（`create_new_session_on_fire: true`、毎回新規セッション。旧トリガー`trig_013aykZunoWCms7Aos4SKeMN`は削除済み）
 - セッション単位のトリガーは最長7日程度で自動終了する場合がある（`CronCreate`ベースの場合）。この2つは`create_trigger`（恒久的なRoutine機能）で作成しているため、労務ニュースと同様に永続的に動作する想定。もし数日後に配信が止まっていたら、`list_triggers`で状態を確認すること。
 
 ## 改訂履歴
